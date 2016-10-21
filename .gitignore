@@ -3,3 +3,6 @@ runtime
 frameworks
 *.dll
 pp.exe
+pp.ilk
+*.pdb
+win32.zip
