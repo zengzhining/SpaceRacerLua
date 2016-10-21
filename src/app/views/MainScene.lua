@@ -18,14 +18,13 @@ function MainScene:onCreate()
 end
 
 function MainScene:setupTestMenu()
-    self.status =
-    cc.Label:createWithSystemFont("Hello Lua", "Arial", 32)
-            :move(display.cx, 100)
-            :addTo(self)
+    self.status = cc.Label:createWithSystemFont("Hello Lua", "Arial", 32)
+    self.status:move(display.cx, 100)
+    self.status:addTo(self)
     self.status:setColor(cc.c3b(255, 0, 0))
     local showText = function(msg)
         printf(msg)
-        self.status:setString(msg)
+        -- self.status:setString(msg)
     end
 
     self.kHomeBanner = "admob"
@@ -75,11 +74,30 @@ function MainScene:setupTestMenu()
     end)
     plugin:init()
 
+    local newplugin = sdkbox.PluginReview
+    newplugin:init()
+    newplugin:setListener(function(args)
+        local event = args.event
+        if "onDisplayAlert" == event then
+            print("onDisplayAlert")
+        elseif "onDeclineToRate" == event then
+            print("onDeclineToRate")
+        elseif "onRate" == event then
+            print("onRate")
+        elseif "onRemindLater" == event then
+            print("onRemindLater")
+        end
+    end)
+
     -- AdMobTestDeviceId comes from c++
     if AdMobTestDeviceId then
         print("the admob test device id is:", AdMobTestDeviceId)
         plugin:setTestDevices(AdMobTestDeviceId)
     end
+end
+
+function MainScene:onEnter()
+    sdkbox.PluginReview:show(true --[[ force ]])
 end
 
 return MainScene
