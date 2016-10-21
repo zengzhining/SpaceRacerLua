@@ -1,5 +1,3 @@
-./runtime
-./framework
-./simulator
-
-
+simulator
+runtime
+frameworks
