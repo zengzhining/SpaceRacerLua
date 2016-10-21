@@ -7,6 +7,10 @@
 #ifdef USE_SDK
 #include "PluginAdMobLua.hpp"
 #include "PluginAdMobLuaHelper.h"
+
+#include "PluginReviewLua.hpp"
+#include "PluginReviewLuaHelper.h"
+
 #endif
 
 using namespace CocosDenshion;
@@ -60,6 +64,9 @@ bool AppDelegate::applicationDidFinishLaunching()
 #ifdef USE_SDK
     register_all_PluginAdMobLua(L);
     register_all_PluginAdMobLua_helper(L);
+    
+    register_all_PluginReviewLua(L);
+    register_all_PluginReviewLua_helper(L);
 #endif
 
     register_all_packages();
