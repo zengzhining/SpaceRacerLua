@@ -236,7 +236,7 @@ function display.newScene(name, params)
     scene.name_ = string.format("%s:%d", name or "<unknown-scene>", sceneIndex)
 
     if params.transition then
-        scene = display.wrapSceneWithTransition(scene, params.transition, params.time, params.more)
+        scene = display.wrapScene(scene, params.transition, params.time, params.more)
     end
 
     return scene
@@ -244,7 +244,6 @@ end
 
 function display.wrapScene(scene, transition, time, more)
     local key = string.upper(tostring(transition))
-
     if key == "RANDOM" then
         local keys = table.keys(display.SCENE_TRANSITIONS)
         key = keys[math.random(1, #keys)]

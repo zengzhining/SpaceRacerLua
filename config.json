@@ -4,7 +4,7 @@
        "isWindowTop": false,
        "name": "piexPlane",
        "width": 640,
-       "height": 960,
+       "height": 1136,
        "entry": "src/main.lua",
        "consolePort": 6050,
        "uploadPort": 6060
@@ -22,8 +22,8 @@
         },
         {
             "title": "iPhone 5 (1136x640)",
-            "width": 1136,
-            "height": 640
+            "width": 640,
+            "height": 1136
         },
         {
             "title": "iPad (1024x768)",

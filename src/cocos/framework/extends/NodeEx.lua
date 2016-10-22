@@ -75,6 +75,31 @@ function Node:move(x, y)
     return self
 end
 
+function Node:pos(x, y)
+    self:move( x, y )
+end
+
+function Node:posY( y )
+    self:setPositionY(y)
+end
+
+function Node:posX( x )
+    self:setPositionX(x)
+end
+
+function Node:posBy( x, y )
+    local posx, posy = self:getPosition()
+    self:setPosition(x + posx, posy + y)
+end
+
+function Node:posByY( y )
+    self:posBy(0, y)
+end
+
+function Node:posByX( x )
+    self:posBy(x, 0)
+end
+
 function Node:moveTo(args)
     transition.moveTo(self, args)
     return self
