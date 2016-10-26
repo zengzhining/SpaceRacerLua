@@ -10,7 +10,8 @@
 
 #include "PluginReviewLua.hpp"
 #include "PluginReviewLuaHelper.h"
-
+#include "PluginGoogleAnalyticsLua.hpp"
+//#include "PluginGoogleAnalyticsLuaHelper.h"
 #endif
 
 using namespace CocosDenshion;
@@ -67,6 +68,8 @@ bool AppDelegate::applicationDidFinishLaunching()
     
     register_all_PluginReviewLua(L);
     register_all_PluginReviewLua_helper(L);
+
+    register_all_PluginGoogleAnalyticsLua(L);
 #endif
 
     register_all_packages();
