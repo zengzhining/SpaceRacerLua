@@ -150,6 +150,11 @@ function Node:onUpdate(callback)
     return self
 end
 
+function Node:unUpdate()
+    self:unscheduleUpdate()
+    return self
+end
+
 Node.scheduleUpdate = Node.onUpdate
 
 function Node:onNodeEvent(eventName, callback)

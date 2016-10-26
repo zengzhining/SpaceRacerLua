@@ -12,7 +12,7 @@ function MainMenu:onCreate()
 	layer:onTouch(function (event  )
 		--记得去除掉触摸
 		layer:removeTouch()
-		display.runScene(display.newScene( "GameScene", {transition = "FADE", time = 2, more = cc.c3b(255 , 255 , 255) }))
+		gameApp:create():enterScene("GameScene", "FADE", 2,cc.c3b(255 , 255 , 255) )
 	end, false, false)
 	self:add(layer,1)
 end
@@ -25,6 +25,7 @@ function MainMenu:onEnter()
 
 	hint:runAction(act)
 
+	self:unUpdate()
 	self:onUpdate( handler(self, self.update) )
 
 	audio.playMusic("sfx/mainMenu.mp3")
@@ -43,7 +44,7 @@ function MainMenu:update( dt )
 end
 
 function MainMenu:onExit(  )
-	
+	self:unUpdate()
 end
 
 return MainMenu
