@@ -1,5 +1,8 @@
 {
     "android": {
+        "GoogleAnalytics": {
+            "trackingCode": "UA-86337536-1"
+        }, 
         "AdMob": {
             "test": true, 
             "ads": {
@@ -26,6 +29,10 @@
         }
     }, 
     "ios": {
+        "GoogleAnalytics": {
+            "track_init_screen": false, 
+            "trackingCode": "UA-62417901-1"
+        }, 
         "AdMob": {
             "test": true, 
             "ads": {
