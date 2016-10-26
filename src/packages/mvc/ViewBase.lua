@@ -61,9 +61,7 @@ function ViewBase:showWithScene(transition, time, more)
     self:setVisible(true)
     local scene = display.newScene(self.name_)
     scene:addChild(self)
-
-    sdkbox.PluginGoogleAnalytics:logEvent("EnterScene", self.name_, "", 1)
-    sdkbox.PluginGoogleAnalytics:dispatchHits()
+    
     
     display.runScene(scene, transition, time, more)
     return self

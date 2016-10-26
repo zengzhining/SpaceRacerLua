@@ -11,6 +11,12 @@ CC_SHOW_FPS = true
 -- disable create unexpected global variable
 CC_DISABLE_GLOBAL = false
 
+-- need SDK
+CC_NEED_SDK = false
+
+SDK_BANNER_NAME = "admob"
+SDK_FULLAD_NAME = "gameover"
+
 -- for module display
 CC_DESIGN_RESOLUTION = {
     width = 640,

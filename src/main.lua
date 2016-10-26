@@ -6,9 +6,14 @@ cc.FileUtils:getInstance():addSearchPath("res/")
 require "config"
 require "cocos.init"
 require "pure.init"
-require("app.MyApp")
+
 local function main()
-   gameApp:create():run()
+	
+	if device.platform == "android" then
+		CC_NEED_SDK = true
+	end
+
+   require("app.MyApp"):create():run()
 end
 
 local status, msg = xpcall(main, __G__TRACKBACK__)
