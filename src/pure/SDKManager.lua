@@ -92,6 +92,10 @@ function SDKManager:isAdsAvailable( id_)
 	return yes
 end
 
+function SDKManager:isBannerAvailable()
+	return self:isAdsAvailable(1)
+end
+
 function SDKManager:showBanner()
 	self:showAds(1)
 end
@@ -100,8 +104,20 @@ function SDKManager:hideBanner()
 	self:hideAds(1)
 end
 
+function SDKManager:isFULLADAvailable()
+	return self:isAdsAvailable(0)
+end
+
 function SDKManager:showFULLAD()
-	self:showAds(0)
+	if self:isFULLADAvailable() then
+		self:showAds(0)
+	else
+		print("FULLAD is not available")
+	end
+end
+
+function SDKManager:hideFULLAD()
+	self:hideAds(0)
 end
 
 ----------review

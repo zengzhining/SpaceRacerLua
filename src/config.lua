@@ -30,3 +30,5 @@ CC_DESIGN_RESOLUTION = {
         end
     end
 }
+
+DEFAULT_SCENE = "MainMenu"

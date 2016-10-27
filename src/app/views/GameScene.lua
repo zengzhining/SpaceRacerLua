@@ -24,11 +24,12 @@ function GameScene:initUI( ui_ )
 end
 
 function GameScene:onCut(  )
-	print("onCut~~~~~~~~~~~~")
+
 end
 
 function GameScene:onEnter()
 	audio.stopMusic()
+	SDKManager
 end
 
 function GameScene:onExit()
