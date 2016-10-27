@@ -29,7 +29,7 @@ end
 
 function GameScene:onEnter()
 	audio.stopMusic()
-	SDKManager:getInstance():showFULLAD()
+	SDKManager:getInstance():showReview()
 end
 
 function GameScene:onExit()
