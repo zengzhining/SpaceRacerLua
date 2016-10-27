@@ -34,7 +34,7 @@
             "trackingCode": "UA-62417901-1"
         }, 
         "AdMob": {
-            "test": false, 
+            "test": true, 
             "ads": {
                 "gameover": {
                     "type": "interstitial", 
