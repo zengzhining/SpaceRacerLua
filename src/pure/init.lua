@@ -1,3 +1,3 @@
 require "pure.GlobalVars"
-require "puer.GlobalFunc"
+require "pure.GlobalFunc"
 require "pure.SDKManager"

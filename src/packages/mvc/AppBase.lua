@@ -40,7 +40,8 @@ function AppBase:enterScene(sceneName, transition, time, more)
     local view = self:createView(sceneName)
     view:showWithScene(transition, time, more)
 
-    SDKManager:logEvent("EnterScene", sceneName)
+    
+    SDK:logEvent("EnterScene", sceneName)
     return view
 end
 

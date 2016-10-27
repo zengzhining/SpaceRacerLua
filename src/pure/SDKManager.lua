@@ -1,5 +1,5 @@
 --负责管理SDK层
-local SDKManager = class("SDKManager")
+SDKManager = class("SDKManager")
 
 function SDKManager:ctor(  )
 	if not CC_NEED_SDK then return end
@@ -61,9 +61,10 @@ end
 
 --show ads
 function SDKManager:showAds( id_ )
+	if not CC_NEED_SDK then return end
 	--默认播放全屏
 	local adsName = SDK_FULLAD_NAME
-	id_ == 1 then 
+	if id_ == 1 then 
 		adsName = SDK_BANNER_NAME
 	end
 
@@ -71,9 +72,10 @@ function SDKManager:showAds( id_ )
 end
 
 function SDKManager:hideAds(id_)
+	if not CC_NEED_SDK then return end
 	--默认播放全屏
 	local adsName = SDK_FULLAD_NAME
-	id_ == 1 then 
+	if id_ == 1 then 
 		adsName = SDK_BANNER_NAME
 	end
 
@@ -83,7 +85,7 @@ end
 function SDKManager:isAdsAvailable( id_)
 	--默认播放全屏
 	local adsName = SDK_FULLAD_NAME
-	id_ == 1 then 
+	if id_ == 1 then 
 		adsName = SDK_BANNER_NAME
 	end
 	local yes = sdkbox.PluginAdMob:isAvailable(adsName)
@@ -104,6 +106,7 @@ end
 
 ----------review
 function SDKManager:showReview()
+	if not CC_NEED_SDK then return end
 	sdkbox.PluginReview:show(true --[[ force ]])
 end
 
@@ -117,6 +120,9 @@ function SDKManager:getInstance()
 	SDKManager.new = function (  )
 		error("SDKManager Cannot use new operater,Please use geiInstance")
 	end
+
+	return sdk_manager_instance
 end
 
-_G["SDKManager"] = SDKManager:getInstance()
+_G["SDK"] = SDKManager:getInstance()
+
