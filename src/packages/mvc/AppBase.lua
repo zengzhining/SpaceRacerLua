@@ -41,7 +41,7 @@ function AppBase:enterScene(sceneName, transition, time, more)
     view:showWithScene(transition, time, more)
     
     SDKManager:getInstance():logEvent("EnterScene", sceneName)
-    
+
     return view
 end
 

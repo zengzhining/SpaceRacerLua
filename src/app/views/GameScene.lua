@@ -1,4 +1,4 @@
-local GameScene = class("MainScene", cc.load("mvc").ViewBase)
+local GameScene = class("GameScene", cc.load("mvc").ViewBase)
 
 local TAG_UI = 101
 
@@ -29,7 +29,7 @@ end
 
 function GameScene:onEnter()
 	audio.stopMusic()
-	SDKManager
+	-- SDKManager
 end
 
 function GameScene:onExit()
