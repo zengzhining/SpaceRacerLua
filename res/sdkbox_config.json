@@ -4,7 +4,7 @@
             "trackingCode": "UA-86337536-1"
         }, 
         "AdMob": {
-            "test": false, 
+            "test": true, 
             "ads": {
                 "gameover": {
                     "type": "interstitial", 
