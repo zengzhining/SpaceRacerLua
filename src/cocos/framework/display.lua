@@ -538,4 +538,10 @@ function display.removeUnusedSpriteFrames()
     textureCache:removeUnusedTextures()
 end
 
+function display.newCSNode( name )
+    local node = cc.CSLoader:createNode(name)
+
+    return node
+end
+
 return display
