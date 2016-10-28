@@ -29,10 +29,14 @@ end
 
 function GameScene:onCut(  )
 	if not self:getChildByTag(TAG_CUT) then 
-		display.pause()
 		local layer = __G__createCutLayer( "Layer/ResumeLayer.csb" )
 		self:addChild(layer, 100, TAG_CUT)
 		SDKManager:getInstance():showBanner()
+
+		SDKManager:getInstance():setFULLADCallback(function()  
+			print("FULLAD callback~~~~~~~~~~~")
+			end)
+		display.pause()
 	end
 end
 

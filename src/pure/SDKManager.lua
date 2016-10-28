@@ -6,13 +6,13 @@ function SDKManager:ctor(  )
 	self:initAllSDK()
 	self:addEvent()
 	self:cacheADS()
+	self:initData()
 end
 
 function SDKManager:initAllSDK()
 	sdkbox.PluginGoogleAnalytics:init()
 	--ads
 	sdkbox.PluginAdMob:init()
-
 	--review
 	sdkbox.PluginReview:init()
 end
@@ -22,14 +22,28 @@ function SDKManager:addEvent()
 	sdkbox.PluginAdMob:setListener(function(args)
         local event = args.event
         dump(args, "admob listener info:")
-        print("event~~~~~~~~", event)
         if event == "adViewDidReceiveAd" then
-        	if args.name == SDK_BANNER_NAME then
-	           SDKManager:onBannerLoaded()
-	        elseif args.name == SDK_FULLAD_NAME then 
-	        	SDKManager:onFULLADLoaded()
+	        local name = args.name
+        	if name == SDK_BANNER_NAME then
+	           SDKManager:getInstance():onBannerLoaded()
+	        elseif name == SDK_FULLAD_NAME then 
+	        	SDKManager:getInstance():onFULLADLoaded()
 	        end
-       end
+	    elseif event == "adViewWillPresentScreen" then 
+	        local name = args.name
+	    	if name == SDK_BANNER_NAME then
+	           SDKManager:getInstance():onBeforeShowBanner()
+	    	elseif name == SDK_FULLAD_NAME then
+	           SDKManager:getInstance():onBeforeShowFULLAD()
+	    	end
+	    elseif event == "adViewDidDismissScreen" then
+	        local name = args.name
+	    	if name == SDK_BANNER_NAME then
+	           SDKManager:getInstance():onBannerDismiss()
+	    	elseif name == SDK_FULLAD_NAME then
+	           SDKManager:getInstance():onFULLADDismiss()
+	    	end
+        end
     end)
 
     -- if AdMobTestDeviceId then
@@ -60,6 +74,34 @@ end
 function SDKManager:onFULLADLoaded()
 
 end
+
+function SDKManager:onBeforeShowBanner()
+
+end
+
+function SDKManager:onBeforeShowFULLAD()
+
+end
+
+function SDKManager:onBannerDismiss()
+
+end
+
+function SDKManager:onFULLADDismiss()
+	if self.fulladDismissCallback_ then 
+		self.fulladDismissCallback_()
+	end
+end
+
+function SDKManager:initData()
+	self.fulladDismissCallback_ = nil
+end
+
+function SDKManager:setFULLADCallback( callback_ )
+	self.fulladDismissCallback_ = callback_
+end
+
+--------------------------------------
 
 --analytics log event
 function SDKManager:logEvent( key, value )

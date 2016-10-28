@@ -280,6 +280,14 @@ function display.getRunningScene()
     return director:getRunningScene()
 end
 
+function display.pause()
+    director:pause()
+end
+
+function display.resume()
+    director:resume()
+end
+
 function display.newNode()
     return cc.Node:create()
 end
