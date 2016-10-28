@@ -15,7 +15,7 @@ __G__createCutLayer = function ( fileName )
 				scene:onResume()
 			end		
 		end
-	end)
+	end, false, true)
 
 	local restart = node:getChildByName("Restart")
 	restart:onTouch(function ( event )
@@ -25,7 +25,7 @@ __G__createCutLayer = function ( fileName )
 				scene:onRestart()
 			end		
 		end
-	end)
+	end,  false, true)
 
 	local exit = node:getChildByName("Exit")
 	exit:onTouch(function ( event )
@@ -35,7 +35,7 @@ __G__createCutLayer = function ( fileName )
 				scene:onCutExit()
 			end		
 		end
-	end)
+	end,  false, true)
 
 
 	return layer

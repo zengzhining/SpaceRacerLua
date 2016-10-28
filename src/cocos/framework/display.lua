@@ -552,4 +552,9 @@ function display.newCSNode( name )
     return node
 end
 
+function display.newDrawNode(  )
+    local node = cc.DrawNode:create()
+    return node
+end
+
 return display

@@ -14,6 +14,8 @@ CC_DISABLE_GLOBAL = false
 -- need SDK
 CC_NEED_SDK = false
 
+CC_DEBUG_RECT = true
+
 SDK_BANNER_NAME = "admob"
 SDK_FULLAD_NAME = "gameover"
 

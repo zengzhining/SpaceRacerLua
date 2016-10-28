@@ -10,7 +10,9 @@ function PlaneFactory:createPlane( id_ )
 	if id_ == 1 then 	
 		return HeroPlane.new("png/RolePlane.png")
 	elseif id_ == 2 then
-		return ArmyPlane.new("png/GreenPlane.png")
+		local plane = ArmyPlane.new("png/GreenPlane.png")
+		plane:setScore( 2 )
+		return plane
 	end
 end
 --单例
