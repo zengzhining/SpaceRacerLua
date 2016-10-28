@@ -140,5 +140,3 @@ function SDKManager:getInstance()
 	return sdk_manager_instance
 end
 
-_G["SDK"] = SDKManager:getInstance()
-

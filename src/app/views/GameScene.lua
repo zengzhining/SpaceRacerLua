@@ -45,6 +45,7 @@ function GameScene:onRestart()
 end
 
 function GameScene:onCutExit()
+	SDKManager:getInstance():showFULLAD()
 end
 
 --------------------------------

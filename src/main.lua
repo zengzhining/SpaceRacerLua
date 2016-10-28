@@ -9,7 +9,7 @@ require "pure.init"
 
 local function main()
 	
-	if device.platform == "android" then
+	if device.platform == "android" or device.platform == "ios" then
 		CC_NEED_SDK = true
 	end
 

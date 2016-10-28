@@ -12,7 +12,7 @@ CC_SHOW_FPS = true
 CC_DISABLE_GLOBAL = false
 
 -- need SDK
-CC_NEED_SDK = false
+CC_NEED_SDK = true
 
 SDK_BANNER_NAME = "admob"
 SDK_FULLAD_NAME = "gameover"
