@@ -22,15 +22,20 @@ function SDKManager:addEvent()
 	sdkbox.PluginAdMob:setListener(function(args)
         local event = args.event
         dump(args, "admob listener info:")
-        if event == "adViewDidReceiveAd" and args.name == SDK_BANNER_NAME then
-           SDKManager:showBanner()
+        print("event~~~~~~~~", event)
+        if event == "adViewDidReceiveAd" then
+        	if args.name == SDK_BANNER_NAME then
+	           SDKManager:onBannerLoaded()
+	        elseif args.name == SDK_FULLAD_NAME then 
+	        	SDKManager:onFULLADLoaded()
+	        end
        end
     end)
 
-    if AdMobTestDeviceId then
-        print("the admob test device id is:", AdMobTestDeviceId)
-        sdkbox.PluginAdMob:setTestDevices(AdMobTestDeviceId)
-    end
+    -- if AdMobTestDeviceId then
+    --     print("the admob test device id is:", AdMobTestDeviceId)
+    --     sdkbox.PluginAdMob:setTestDevices(AdMobTestDeviceId)
+    -- end
 
     --review event
     sdkbox.PluginReview:setListener(function(args)
@@ -45,6 +50,15 @@ function SDKManager:addEvent()
             print("onRemindLater")
         end
     end)
+end
+
+--广告回调事件
+function SDKManager:onBannerLoaded()
+
+end
+
+function SDKManager:onFULLADLoaded()
+
 end
 
 --analytics log event
