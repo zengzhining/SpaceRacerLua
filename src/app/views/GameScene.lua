@@ -41,6 +41,7 @@ function GameScene:onResume()
 end
 
 function GameScene:onRestart()
+	SDKManager:getInstance():showReview()
 end
 
 function GameScene:onCutExit()
