@@ -6,6 +6,7 @@ cc.FileUtils:getInstance():addSearchPath("res/")
 require "config"
 require "cocos.init"
 require "pure.init"
+require "app/obj/PlaneFactory"
 
 local function main()
 	

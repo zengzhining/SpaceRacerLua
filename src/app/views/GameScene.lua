@@ -2,6 +2,7 @@ local GameScene = class("GameScene", cc.load("mvc").ViewBase)
 
 local TAG_UI = 101
 local TAG_CUT = 100
+local TAG_GAME_LAYER = 102
 
 function GameScene:onCreate()
 	-- body
@@ -10,6 +11,8 @@ function GameScene:onCreate()
 
 	self:initUI(uiLayer)
 	self:addChild(uiLayer, -1, TAG_UI )
+
+	self:initObj()
 end
 
 function GameScene:initUI( ui_ )
@@ -25,6 +28,28 @@ function GameScene:initUI( ui_ )
 
 	local scoreLb = ui_:getChildByName("Score")
 	
+end
+
+function GameScene:initObj()
+	local gameLayer = display.newLayer()
+	self:addChild(gameLayer, 1, TAG_GAME_LAYER)
+	local plane = PlaneFactory:getInstance():createPlane(1)
+	plane:pos(display.cx, display.cy)
+	gameLayer:addChild(plane)
+
+	gameLayer:onTouch(function (  event )
+		print("event~~~~~~")
+		print("plane.onTouch~~~", plane.onTouch)
+		if plane and plane.onTouch then
+			plane:onTouch(event)
+		end
+	end, false, true)
+
+	gameLayer:onAccelerate( function ( event )
+		if plane and plane.accelerateEvent then 
+			plane:accelerateEvent(event)
+		end
+	end )
 end
 
 function GameScene:onCut(  )
