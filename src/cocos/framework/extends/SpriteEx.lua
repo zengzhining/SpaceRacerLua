@@ -65,3 +65,8 @@ function Sprite:playAnimationForever(animation)
     self:runAction(action)
     return action
 end
+
+function Sprite:flipY( b )
+    self:setFlippedY(b)
+    -- body
+end

@@ -40,3 +40,11 @@ __G__createCutLayer = function ( fileName )
 
 	return layer
 end
+
+--延时执行动作
+__G__actDelay = function (target, callback, time)
+	local act = cc.Sequence:create( cc.DelayTime:create(time), cc.CallFunc:create(function ( obj )
+		callback()
+	end)) 
+	target:runAction(act)
+end

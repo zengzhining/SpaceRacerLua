@@ -1,5 +1,6 @@
 PlaneFactory = class("PlaneFactory")
 local HeroPlane = require("app/Obj/HeroPlane")
+local ArmyPlane = require("app/Obj/ArmyPlane")
 
 function PlaneFactory:ctor(  )
 	
@@ -8,6 +9,8 @@ end
 function PlaneFactory:createPlane( id_ )
 	if id_ == 1 then 	
 		return HeroPlane.new("png/RolePlane.png")
+	elseif id_ == 2 then
+		return ArmyPlane.new("png/GreenPlane.png")
 	end
 end
 --单例

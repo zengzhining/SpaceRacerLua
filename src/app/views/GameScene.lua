@@ -4,6 +4,8 @@ local TAG_UI = 101
 local TAG_CUT = 100
 local TAG_GAME_LAYER = 102
 
+local armySet = {}
+
 function GameScene:onCreate()
 	-- body
 	local fileName = "Layer/GameCut.csb"
@@ -13,6 +15,32 @@ function GameScene:onCreate()
 	self:addChild(uiLayer, -1, TAG_UI )
 
 	self:initObj()
+	self:onUpdate(handler(self, self.step))
+end
+
+function GameScene:step( dt )
+	--遍历处理
+	local roleRect = self.role_:getRect()
+	for k, army in pairs(armySet) do
+		local rect = army:getRect()
+		local iscollision = cc.rectIntersectsRect(roleRect, rect)
+		if iscollision then 
+			self.role_:onCollision( army )
+			army:onCollision( self.role_ )
+		end
+
+		local isOutOfWindow = (army:getPositionY() <= -display.height and true or false )
+		if isOutOfWindow then 
+			army:removeSelf()
+			table.remove(armySet, k)
+			break
+		end
+	end
+end
+
+--角色死亡回调函数
+function GameScene:onPlayerDead(  )
+	
 end
 
 function GameScene:initUI( ui_ )
@@ -25,7 +53,6 @@ function GameScene:initUI( ui_ )
 	end)
 
 	self.cutBtn_ = cutBtn
-
 	local scoreLb = ui_:getChildByName("Score")
 	
 end
@@ -34,12 +61,13 @@ function GameScene:initObj()
 	local gameLayer = display.newLayer()
 	self:addChild(gameLayer, 1, TAG_GAME_LAYER)
 	local plane = PlaneFactory:getInstance():createPlane(1)
-	plane:pos(display.cx, display.cy)
+	local width = plane:getRect().width
+	plane:pos(display.cx - width * 0.6, display.cy )
 	gameLayer:addChild(plane)
+	self.role_ = plane
 
+	--事件处理
 	gameLayer:onTouch(function (  event )
-		print("event~~~~~~")
-		print("plane.onTouch~~~", plane.onTouch)
 		if plane and plane.onTouch then
 			plane:onTouch(event)
 		end
@@ -50,6 +78,13 @@ function GameScene:initObj()
 			plane:accelerateEvent(event)
 		end
 	end )
+
+	local army = PlaneFactory:getInstance():createPlane(2)
+	army:pos(display.cx + width * 0.6, display.cy + 500)
+	army:setSpeed(cc.p(0, -1))
+	gameLayer:addChild(army)
+	table.insert(armySet, army)
+
 end
 
 function GameScene:onCut(  )
@@ -59,7 +94,6 @@ function GameScene:onCut(  )
 		SDKManager:getInstance():showBanner()
 
 		SDKManager:getInstance():setFULLADCallback(function()  
-			print("FULLAD callback~~~~~~~~~~~")
 			end)
 		display.pause()
 	end
