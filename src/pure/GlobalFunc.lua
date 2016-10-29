@@ -41,6 +41,36 @@ __G__createCutLayer = function ( fileName )
 	return layer
 end
 
+__G__createOverLayer = function ( fileName )
+	local layer = display.newLayer(cc.c4b(255, 255, 255, 100))
+
+	local node = display.newCSNode(fileName)
+	layer:addChild(node)
+
+	local Retry = node:getChildByName("Retry")
+	Retry:onTouch(function ( event )
+		if event.name == "began" then
+			local scene = layer:getParent()
+			if scene and scene.onRetry then 
+				scene:onRetry()
+			end		
+		end
+	end, false, true)
+
+	local exit = node:getChildByName("Exit")
+	exit:onTouch(function ( event )
+		if event.name == "began" then
+			local scene = layer:getParent()
+			if scene and scene.onGameExit then 
+				scene:onGameExit()
+			end		
+		end
+	end,  false, true)
+
+
+	return layer
+end
+
 --延时执行动作
 __G__actDelay = function (target, callback, time)
 	local act = cc.Sequence:create( cc.DelayTime:create(time), cc.CallFunc:create(function ( obj )
