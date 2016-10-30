@@ -26,11 +26,11 @@ function ResultScene:onCreate(  )
 end
 
 function ResultScene:onRetry(  )
-	print("onRetry~~~~~~~~~~")
+	self:getApp():enterScene("GameScene", "FADE", 2,cc.c3b(255 , 255 , 255) )
 end
 
 function ResultScene:onGameExit()
-	print("onGameExit~~~~~~")
+	display.exit()
 end
 
 function ResultScene:onEnter()

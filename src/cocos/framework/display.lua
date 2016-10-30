@@ -288,6 +288,10 @@ function display.resume()
     director:resume()
 end
 
+function display.exit()
+    director:endToLua()
+end
+
 function display.newNode()
     return cc.Node:create()
 end

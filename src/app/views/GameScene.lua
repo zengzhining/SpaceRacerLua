@@ -12,6 +12,8 @@ local tempTime = 0
 local score = 0
 
 function GameScene:onCreate()
+	--addSpriteFrames
+	display.loadSpriteFrames("Plane.plist", "Plane.png")
 	-- body
 	local fileName = "Layer/GameCut.csb"
 	local uiLayer = display.newCSNode(fileName)	
@@ -92,8 +94,6 @@ function GameScene:initObj()
 
 	--事件处理
 	gameLayer:onTouch(function (  event )
-		print("onTouch~~~~~~")
-		print(debug.traceback())
 		if plane and plane.onTouch then
 			plane:onTouch(event)
 		end

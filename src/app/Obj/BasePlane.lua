@@ -78,5 +78,9 @@ function BasePlane:setScore( score )
 	self.score_ = score
 end
 
+--死亡动画
+function BasePlane:playDeadAnimation( formatFile_  )
+	
+end
 
 return BasePlane
