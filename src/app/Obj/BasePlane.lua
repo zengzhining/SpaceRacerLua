@@ -1,12 +1,11 @@
 local BasePlane = class("BasePlane", function ( fileName )
 	local node = display.newSprite( fileName )
+	node:enableNodeEvents()
 	return node 
 end)
 
 function BasePlane:ctor(  )
 	self:initData()
-	self:onUpdate(handler(self, self.step))
-
 	if CC_DEBUG_RECT then 
 		local draw = display.newDrawNode()
 		self:addChild(draw, 999)
@@ -15,6 +14,14 @@ function BasePlane:ctor(  )
 		local viewRect = self:getViewRect()
         draw:drawRect(cc.p( (viewRect.width - rect.width) * 0.5 , (viewRect.height - rect.height) * 0.5 ), cc.p(rect.width + (viewRect.width - rect.width) * 0.5,rect.height +  (viewRect.width - rect.width) * 0.5), cc.c4f(1,1,0,1))
 	end
+end
+
+function BasePlane:onEnter()
+	self:onUpdate(handler(self, self.step))
+end
+
+function BasePlane:onExit()
+	self:unUpdate()
 end
 
 function BasePlane:initData()

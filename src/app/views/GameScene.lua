@@ -12,6 +12,7 @@ local tempTime = 0
 local score = 0
 
 function GameScene:onCreate()
+	self:initData()
 	--addSpriteFrames
 	display.loadSpriteFrames("Plane.plist", "Plane.png")
 	-- body
@@ -22,7 +23,11 @@ function GameScene:onCreate()
 	self:addChild(uiLayer, -1, TAG_UI )
 
 	self:initObj()
-	self:onUpdate(handler(self, self.step))
+end
+
+function GameScene:initData()
+	armySet = {}
+	score = 0
 end
 
 function GameScene:step( dt )
@@ -58,7 +63,9 @@ end
 
 --角色死亡回调函数
 function GameScene:onPlayerDead(  )
-
+	__G__actDelay( self, function (  )
+		self:getApp():enterScene("ResultScene")
+	end, 1.0 )
 end
 
 function GameScene:initUI( ui_ )
@@ -105,11 +112,6 @@ function GameScene:initObj()
 		end
 	end )
 
-	local army = PlaneFactory:getInstance():createPlane(2)
-	army:pos(display.cx + width * 0.6, display.height * 1.2)
-	army:setSpeed(cc.p(0, -10))
-	gameLayer:addChild(army)
-	table.insert(armySet, army)
 end
 
 function GameScene:onCreateArmy(  )
@@ -122,9 +124,16 @@ function GameScene:onCreateArmy(  )
 	local army = PlaneFactory:getInstance():createPlane(2)
 	army:setSpeed(cc.p(0, -10))
 	local lastArmy = armySet[#armySet] 
-	local height = lastArmy:getViewRect().height
-	local width = lastArmy:getViewRect().width
-	army:pos(display.cx + width * 0.6 * dir, lastArmy:getPositionY() + height * 3 )
+
+	local height = army:getViewRect().height
+	local width = army:getViewRect().width
+	local posy = display.height * 1.2
+	if lastArmy then
+		height = lastArmy:getViewRect().height
+		width = lastArmy:getViewRect().width
+		posy =  lastArmy:getPositionY()
+	end
+	army:pos(display.cx + width * 0.6 * dir, posy + height * 3 )
 	self.gameLayer_ :addChild(army)
 	table.insert(armySet, army)
 
@@ -166,9 +175,18 @@ end
 
 function GameScene:onEnter()
 	audio.stopMusic()
+	-- armySet = {}
+	-- score = 0
+	self:onUpdate(handler(self, self.step))
 end
 
 function GameScene:onExit()
+	self:unUpdate()
+	for k, army in pairs(armySet) do
+		if army then 
+			army:removeSelf()
+		end
+	end
 
 end
 

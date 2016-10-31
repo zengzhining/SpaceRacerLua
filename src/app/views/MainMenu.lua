@@ -12,7 +12,7 @@ function MainMenu:onCreate()
 	layer:onTouch(function (event  )
 		--记得去除掉触摸
 		layer:removeTouch()
-		self:getApp():enterScene("GameScene", "FADE", 2,cc.c3b(255 , 255 , 255) )
+		self:getApp():enterScene("GameScene")
 	end, false, false)
 	self:add(layer,1)
 end
