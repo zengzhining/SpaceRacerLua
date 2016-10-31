@@ -18,6 +18,7 @@ CC_DEBUG_RECT = true
 
 SDK_BANNER_NAME = "admob"
 SDK_FULLAD_NAME = "gameover"
+SDK_VEDIO_NAME  = "restart"
 
 -- for module display
 CC_DESIGN_RESOLUTION = {
@@ -33,4 +34,4 @@ CC_DESIGN_RESOLUTION = {
     end
 }
 
-DEFAULT_SCENE = "VedioScene"
+DEFAULT_SCENE = "MainMenu"

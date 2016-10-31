@@ -15,6 +15,8 @@ function SDKManager:initAllSDK()
 	sdkbox.PluginAdMob:init()
 	--review
 	sdkbox.PluginReview:init()
+	--video
+	sdkbox.PluginAdColony:init()
 end
 
 function SDKManager:addEvent()
@@ -64,11 +66,40 @@ function SDKManager:addEvent()
             print("onRemindLater")
         end
     end)
+
+    --vedio event
+    sdkbox.PluginAdColony:setListener(function(args)
+    	print("PluginAdColony~~~~~~~~~~~")
+        dump(args)
+
+        if "onAdColonyChange" == args.name then
+        local info = args.info  -- sdkbox::AdColonyAdInfo
+        local available = args.available -- boolean
+                dump(info, "onAdColonyChange:")
+		        print("available:", available)
+	    elseif "onAdColonyReward" ==  args.name then
+	        local info = args.info  -- sdkbox::AdColonyAdInfo
+	        local currencyName = args.currencyName -- string
+	        local amount = args.amount -- int
+	        local success = args.success -- boolean
+	                dump(info, "onAdColonyReward:")
+	        print("currencyName:", currencyName)
+	        print("amount:", amount)
+	        print("success:", success)
+	    elseif "onAdColonyStarted" ==  args.name then
+	        local info = args.info  -- sdkbox::AdColonyAdInfo
+            dump(info, "onAdColonyStarted:")
+	    elseif "onAdColonyFinished" ==  args.name then
+	        local info = args.info  -- sdkbox::AdColonyAdInfo
+            dump(info, "onAdColonyFinished:")
+	    end
+    end)
+
 end
 
 --广告回调事件
 function SDKManager:onBannerLoaded()
-
+	self:showBanner()
 end
 
 function SDKManager:onFULLADLoaded()
@@ -123,7 +154,6 @@ function SDKManager:showAds( id_ )
 	if id_ == 1 then 
 		adsName = SDK_BANNER_NAME
 	end
-
 	sdkbox.PluginAdMob:show(adsName)
 end
 
@@ -174,6 +204,18 @@ end
 
 function SDKManager:hideFULLAD()
 	self:hideAds(0)
+end
+
+function SDKManager:showVideo( callback )
+	if not CC_NEED_SDK then return end
+	local status = sdkbox.PluginAdColony:getStatus(SDK_VEDIO_NAME)
+	--没有就播放全屏
+	if status == 2 then
+		self:setFULLADCallback( callback )
+		self:showFULLAD()
+	else
+		sdkbox.PluginAdColony:show(SDK_VEDIO_NAME)
+	end
 end
 
 ----------review
