@@ -26,7 +26,6 @@ function HeroPlane:onTouch( event )
 end
 
 function HeroPlane:accelerateEvent( event )
-	print("accelerateEvent~~~~~~~~")
 end
 
 --碰撞碰到敌人回调

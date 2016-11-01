@@ -3,6 +3,20 @@
         "GoogleAnalytics": {
             "trackingCode": "UA-86337536-1"
         }, 
+        "Vungle": {
+            "id": "573773b60fc58d1156000081", 
+            "ads": {
+                "reward": {
+                    "sound": false, 
+                    "backbutton": false, 
+                    "incentivized": true
+                }, 
+                "video": {
+                    "sound": true, 
+                    "backbutton": true
+                }
+            }
+        }, 
         "AdMob": {
             "test": false, 
             "ads": {
@@ -42,6 +56,21 @@
         "GoogleAnalytics": {
             "track_init_screen": false, 
             "trackingCode": "UA-62417901-1"
+        }, 
+        "Vungle": {
+            "debug": true, 
+            "id": "5535dc14a104ddf07600001c", 
+            "ads": {
+                "reward": {
+                    "sound": false, 
+                    "backbutton": false, 
+                    "incentivized": true
+                }, 
+                "video": {
+                    "sound": true, 
+                    "backbutton": true
+                }
+            }
         }, 
         "AdMob": {
             "test": true, 

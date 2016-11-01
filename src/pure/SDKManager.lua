@@ -17,6 +17,8 @@ function SDKManager:initAllSDK()
 	sdkbox.PluginReview:init()
 	--video
 	sdkbox.PluginAdColony:init()
+	sdkbox.PluginVungle:init()
+
 end
 
 function SDKManager:addEvent()
@@ -92,8 +94,26 @@ function SDKManager:addEvent()
 	    elseif "onAdColonyFinished" ==  args.name then
 	        local info = args.info  -- sdkbox::AdColonyAdInfo
             dump(info, "onAdColonyFinished:")
+	        SDKManager:getInstance():onVedioFinished()
 	    end
     end)
+
+	sdkbox.PluginVungle:setListener(function(name, args)
+		print("PluginVungle~~~~~~~~~~~", name, args)
+	    if "onVungleCacheAvailable" == name then
+	        print("onVungleCacheAvailable")
+	    elseif "onVungleStarted" ==  name then
+	        print("onVungleStarted")
+	    elseif "onVungleFinished" ==  name then
+	        print("onVungleFinished")
+	    elseif "onVungleAdViewed" ==  name then
+	        print("onVungleAdViewed:", args)
+	        SDKManager:getInstance():onVedioFinished()
+
+	    elseif "onVungleAdReward" ==  name then
+	        print("onVungleAdReward:", args)
+	    end
+	end)
 
 end
 
@@ -124,8 +144,19 @@ function SDKManager:onFULLADDismiss()
 	end
 end
 
+function SDKManager:onVedioFinished()
+	if self.vedioFinishCallback_ then 
+		self.vedioFinishCallback_()
+	end
+end
+
 function SDKManager:initData()
 	self.fulladDismissCallback_ = nil
+	self.vedioFinishCallback_ = nil
+end
+
+function SDKManager:setVedioCallback( callback_ )
+	self.vedioFinishCallback_ = callback_
 end
 
 function SDKManager:setFULLADCallback( callback_ )
@@ -209,11 +240,20 @@ end
 function SDKManager:showVideo( callback )
 	if not CC_NEED_SDK then return end
 	local status = sdkbox.PluginAdColony:getStatus(SDK_VEDIO_NAME)
+	print("sdkbox.PluginAdColony:getStatus~~~~~", sdkbox.PluginAdColony:getStatus(SDK_VEDIO_NAME))
 	--没有就播放全屏
 	if status == 2 then
-		self:setFULLADCallback( callback )
-		self:showFULLAD()
+		print("sdkbox.PluginVungle:isCacheAvailable()~~~~", sdkbox.PluginVungle:isCacheAvailable())
+		if sdkbox.PluginVungle:isCacheAvailable() then
+			self:setVedioCallback( callback )
+			sdkbox.PluginVungle:show("video")
+		else
+			self:setFULLADCallback( callback )
+			self:showFULLAD()
+			
+		end
 	else
+		self:setVedioCallback( callback )
 		sdkbox.PluginAdColony:show(SDK_VEDIO_NAME)
 	end
 end

@@ -61,9 +61,11 @@ end
 
 --角色死亡回调函数
 function GameScene:onPlayerDead(  )
+	print("onPlayerDead~~~~~~~")
 	__G__actDelay( self, function (  )
 		self:getApp():enterScene("ResultScene")
 	end, 1.0 )
+	device.vibrate( 0.3 )
 end
 
 function GameScene:initUI( ui_ )
@@ -109,7 +111,8 @@ function GameScene:initObj()
 		end
 	end, false, true)
 
-	gameLayer:onAccelerate( function ( event )
+	gameLayer:onAccelerate( function ( x,y,z,timeStap )
+		print("onAccelerate~~~~~", x,y,z,timeStap)
 		if plane and plane.accelerateEvent then 
 			plane:accelerateEvent(event)
 		end

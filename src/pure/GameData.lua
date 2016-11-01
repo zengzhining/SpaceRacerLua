@@ -3,8 +3,10 @@ GameData = class("GameData")
 function GameData:ctor()
 	self.score_ = 0
 	self.rank_ = 100
-end
 
+	--游戏背景移动速度
+	self.bgSpeed_ = 10
+end
 
 --读取和存储游戏数据
 function GameData:load()
@@ -14,6 +16,19 @@ end
 function GameData:save()
 
 end
+
+function GameData:setBgSpeed( speed )
+	self.bgSpeed_ = speed
+end
+
+function GameData:addBgSpeed( speed )
+	self.bgSpeed_ = self.bgSpeed_ + speed
+end
+
+function GameData:getBgSpeed()
+	return self.bgSpeed_
+end
+
 
 function GameData:setScore( score )
 	self.score_ = score

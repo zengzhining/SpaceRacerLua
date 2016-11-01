@@ -35,15 +35,7 @@ function MainMenu:onEnter()
 end
 
 function MainMenu:update( dt )
-	local root = self:getResourceNode()
-	local tbl ={ "Bg", "BgUp" }
-	for c, key in pairs (tbl) do
-		local bg = root:getChildByName(key)
-		if bg:getPositionY() <= 0 then
-			bg:posY(display.height * 2)
-		end
-		bg:posByY(-10)
-	end
+	
 end
 
 function MainMenu:onExit(  )

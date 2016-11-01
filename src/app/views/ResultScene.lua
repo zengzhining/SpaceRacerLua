@@ -33,7 +33,13 @@ function ResultScene:onCreate(  )
 end
 
 function ResultScene:onRetry(  )
-	self:getApp():enterScene("GameScene", "FADE", 2,cc.c3b(255 , 255 , 255) )
+	print("onRetry~~~~~~~~~~")
+	local callback = function ()
+		__G__actDelay(self, function()
+				self:getApp():enterScene("GameScene" )
+			end, 0.2)
+	end
+	SDKManager:getInstance():showVideo( callback )
 end
 
 function ResultScene:onGameExit()

@@ -14,6 +14,9 @@ local function main()
 		CC_NEED_SDK = true
 	end
 
+   --初始化SDK
+   SDKManager:getInstance()
+
    require("app.MyApp"):create():run()
 end
 

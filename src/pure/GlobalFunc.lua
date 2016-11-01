@@ -86,7 +86,14 @@ __G__createBg = function (fileName)
 	end
 
 	function layer:update(dt)
-		print("dt~~~~~~~~~")
+		local tbl ={ "Bg", "BgUp" }
+		for c, key in pairs (tbl) do
+			local bg = node:getChildByName(key)
+			if bg:getPositionY() <= 0 then
+				bg:posY(display.height * 2)
+			end
+			bg:posByY(-10)
+		end
 	end
 
 	return layer

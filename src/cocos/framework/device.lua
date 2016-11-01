@@ -87,6 +87,10 @@ else
     language_ = "en"
 end
 
+device.vibrate = function( time )
+    cc.Device:vibrate(time)
+end
+
 device.language = language_
 device.writablePath = cc.FileUtils:getInstance():getWritablePath()
 device.directorySeparator = "/"
