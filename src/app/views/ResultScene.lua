@@ -23,6 +23,13 @@ function ResultScene:onCreate(  )
 			end		
 		end
 	end,  false, true)
+
+	local rankLb = root:getChildByName("Rank")
+	rankLb:setString(tostring(GameData:getInstance():getRank()))
+
+	local scoreLb = root:getChildByName("Score")
+	scoreLb:setString(tostring(GameData:getInstance():getScore()))
+
 end
 
 function ResultScene:onRetry(  )

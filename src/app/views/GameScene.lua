@@ -9,8 +9,6 @@ local armySet = {}
 local ARMY_TIME = 1 --敌人生成时间
 local tempTime = 0
 
-local score = 0
-
 function GameScene:onCreate()
 	self:initData()
 	--addSpriteFrames
@@ -27,7 +25,6 @@ end
 
 function GameScene:initData()
 	armySet = {}
-	score = 0
 end
 
 function GameScene:step( dt )
@@ -43,7 +40,7 @@ function GameScene:step( dt )
 
 		local isOutOfWindow = (army:getPositionY() <= 0 and true or false )
 		if isOutOfWindow then 
-			score = score + army:getScore()
+			GameData:getInstance():addScore( army:getScore() ) 
 			army:removeSelf()
 			table.remove(armySet, k)
 			break
@@ -59,6 +56,7 @@ function GameScene:step( dt )
 
 
 	self:updateScore()
+	self:updateRank()
 end
 
 --角色死亡回调函数
@@ -82,13 +80,18 @@ function GameScene:initUI( ui_ )
 	self.cutBtn_ = cutBtn
 	local scoreLb = ui_:getChildByName("Score")
 	self.scoreLb_ = scoreLb
+	local rankLb = ui_:getChildByName("Rank")
+	self.rankLb_ = rankLb
 	self:updateScore()
 end
 
 function GameScene:updateScore(  )
-	self.scoreLb_:setString(string.format("%04d", score))
+	self.scoreLb_:setString(string.format("%04d", GameData:getInstance():getScore()))
 end
 
+function GameScene:updateRank()
+	self.rankLb_:setString( GameData:getInstance():getRank() )
+end
 function GameScene:initObj()
 	local gameLayer = display.newLayer()
 	self:addChild(gameLayer, -2, TAG_GAME_LAYER)

@@ -15,6 +15,9 @@ function MainMenu:onCreate()
 		self:getApp():enterScene("GameScene")
 	end, false, false)
 	self:add(layer,1)
+
+	local bg = __G__createBg( "Layer/BackGround.csb" )
+	self:add(bg, -1)
 end
 
 function MainMenu:onEnter()
@@ -25,8 +28,8 @@ function MainMenu:onEnter()
 
 	hint:runAction(act)
 
-	self:unUpdate()
-	self:onUpdate( handler(self, self.update) )
+	-- self:unUpdate()
+	-- self:onUpdate( handler(self, self.update) )
 
 	audio.playMusic("sfx/mainMenu.mp3")
 end

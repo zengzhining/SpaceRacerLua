@@ -71,6 +71,27 @@ __G__createOverLayer = function ( fileName )
 	return layer
 end
 
+__G__createBg = function (fileName)
+	local layer = display.newLayer()
+	local node = display.newCSNode(fileName)
+
+	layer:enableNodeEvents()
+	
+	layer:addChild(node)
+
+	function layer:onEnter()
+		layer:unUpdate()
+		layer:onUpdate(handler(layer, layer.update))
+
+	end
+
+	function layer:update(dt)
+		print("dt~~~~~~~~~")
+	end
+
+	return layer
+end
+
 --延时执行动作
 __G__actDelay = function (target, callback, time)
 	local act = cc.Sequence:create( cc.DelayTime:create(time), cc.CallFunc:create(function ( obj )
