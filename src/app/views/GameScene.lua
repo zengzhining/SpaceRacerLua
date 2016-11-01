@@ -61,7 +61,6 @@ end
 
 --角色死亡回调函数
 function GameScene:onPlayerDead(  )
-	print("onPlayerDead~~~~~~~")
 	__G__actDelay( self, function (  )
 		self:getApp():enterScene("ResultScene")
 	end, 1.0 )
@@ -112,11 +111,18 @@ function GameScene:initObj()
 	end, false, true)
 
 	gameLayer:onAccelerate( function ( x,y,z,timeStap )
-		print("onAccelerate~~~~~", x,y,z,timeStap)
 		if plane and plane.accelerateEvent then 
-			plane:accelerateEvent(event)
+			plane:accelerateEvent(x,y,z,timeStap)
 		end
 	end )
+
+	--按键事件
+	local keyCallback = function ( keyCode, event )
+		if keyCode == cc.KeyCode.KEY_BACK then
+			self:onCut()
+        end
+    end
+	gameLayer:onKeypad( keyCallback )
 
 end
 
@@ -150,9 +156,6 @@ function GameScene:onCut(  )
 		local layer = __G__createCutLayer( "Layer/ResumeLayer.csb" )
 		self:addChild(layer, 100, TAG_CUT)
 		SDKManager:getInstance():showBanner()
-
-		SDKManager:getInstance():setFULLADCallback(function()  
-			end)
 		display.pause()
 	end
 end
@@ -168,16 +171,14 @@ function GameScene:onResume()
 end
 
 function GameScene:onRestart()
-	SDKManager:getInstance():showReview()
+
 end
 
 function GameScene:onCutExit()
-	SDKManager:getInstance():showFULLAD()
+	
 end
 
 --------------------------------
-
-
 
 function GameScene:onEnter()
 	audio.stopMusic()
@@ -187,12 +188,16 @@ function GameScene:onEnter()
 end
 
 function GameScene:onExit()
+	self.gameLayer_:removeKeypad()
+	self.gameLayer_:removeAccelerate()
 	self:unUpdate()
 	for k, army in pairs(armySet) do
 		if army then 
 			army:removeSelf()
 		end
 	end
+
+
 
 end
 

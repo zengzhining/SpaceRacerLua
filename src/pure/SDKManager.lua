@@ -1,6 +1,8 @@
 --负责管理SDK层
 SDKManager = class("SDKManager")
 
+local DELTA_TIME_VEDIO = 60
+
 function SDKManager:ctor(  )
 	if not CC_NEED_SDK then return end
 	self:initAllSDK()
@@ -153,6 +155,7 @@ end
 function SDKManager:initData()
 	self.fulladDismissCallback_ = nil
 	self.vedioFinishCallback_ = nil
+	self.lastPlayVedioTime_ = 0
 end
 
 function SDKManager:setVedioCallback( callback_ )
@@ -237,6 +240,24 @@ function SDKManager:hideFULLAD()
 	self:hideAds(0)
 end
 
+function SDKManager:isCanPlayVedio()
+	--一分钟只能播放一次广告
+	if os.time() - self.lastPlayVedioTime_ >= DELTA_TIME_VEDIO then 
+		return false
+	end
+
+	local status = sdkbox.PluginAdColony:getStatus(SDK_VEDIO_NAME)
+	if status ~= 2 then 
+		return true
+	end
+
+	if sdkbox.PluginVungle:isCacheAvailable() then 
+		return true
+	end
+
+	return false
+end
+
 function SDKManager:showVideo( callback )
 	if not CC_NEED_SDK then return end
 	local status = sdkbox.PluginAdColony:getStatus(SDK_VEDIO_NAME)
@@ -250,12 +271,13 @@ function SDKManager:showVideo( callback )
 		else
 			self:setFULLADCallback( callback )
 			self:showFULLAD()
-			
 		end
 	else
 		self:setVedioCallback( callback )
 		sdkbox.PluginAdColony:show(SDK_VEDIO_NAME)
 	end
+
+	self.lastPlayVedioTime_ = os.time()
 end
 
 ----------review

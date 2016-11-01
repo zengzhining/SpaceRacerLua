@@ -33,21 +33,29 @@ function ResultScene:onCreate(  )
 end
 
 function ResultScene:onRetry(  )
-	print("onRetry~~~~~~~~~~")
 	local callback = function ()
 		__G__actDelay(self, function()
 				self:getApp():enterScene("GameScene" )
 			end, 0.2)
 	end
-	SDKManager:getInstance():showVideo( callback )
+
+	--判断能否播放广告，可以就播放
+	if SDKManager:getInstance():isCanPlayVedio() then
+		SDKManager:getInstance():showVideo( callback )
+	else
+		callback()
+	end
 end
 
 function ResultScene:onGameExit()
 	display.exit()
 end
 
+--进入结算界面先播放个全屏
 function ResultScene:onEnter()
-
+	__G__actDelay( self, function () 
+		SDKManager:getInstance():showFULLAD()
+	end, 0.2 )
 end
 
 function ResultScene:onExit()

@@ -3,6 +3,10 @@ local BasePlane = require("app/Obj/BasePlane")
 local HeroPlane = class("HeroPlane", BasePlane)
 
 local MOVE_TIME = 0.3
+--左右加速器判断
+local LEFT_ACC = -0.5
+local RIGHT_ACC = 0.5
+
 function HeroPlane:ctor(  )
 	self.super.ctor(self)
 
@@ -25,7 +29,14 @@ function HeroPlane:onTouch( event )
 	end
 end
 
-function HeroPlane:accelerateEvent( event )
+function HeroPlane:accelerateEvent( x,y,z,timeStap )
+	if x < LEFT_ACC then
+		self:onLeft( self:getViewRect().width * 0.6 )
+	end
+	
+	if x > RIGHT_ACC then
+		self:onRight( self:getViewRect().width * 0.6 )
+	end
 end
 
 --碰撞碰到敌人回调
