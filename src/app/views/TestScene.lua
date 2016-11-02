@@ -9,6 +9,7 @@ function TestScene:ctor()
 	--test keycode
 	layer:onKeypad(function( event )
 		print("keycode~~~~", event.keycode, event.target)
+		print("cc.KeyCode.KEY_BACK~~~~~", cc.KeyCode.KEY_BACK)
 	end)
 
 	--remove

@@ -125,9 +125,13 @@ function GameScene:initObj()
 	end )
 
 	--按键事件
-	local keyCallback = function ( keyCode, event )
-		if keyCode == cc.KeyCode.KEY_BACK then
+	local keyCallback = function ( event )
+		if event.keycode == cc.KeyCode.KEY_BACK then
 			self:onCut()
+        end
+
+        if device.platform ~= android and plane and plane.onKeyPad then 
+        	plane:onKeyPad(event)
         end
     end
 	gameLayer:onKeypad( keyCallback )

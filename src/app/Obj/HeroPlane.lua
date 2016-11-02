@@ -39,6 +39,16 @@ function HeroPlane:accelerateEvent( x,y,z,timeStap )
 	end
 end
 
+function HeroPlane:onKeyPad( event )
+	local code = event.keycode
+	local target = event.target
+	if code == cc.KeyCodeKey.KEY_A then 
+		self:onLeft( self:getViewRect().width * 0.6 )
+	elseif code == cc.KeyCodeKey.KEY_S then 
+		self:onRight( self:getViewRect().width * 0.6 )
+	end
+end
+
 --碰撞碰到敌人回调
 function HeroPlane:onCollision(other )
 	self:onHurt(1)

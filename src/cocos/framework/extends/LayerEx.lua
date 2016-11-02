@@ -56,8 +56,11 @@ function Layer:removeTouch()
 end
 
 function Layer:onKeypad(callback)
+    --old
     -- self:registerScriptKeypadHandler(callback)
     -- self:setKeyboardEnabled(true)
+
+    --new
     local keyboardCallback = function ( keyCode, event )
         local event = { keycode = keyCode, target = event:getCurrentTarget() }
         return callback(event)
