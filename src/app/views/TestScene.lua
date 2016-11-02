@@ -11,6 +11,9 @@ function TestScene:ctor()
 		print("keycode~~~~", event.keycode, event.target)
 	end)
 
+	--remove
+	-- layer:removeKeypad()
+	
 
 	--竖屏
 	-- x > 0.5 为向右旋转

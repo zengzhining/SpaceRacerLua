@@ -73,6 +73,8 @@ end
 
 function Layer:removeKeypad()
     self:unregisterScriptKeypadHandler()
+    local eventDispatcher = self:getEventDispatcher()
+    eventDispatcher:removeEventListenersForType( cc.EVENT_KEYBOARD )
     self:setKeyboardEnabled(false)
     return self
 end
