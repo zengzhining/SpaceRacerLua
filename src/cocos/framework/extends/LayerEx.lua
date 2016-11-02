@@ -56,8 +56,18 @@ function Layer:removeTouch()
 end
 
 function Layer:onKeypad(callback)
-    self:registerScriptKeypadHandler(callback)
-    self:setKeyboardEnabled(true)
+    -- self:registerScriptKeypadHandler(callback)
+    -- self:setKeyboardEnabled(true)
+    local keyboardCallback = function ( keyCode, event )
+        local event = { keycode = keyCode, target = event:getCurrentTarget() }
+        return callback(event)
+    end
+
+    local listener = cc.EventListenerKeyboard:create()
+    listener:registerScriptHandler(keyboardCallback, cc.Handler.EVENT_KEYBOARD_PRESSED )
+
+    local eventDispatcher = self:getEventDispatcher()
+    eventDispatcher:addEventListenerWithSceneGraphPriority(listener, self)
     return self
 end
 
