@@ -183,11 +183,13 @@ function GameScene:onResume()
 end
 
 function GameScene:onRestart()
-	print("onRestart~~~~~~~~~~")
+	GameData:getInstance():reset()
+	self:getApp():enterScene("GameScene")
 end
 
+
 function GameScene:onCutExit()
-	
+	display.exit()
 end
 
 --------------------------------
