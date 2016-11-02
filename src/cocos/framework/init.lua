@@ -33,6 +33,7 @@ device     = require("cocos.framework.device")
 display    = require("cocos.framework.display")
 audio      = require("cocos.framework.audio")
 transition = require("cocos.framework.transition")
+userDefault = require("cocos.framework.userDefault")
 
 require("cocos.framework.extends.NodeEx")
 require("cocos.framework.extends.SpriteEx")

@@ -54,7 +54,6 @@ function GameScene:step( dt )
 		self:onCreateArmy()
 	end
 
-
 	self:updateScore()
 	self:updateRank()
 end
@@ -96,11 +95,11 @@ end
 function GameScene:updateRank()
 	--如果两次的排行榜数据不同就更新显示
 	local score = GameData:getInstance():getScore()
-	local rank = 100 - math.floor(self.score_ /50)  
-	if rank < lastRank then
-		self.rankLb_:setString( GameData:getInstance():getRank() )
+	local rank = 100 - math.floor(score /50)  
+	-- if rank < lastRank then
+	-- 	self.rankLb_:setString( GameData:getInstance():getRank() )
 
-	end
+	-- end
 end
 function GameScene:initObj()
 	local gameLayer = display.newLayer()

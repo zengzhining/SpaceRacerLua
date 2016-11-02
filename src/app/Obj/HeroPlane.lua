@@ -4,8 +4,8 @@ local HeroPlane = class("HeroPlane", BasePlane)
 
 local MOVE_TIME = 0.3
 --左右加速器判断
-local LEFT_ACC = -0.5
-local RIGHT_ACC = 0.5
+local LEFT_ACC = -0.1
+local RIGHT_ACC = 0.1
 
 function HeroPlane:ctor(  )
 	self.super.ctor(self)

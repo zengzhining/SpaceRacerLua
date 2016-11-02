@@ -11,6 +11,10 @@
 #include "PluginReviewLua.hpp"
 #include "PluginReviewLuaHelper.h"
 #include "PluginGoogleAnalyticsLua.hpp"
+#include "PluginAdColonyLua.hpp"
+#include "PluginAdColonyLuaHelper.h"
+#include "PluginVungleLua.hpp"
+#include "PluginVungleLuaHelper.h"
 //#include "PluginGoogleAnalyticsLuaHelper.h"
 #endif
 
@@ -70,6 +74,13 @@ bool AppDelegate::applicationDidFinishLaunching()
     register_all_PluginReviewLua_helper(L);
 
     register_all_PluginGoogleAnalyticsLua(L);
+
+    register_all_PluginAdColonyLua(L);
+    register_all_PluginAdColonyLua_helper(L);
+
+    register_all_PluginVungleLua(LuaEngine::getInstance()->getLuaStack()->getLuaState());
+    register_all_PluginVungleLua_helper(LuaEngine::getInstance()->getLuaStack()->getLuaState());
+
 #endif
 
     register_all_packages();

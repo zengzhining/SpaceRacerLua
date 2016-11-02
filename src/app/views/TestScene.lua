@@ -5,6 +5,7 @@ function TestScene:ctor()
 	layer:onAccelerate(function(x,y,z,timeStap)
 		print("x,y,z,timeStap~~~~~~~~",x, y, z, timeStap)
 	end)
+
 	--竖屏
 	-- x > 0.5 为向右旋转
 	--  y> 0.5 为向前旋转
