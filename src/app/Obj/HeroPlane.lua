@@ -45,10 +45,6 @@ function HeroPlane:onCollision(other )
 	if self:isDead() then 
 		--默认在上上层
 		self:playDeadAnimation( "PlaneExplose%02d.png")
-		local view = self:getParent():getParent()
-		if view and view.onPlayerDead then 
-			view:onPlayerDead()
-		end
 	end
 end
 
@@ -62,7 +58,12 @@ function HeroPlane:playDeadAnimation( fileFormat_ )
 		display.setAnimationCache( "heroDeadAnimation", ani )
 	end
 
-	local act = cc.Sequence:create( cc.Animate:create( ani ), cc.Hide:create(), cc.CallFunc:create( function ( target )
+	local act = cc.Sequence:create( cc.CallFunc:create( function (  )
+		local view = self:getParent():getParent()
+		if view and view.onPlayerDead then 
+			view:onPlayerDead()
+		end
+	end ),cc.Animate:create( ani ), cc.Hide:create(), cc.CallFunc:create( function ( target )
 		target.onDeadAni_ = false
 	end ) )
 	self:runAction(act)

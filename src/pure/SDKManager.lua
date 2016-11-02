@@ -203,6 +203,7 @@ function SDKManager:hideAds(id_)
 end
 
 function SDKManager:isAdsAvailable( id_)
+	if not CC_NEED_SDK then return false end
 	--默认播放全屏
 	local adsName = SDK_FULLAD_NAME
 	if id_ == 1 then 
@@ -241,6 +242,7 @@ function SDKManager:hideFULLAD()
 end
 
 function SDKManager:isCanPlayVedio()
+	if not CC_NEED_SDK then return false end
 	--一分钟只能播放一次广告
 	if os.time() - self.lastPlayVedioTime_ >= DELTA_TIME_VEDIO then 
 		return false

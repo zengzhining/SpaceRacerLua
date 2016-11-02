@@ -1,13 +1,19 @@
 GameData = class("GameData")
 
-function GameData:ctor()
-	self.score_ = 0
-	self.rank_ = 100
+local MAX_RANK = 100
+local BG_SPEED = 10
 
-	--游戏背景移动速度
-	self.bgSpeed_ = 10
+function GameData:ctor()
+	self:initData()
 end
 
+function GameData:initData()
+	self.score_ = 0
+	self.rank_ = MAX_RANK
+	self.lastRank_ = MAX_RANK
+	--游戏背景移动速度
+	self.bgSpeed_ = MAX_RANK
+end
 --读取和存储游戏数据
 function GameData:load()
 
@@ -15,6 +21,10 @@ end
 
 function GameData:save()
 
+end
+
+function GameData:reset()
+	self:initData()
 end
 
 function GameData:setBgSpeed( speed )
@@ -28,7 +38,6 @@ end
 function GameData:getBgSpeed()
 	return self.bgSpeed_
 end
-
 
 function GameData:setScore( score )
 	self.score_ = score
@@ -47,9 +56,15 @@ function GameData:setRank( rank )
 end
 
 function GameData:getRank()
-	local rank = 100 - math.floor(self.score_ /50)  
-	self.rank_ = rank
 	return self.rank_
+end
+
+function GameData:getLastRank()
+	return self.lastRank_ 
+end
+
+function GameData:setLastRank( rank )
+	self.lastRank_ = rank
 end
 
 -----单例
@@ -60,7 +75,7 @@ function GameData:getInstance()
 	end
 
 	GameData.new = function (  )
-		error("GameData Cannot use new operater,Please use geiInstance")
+		error("GameData Cannot use new operater,Please use getInstance")
 	end
 
 	return gamedata_instance

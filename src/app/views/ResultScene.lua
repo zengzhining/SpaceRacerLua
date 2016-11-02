@@ -39,6 +39,9 @@ function ResultScene:onRetry(  )
 			end, 0.2)
 	end
 
+	--重置游戏数据
+	GameData:getInstance():reset()
+
 	--判断能否播放广告，可以就播放
 	if SDKManager:getInstance():isCanPlayVedio() then
 		SDKManager:getInstance():showVideo( callback )

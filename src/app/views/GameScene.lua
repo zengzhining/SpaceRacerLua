@@ -61,10 +61,13 @@ end
 
 --角色死亡回调函数
 function GameScene:onPlayerDead(  )
+	self.gameLayer_:removeKeypad()
+	self.gameLayer_:removeAccelerate()
+	self:unUpdate()
 	__G__actDelay( self, function (  )
 		self:getApp():enterScene("ResultScene")
 	end, 1.0 )
-	device.vibrate( 0.3 )
+	device.vibrate( 0.2 )
 end
 
 function GameScene:initUI( ui_ )
@@ -91,7 +94,13 @@ function GameScene:updateScore(  )
 end
 
 function GameScene:updateRank()
-	self.rankLb_:setString( GameData:getInstance():getRank() )
+	--如果两次的排行榜数据不同就更新显示
+	local score = GameData:getInstance():getScore()
+	local rank = 100 - math.floor(self.score_ /50)  
+	if rank < lastRank then
+		self.rankLb_:setString( GameData:getInstance():getRank() )
+
+	end
 end
 function GameScene:initObj()
 	local gameLayer = display.newLayer()
@@ -171,7 +180,7 @@ function GameScene:onResume()
 end
 
 function GameScene:onRestart()
-
+	print("onRestart~~~~~~~~~~")
 end
 
 function GameScene:onCutExit()
@@ -184,6 +193,7 @@ function GameScene:onEnter()
 	audio.stopMusic()
 	-- armySet = {}
 	-- score = 0
+	self:unUpdate()
 	self:onUpdate(handler(self, self.step))
 end
 
