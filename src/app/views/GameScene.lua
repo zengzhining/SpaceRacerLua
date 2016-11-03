@@ -6,6 +6,7 @@ local TAG_GAME_LAYER = 102
 local TAG_BG = 103
 
 local armySet = {}
+local bulletSet = {}
 
 local ARMY_TIME = 0.6 --敌人生成时间
 local tempTime = 0
@@ -30,12 +31,14 @@ end
 
 function GameScene:initData()
 	armySet = {}
+	bulletSet = {}
 end
 
 function GameScene:step( dt )
 	--遍历处理
 	local roleRect = self.role_:getCollisionRect()
 	local rolePosY = self.role_:getPositionY()
+	--遍历敌人
 	for k, army in pairs(armySet) do
 		local rect = army:getCollisionRect()
 		local iscollision = cc.rectIntersectsRect(roleRect, rect) 
@@ -62,12 +65,47 @@ function GameScene:step( dt )
 		end
 	end
 
+	local armyInScreen = {}
+	for k,army in pairs(armySet) do
+		if army:getPositionY() >= 0 and army:getPositionY()<= display.height then
+			army.key_ = k
+			table.insert(armyInScreen, army)
+		end
+	end
+	--遍历子弹处理子弹碰撞逻辑
+	for i, bullet in pairs(bulletSet) do
+		local bulletRect = bullet:getCollisionRect()
+		for k, army in pairs(armyInScreen) do
+			local armyRect = army:getCollisionRect()
+			local iscollision = cc.rectIntersectsRect(armyRect, bulletRect) 
+			if iscollision then
+				army:onCollisionBullet(bullet)
+				bullet:onCollision(army)
+
+				--最后再处理去除逻辑
+				table.remove(bulletSet, i)
+				table.remove(armySet, army.key_)
+
+				break
+			end
+		end
+
+		--子弹超出边界就去除掉
+		if bullet:getPositionY() >= display.height + bullet:getViewRect().height* 0.5 then 
+			table.remove(bulletSet, i)
+			bullet:removeSelf()
+		end
+	end
+
 	--生成敌人
 	tempTime = tempTime + dt
 	local armtTime = self:getArmyTime()
 	if tempTime >= armtTime then
 		tempTime = 0 
-		self:onCreateArmy()
+		--只有全部敌人数量超过三十个才要创建
+		if #armySet <= 30 then
+			self:onCreateArmy()
+		end
 	end
 
 	self:updateScore()
@@ -84,11 +122,14 @@ end
 
 --角色超越敌机瞬间的回调函数
 function GameScene:onBeyoundArmy( army_ )
-	GameData:getInstance():addScore( army_:getScore() ) 
+
 end
 
 --角色死亡回调函数
-function GameScene:onPlayerDead(  )
+function GameScene:onPlayerDead( target )
+	if target then 
+		target:setLocalZOrder(100)
+	end
 	__G__ExplosionSound()
 	self.cutBtn_:setTouchEnabled(false)
 	self.gameLayer_:removeKeypad()
@@ -99,6 +140,12 @@ function GameScene:onPlayerDead(  )
 		self:getApp():enterScene("ResultScene")
 	end, 1.0 )
 	device.vibrate( 0.2 )
+end
+
+--敌人死亡的回调函数
+function GameScene:onArmyDead( target)
+	__G__ExplosionSound()
+	GameData:getInstance():addScore( target:getScore() ) 
 end
 
 function GameScene:initUI( ui_ )
@@ -166,7 +213,19 @@ function GameScene:initObj()
         end
     end
 	gameLayer:onKeypad( keyCallback )
+end
 
+--主角发射炮弹的回调函数
+function GameScene:onFireBullet( id_ )
+	if #bulletSet >= GameData:getInstance():getBulletFireNum() then return end
+	local bullet = PlaneFactory.createBullet(id_)
+	local gameLayer = self.gameLayer_
+	local role = self.role_
+	local roleX,roleY = role:getPosition()
+	bullet:pos(roleX, roleY + role:getViewRect().height *0.5 + bullet:getViewRect().height * 0.25)
+	bullet:onFire()
+	gameLayer:addChild(bullet)
+	table.insert(bulletSet, bullet)
 end
 
 function GameScene:onCreateArmy(  )

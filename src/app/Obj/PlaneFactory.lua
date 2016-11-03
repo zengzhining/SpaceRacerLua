@@ -1,6 +1,7 @@
 PlaneFactory = class("PlaneFactory")
 local HeroPlane = require("app/Obj/HeroPlane")
 local ArmyPlane = require("app/Obj/ArmyPlane")
+local Bullet = require("app/Obj/Bullet")
 
 function PlaneFactory:ctor(  )
 	
@@ -14,6 +15,17 @@ function PlaneFactory:createPlane( id_ )
 		plane:setScore( 2 )
 		return plane
 	end
+end
+
+function PlaneFactory:createBullet( id_ )
+	if not id_ then id_ = 1 end
+	local bullet
+	if id_ == 1 then
+		bullet = Bullet.new("#BlueBullet03.png")
+		bullet:setAnimationFormat("BlueBullet%02d.png")
+	end
+	return bullet
+
 end
 --单例
 local plane_factory_instance = nil

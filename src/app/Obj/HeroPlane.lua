@@ -21,10 +21,14 @@ end
 
 function HeroPlane:onTouch( event )
 	if event.name == "began" then
-		if event.x < display.cx then 
-			self:onLeft( self:getViewRect().width * 0.6 )
-		else
-			self:onRight( self:getViewRect().width * 0.6 )
+		-- if event.x < display.cx then 
+		-- 	self:onLeft( self:getViewRect().width * 0.6 )
+		-- else
+		-- 	self:onRight( self:getViewRect().width * 0.6 )
+		-- end
+		local scene = self:getParent():getParent()
+		if scene and scene.onFireBullet then 
+			scene:onFireBullet(self:getBulletId())
 		end
 	end
 end
@@ -61,17 +65,17 @@ end
 function HeroPlane:playDeadAnimation( fileFormat_ )
 	if self.onDeadAni_ then return end 
 	self.onDeadAni_ = true
-	local ani = display.getAnimationCache(heroDeadAnimation)
+	local ani = display.getAnimationCache("PlaneDeadAnimation")
 	if not ani then 
 		local frames = display.newFrames( fileFormat_, 1, 4, false )
 		ani = display.newAnimation(frames, 0.2)
-		display.setAnimationCache( "heroDeadAnimation", ani )
+		display.setAnimationCache( "PlaneDeadAnimation", ani )
 	end
 
-	local act = cc.Sequence:create( cc.CallFunc:create( function (  )
+	local act = cc.Sequence:create( cc.CallFunc:create( function ( target )
 		local view = self:getParent():getParent()
 		if view and view.onPlayerDead then 
-			view:onPlayerDead()
+			view:onPlayerDead( target )
 		end
 	end ),cc.Animate:create( ani ), cc.Hide:create(), cc.CallFunc:create( function ( target )
 		target.onDeadAni_ = false

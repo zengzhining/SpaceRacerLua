@@ -29,6 +29,7 @@ function BasePlane:initData()
 	self.speed_ = cc.p(0, 0)
 	self.hp_ = 1
 	self.score_ = 0
+	self.bulletId_ = 1
 end
 
 function BasePlane:setSpeed(speed)
@@ -43,9 +44,9 @@ end
 --碰撞检测所用矩形
 function BasePlane:getCollisionRect(  )
 	local rect = self:getBoundingBox()
-	local finalWidth  = rect.width * 0.5
+	local finalWidth  = rect.width * 0.8
 	local finalHeight = rect.height * 0.5 
-	local newRect = cc.rect( rect.x, rect.y, finalWidth, finalWidth )
+	local newRect = cc.rect( rect.x, rect.y, finalWidth, finalHeight )
 	return newRect
 end
 
@@ -55,6 +56,10 @@ end
 
 --碰撞检测回调
 function BasePlane:onCollision( other )
+	self:hide()
+end
+
+function BasePlane:onCollisionBullet(other)
 	self:hide()
 end
 
@@ -83,6 +88,14 @@ end
 
 function BasePlane:setScore( score )
 	self.score_ = score
+end
+
+function BasePlane:setBulletId( id_ )
+	self.bulletId_ = id_
+end
+
+function BasePlane:getBulletId()
+	return self.bulletId_
 end
 
 --死亡动画
