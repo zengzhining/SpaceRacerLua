@@ -6,4 +6,9 @@ function MyApp:onCreate()
     SDKManager:getInstance()
 end
 
+function MyApp:enterLoading( nextSceneName )
+	local view = self:enterScene("LoadingScene")
+	view:setNextScene(nextSceneName)
+end
+
 return MyApp

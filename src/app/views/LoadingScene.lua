@@ -11,6 +11,10 @@ function LoadingScene:onCreate(  )
 	self.time_ = 0
 end
 
+function LoadingScene:setNextScene( sceneName )
+	self.sceneName_ = sceneName
+end
+
 function LoadingScene:onEnter()
 	self:unUpdate()
 	self:onUpdate(handler(self, self.update))
@@ -22,6 +26,20 @@ function LoadingScene:update(dt)
 	if self.time_ >=  3*LOADING_DT then 
 		self.title_:setString("Loading...")
 		self.time_ = 0
+		self:unUpdate()
+		local callback = function()
+			__G__actDelay(self, function (  )
+				self:getApp():enterScene(self.sceneName_)
+			end, 1.0)
+			SDKManager:getInstance():setFULLADCallback( nil)
+		end
+
+		if SDKManager:getInstance():isFULLADAvailable() then
+			SDKManager:getInstance():setFULLADCallback( callback)
+			SDKManager:getInstance():showFULLAD()
+		else
+			callback()
+		end
 	elseif self.time_ >= 2* LOADING_DT then 
 		self.title_:setString("Loading..")
 	elseif self.time_ >= LOADING_DT then
@@ -30,7 +48,7 @@ function LoadingScene:update(dt)
 end
 
 function LoadingScene:onExit()
-
+	self:unUpdate()
 end
 
 return LoadingScene

@@ -191,7 +191,6 @@ function GameScene:onCut(  )
 	if not self:getChildByTag(TAG_CUT) then 
 		local layer = __G__createCutLayer( "Layer/ResumeLayer.csb" )
 		self:addChild(layer, 100, TAG_CUT)
-		SDKManager:getInstance():showBanner()
 		display.pause()
 	end
 end
@@ -200,8 +199,6 @@ end
 function GameScene:onResume()
 	display.resume()
 	self.gameLayer_:setTouchEnabled(true)
-	SDKManager:getInstance():hideBanner()
-
 	self:removeChildByTag(TAG_CUT, true)
 	self.cutBtn_:setTouchEnabled(true)
 end

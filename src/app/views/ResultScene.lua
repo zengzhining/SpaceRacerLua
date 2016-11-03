@@ -45,6 +45,9 @@ function ResultScene:onRetry(  )
 	--判断能否播放广告，可以就播放
 	if SDKManager:getInstance():isCanPlayVedio() then
 		SDKManager:getInstance():showVideo( callback )
+	elseif SDKManager:getInstance():isFULLADAvailable() then
+		SDKManager:getInstance():showFULLAD()
+		SDKManager:getInstance():setFULLADCallback(callback)
 	else
 		callback()
 	end
@@ -56,9 +59,7 @@ end
 
 --进入结算界面先播放个全屏
 function ResultScene:onEnter()
-	__G__actDelay( self, function () 
-		SDKManager:getInstance():showFULLAD()
-	end, 0.2 )
+	
 end
 
 function ResultScene:onExit()
