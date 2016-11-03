@@ -313,6 +313,7 @@ function GameScene:onEnter()
 	-- armySet = {}
 	-- score = 0
 	self:unUpdate()
+
 	self:onUpdate(handler(self, self.step))
 end
 

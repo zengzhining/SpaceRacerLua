@@ -3,6 +3,7 @@ GameData = class("GameData")
 local MAX_RANK = 100
 local BG_SPEED = 10
 local DEFAULT_BULLET_NUM = 1
+
 function GameData:ctor()
 	self:initData()
 end
@@ -14,6 +15,9 @@ function GameData:initData()
 	--游戏背景移动速度
 	self.bgSpeed_ = MAX_RANK
 	self.bulletFireNum_ = DEFAULT_BULLET_NUM
+
+	--游戏速度
+	self.gameSpeed_ = 1.0
 end
 --读取和存储游戏数据
 function GameData:load()
@@ -34,6 +38,14 @@ end
 
 function GameData:setBulletFireNum( num_ )
 	self.bulletFireNum_ = num_
+end
+
+function GameData:setGameSpeed(speed_)
+	self.gameSpeed_ = speed_
+end
+
+function GameData:getGameSpeed()
+	return self.gameSpeed_
 end
 
 function GameData:setBgSpeed( speed )

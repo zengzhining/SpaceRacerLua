@@ -51,6 +51,15 @@ function HeroPlane:onKeyPad( event )
 	elseif code == cc.KeyCode.KEY_D then 
 		self:onRight( self:getViewRect().width * 0.6 )
 	end
+
+	if code == cc.KeyCode.KEY_SPACE then 
+		speed = GameData:getInstance():getGameSpeed()
+		if speed > 1.0 then 
+			GameData:getInstance():setGameSpeed(1.0)
+		else
+			GameData:getInstance():setGameSpeed(2.0)
+		end
+	end
 end
 
 --碰撞碰到敌人回调

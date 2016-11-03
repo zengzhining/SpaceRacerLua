@@ -90,13 +90,14 @@ __G__createBg = function (fileName)
 	end
 
 	function layer:update(dt)
+		local gameSpeed = GameData:getInstance():getGameSpeed()
 		local tbl ={ "Bg", "BgUp" }
 		for c, key in pairs (tbl) do
 			local bg = node:getChildByName(key)
 			if bg:getPositionY() <= 0 then
 				bg:posY(display.height * 2)
 			end
-			bg:posByY(self.speed_)
+			bg:posByY(self.speed_ * gameSpeed)
 		end
 	end
 

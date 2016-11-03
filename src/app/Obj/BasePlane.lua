@@ -38,7 +38,8 @@ function BasePlane:setSpeed(speed)
 end
 
 function BasePlane:step( dt )
-	self:posBy(self.speed_.x , self.speed_.y)
+	local gameSpeed = GameData:getInstance():getGameSpeed()
+	self:posBy(self.speed_.x , self.speed_.y * gameSpeed )
 end
 
 --碰撞检测所用矩形

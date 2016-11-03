@@ -33,7 +33,8 @@ function MovedObject:setSpeed(speed)
 end
 
 function MovedObject:step(dt)
-	self:posByY(self.speed_)
+	local gameSpeed = GameData:getInstance():getGameSpeed()
+	self:posByY(self.speed_ * gameSpeed)
 end
 
 --碰撞检测所用矩形
