@@ -34,4 +34,4 @@ CC_DESIGN_RESOLUTION = {
     end
 }
 
-DEFAULT_SCENE = "MainMenu"
+DEFAULT_SCENE = "LoadingScene"

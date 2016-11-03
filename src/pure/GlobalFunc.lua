@@ -74,6 +74,7 @@ end
 __G__createBg = function (fileName)
 	local layer = display.newLayer()
 	local node = display.newCSNode(fileName)
+	layer.speed_ = -10
 
 	layer:enableNodeEvents()
 	
@@ -82,7 +83,10 @@ __G__createBg = function (fileName)
 	function layer:onEnter()
 		layer:unUpdate()
 		layer:onUpdate(handler(layer, layer.update))
+	end
 
+	function layer:setSpeed(speed)
+		self.speed_ = speed
 	end
 
 	function layer:update(dt)
@@ -92,7 +96,7 @@ __G__createBg = function (fileName)
 			if bg:getPositionY() <= 0 then
 				bg:posY(display.height * 2)
 			end
-			bg:posByY(-10)
+			bg:posByY(self.speed_)
 		end
 	end
 

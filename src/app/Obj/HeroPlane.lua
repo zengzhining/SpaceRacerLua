@@ -42,9 +42,9 @@ end
 function HeroPlane:onKeyPad( event )
 	local code = event.keycode
 	local target = event.target
-	if code == cc.KeyCodeKey.KEY_A then 
+	if code == cc.KeyCode.KEY_A then 
 		self:onLeft( self:getViewRect().width * 0.6 )
-	elseif code == cc.KeyCodeKey.KEY_S then 
+	elseif code == cc.KeyCode.KEY_D then 
 		self:onRight( self:getViewRect().width * 0.6 )
 	end
 end

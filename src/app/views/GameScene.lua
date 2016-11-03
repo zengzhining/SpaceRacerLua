@@ -3,10 +3,11 @@ local GameScene = class("GameScene", cc.load("mvc").ViewBase)
 local TAG_UI = 101
 local TAG_CUT = 100
 local TAG_GAME_LAYER = 102
+local TAG_BG = 103
 
 local armySet = {}
 
-local ARMY_TIME = 1 --敌人生成时间
+local ARMY_TIME = 0.6 --敌人生成时间
 local tempTime = 0
 
 function GameScene:onCreate()
@@ -21,6 +22,9 @@ function GameScene:onCreate()
 	self:addChild(uiLayer, -1, TAG_UI )
 
 	self:initObj()
+
+	local bg = __G__createBg( "Layer/BackGround.csb" )
+	self:add(bg, -2, TAG_BG)
 end
 
 function GameScene:initData()
@@ -95,15 +99,14 @@ end
 function GameScene:updateRank()
 	--如果两次的排行榜数据不同就更新显示
 	local score = GameData:getInstance():getScore()
-	local rank = 100 - math.floor(score /50)  
-	-- if rank < lastRank then
-	-- 	self.rankLb_:setString( GameData:getInstance():getRank() )
-
-	-- end
+	local rank = 100 - math.floor(score /10) 
+	GameData:getInstance():setRank(rank) 
+	self.rankLb_:setString( GameData:getInstance():getRank() )
 end
+
 function GameScene:initObj()
 	local gameLayer = display.newLayer()
-	self:addChild(gameLayer, -2, TAG_GAME_LAYER)
+	self:addChild(gameLayer, 1, TAG_GAME_LAYER)
 	self.gameLayer_ = gameLayer
 	local plane = PlaneFactory:getInstance():createPlane(1)
 	local width = plane:getViewRect().width
@@ -130,7 +133,7 @@ function GameScene:initObj()
 			self:onCut()
         end
 
-        if device.platform ~= android and plane and plane.onKeyPad then 
+        if (device.platform ~= android) and plane and plane.onKeyPad then 
         	plane:onKeyPad(event)
         end
     end
@@ -146,7 +149,8 @@ function GameScene:onCreateArmy(  )
 	end
 
 	local army = PlaneFactory:getInstance():createPlane(2)
-	army:setSpeed(cc.p(0, -10))
+	local armySpeed = self:getArmySpeed()
+	army:setSpeed(cc.p(0, armySpeed))
 	local lastArmy = armySet[#armySet] 
 
 	local height = army:getViewRect().height
@@ -161,7 +165,27 @@ function GameScene:onCreateArmy(  )
 	self.gameLayer_ :addChild(army)
 	table.insert(armySet, army)
 
+	--调整一下游戏背景速度
+	local bgSpeed = self:getBgSpeed()
+	local bg = self:getChildByTag(TAG_BG)
+	if bg and bg.setSpeed then 
+		bg:setSpeed(bgSpeed)
+	end
 end
+
+function GameScene:getBgSpeed()
+	local rank = GameData:getInstance():getRank()
+	local speed = (100-rank) * 0.2 + 10
+	return (0-speed)
+end
+
+function GameScene:getArmySpeed()
+	--根据排名来获得分数
+	local rank = GameData:getInstance():getRank()
+	local speed = (100-rank) * 0.1 + 10
+	return (0-speed)
+end
+
 
 function GameScene:onCut(  )
 	if not self:getChildByTag(TAG_CUT) then 
