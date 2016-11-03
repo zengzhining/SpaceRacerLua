@@ -6,7 +6,7 @@ DEBUG = 2
 CC_USE_FRAMEWORK = true
 
 -- show FPS on screen
-CC_SHOW_FPS = true
+CC_SHOW_FPS = false
 
 -- disable create unexpected global variable
 CC_DISABLE_GLOBAL = false
@@ -34,4 +34,4 @@ CC_DESIGN_RESOLUTION = {
     end
 }
 
-DEFAULT_SCENE = "MainMenu"
+DEFAULT_SCENE = "GameScene"

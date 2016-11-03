@@ -9,7 +9,7 @@ __G__createCutLayer = function ( fileName )
 
 	local resume = node:getChildByName("Resume")
 	resume:onTouch(function ( event )
-		if event.name == "began" then
+		if event.name == "ended" then
 			local scene = layer:getParent()
 			if scene and scene.onResume then 
 				scene:onResume()
@@ -19,7 +19,7 @@ __G__createCutLayer = function ( fileName )
 
 	local restart = node:getChildByName("Restart")
 	restart:onTouch(function ( event )
-		if event.name == "began" then
+		if event.name == "ended" then
 			local scene = layer:getParent()
 			if scene and scene.onRestart then 
 				scene:onRestart()
@@ -29,7 +29,7 @@ __G__createCutLayer = function ( fileName )
 
 	local exit = node:getChildByName("Exit")
 	exit:onTouch(function ( event )
-		if event.name == "began" then
+		if event.name == "ended" then
 			local scene = layer:getParent()
 			if scene and scene.onCutExit then 
 				scene:onCutExit()
@@ -49,7 +49,7 @@ __G__createOverLayer = function ( fileName )
 
 	local Retry = node:getChildByName("Retry")
 	Retry:onTouch(function ( event )
-		if event.name == "began" then
+		if event.name == "ended" then
 			local scene = layer:getParent()
 			if scene and scene.onRetry then 
 				scene:onRetry()
@@ -59,7 +59,7 @@ __G__createOverLayer = function ( fileName )
 
 	local exit = node:getChildByName("Exit")
 	exit:onTouch(function ( event )
-		if event.name == "began" then
+		if event.name == "ended" then
 			local scene = layer:getParent()
 			if scene and scene.onGameExit then 
 				scene:onGameExit()
@@ -74,7 +74,7 @@ end
 __G__createBg = function (fileName)
 	local layer = display.newLayer()
 	local node = display.newCSNode(fileName)
-	layer.speed_ = -10
+	layer.speed_ = -2
 
 	layer:enableNodeEvents()
 	
@@ -109,4 +109,42 @@ __G__actDelay = function (target, callback, time)
 		callback()
 	end)) 
 	target:runAction(act)
+end
+
+--背景音乐淡出
+__G__MusicFadeOut = function(target, time)
+	local time_ = 0
+	local originVol = audio.getMusicVolume()
+	local dVol = originVol / time
+	target:onUpdate( function ( dt )
+		time_ = time_ + dt
+		audio.setMusicVolume(originVol-(dVol* time_))
+
+		if time_ >= time then 
+			audio.setMusicVolume(originVol)
+			target:unUpdate()
+		end
+	end )
+end
+
+--菜单点击音效播放
+__G__MenuClickSound = function (  )
+	audio.playSound("sfx/sound/click.wav", false)
+end
+
+--菜单点击取消的音效
+__G__MenuCancelSound = function (  )
+	audio.playSound("sfx/sound/cancel.wav", false)
+end
+
+--爆炸音效
+__G__ExplosionSound = function (  )
+	audio.playSound("sfx/sound/explosion.wav", false)
+end
+
+--背景音乐播放，1为菜单，2为游戏场景，3为结算场景
+__G__MainMusic = function( id )
+	if not id then id = 1 end
+	audio.stopMusic()
+	audio.playMusic("sfx/mainMenu.mp3")
 end

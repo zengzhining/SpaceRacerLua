@@ -1,6 +1,9 @@
 local ResultScene = class("ResultScene", cc.load("mvc").ViewBase)
 
 ResultScene.RESOURCE_FILENAME = "Layer/GameOver.csb"
+
+local TAG_BG = 101
+
 function ResultScene:onCreate(  )
 	-- body
 	local root = self:getResourceNode()
@@ -30,13 +33,16 @@ function ResultScene:onCreate(  )
 	local scoreLb = root:getChildByName("Score")
 	scoreLb:setString(tostring(GameData:getInstance():getScore()))
 
+	local bg = __G__createBg( "Layer/BackGround.csb" )
+	self:addChild(bg, -1,TAG_BG)
+
 end
 
 function ResultScene:onRetry(  )
 	local callback = function ()
 		__G__actDelay(self, function()
-				self:getApp():enterScene("GameScene" )
-			end, 0.2)
+				self:getApp():enterLoading("GameScene" )
+		end, 0.2)
 	end
 
 	--重置游戏数据
@@ -57,9 +63,8 @@ function ResultScene:onGameExit()
 	display.exit()
 end
 
---进入结算界面先播放个全屏
 function ResultScene:onEnter()
-	
+	__G__MainMusic()		
 end
 
 function ResultScene:onExit()

@@ -24,6 +24,7 @@ function GameScene:onCreate()
 	self:initObj()
 
 	local bg = __G__createBg( "Layer/BackGround.csb" )
+	bg:setSpeed(self:getBgSpeed())
 	self:add(bg, -2, TAG_BG)
 end
 
@@ -64,9 +65,12 @@ end
 
 --角色死亡回调函数
 function GameScene:onPlayerDead(  )
+	__G__ExplosionSound()
+	self.cutBtn_:setTouchEnabled(false)
 	self.gameLayer_:removeKeypad()
 	self.gameLayer_:removeAccelerate()
 	self:unUpdate()
+	__G__MusicFadeOut(self, 1)
 	__G__actDelay( self, function (  )
 		self:getApp():enterScene("ResultScene")
 	end, 1.0 )
@@ -76,7 +80,7 @@ end
 function GameScene:initUI( ui_ )
 	local cutBtn = ui_:getChildByName("CutButton")
 	cutBtn:onTouch(function ( event )
-		if event.name == "began" then 
+		if event.name == "ended" then 
 			self.gameLayer_:setTouchEnabled(false)
 			self:onCut()
 			cutBtn:setTouchEnabled(false)
@@ -110,7 +114,7 @@ function GameScene:initObj()
 	self.gameLayer_ = gameLayer
 	local plane = PlaneFactory:getInstance():createPlane(1)
 	local width = plane:getViewRect().width
-	plane:pos(display.cx - width * 0.6, display.height /3 )
+	plane:pos(display.cx - width * 0.6, display.height /4 )
 	gameLayer:addChild(plane)
 	self.role_ = plane
 
@@ -175,7 +179,7 @@ end
 
 function GameScene:getBgSpeed()
 	local rank = GameData:getInstance():getRank()
-	local speed = (100-rank) * 0.2 + 10
+	local speed = (100-rank) * 0.2 + 2
 	return (0-speed)
 end
 
@@ -189,6 +193,7 @@ end
 
 function GameScene:onCut(  )
 	if not self:getChildByTag(TAG_CUT) then 
+		__G__MenuClickSound()
 		local layer = __G__createCutLayer( "Layer/ResumeLayer.csb" )
 		self:addChild(layer, 100, TAG_CUT)
 		display.pause()
@@ -197,6 +202,7 @@ end
 
 --暂停的回调方法-----
 function GameScene:onResume()
+	__G__MenuCancelSound()
 	display.resume()
 	self.gameLayer_:setTouchEnabled(true)
 	self:removeChildByTag(TAG_CUT, true)
@@ -204,19 +210,22 @@ function GameScene:onResume()
 end
 
 function GameScene:onRestart()
+	__G__MenuCancelSound()
+	display.resume()
 	GameData:getInstance():reset()
-	self:getApp():enterScene("GameScene")
+	self:getApp():enterLoading("GameScene")
 end
 
 
 function GameScene:onCutExit()
+	__G__MenuCancelSound()
 	display.exit()
 end
 
 --------------------------------
 
 function GameScene:onEnter()
-	audio.stopMusic()
+	__G__MainMusic()	
 	-- armySet = {}
 	-- score = 0
 	self:unUpdate()

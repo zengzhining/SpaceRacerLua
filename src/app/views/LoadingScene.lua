@@ -9,6 +9,10 @@ function LoadingScene:onCreate(  )
 	self.title_ = root:getChildByName("Loading") 
 
 	self.time_ = 0
+
+	local bg = __G__createBg( "Layer/BackGround.csb" )
+	bg:setSpeed(-5)
+	self:add(bg, -1)
 end
 
 function LoadingScene:setNextScene( sceneName )
@@ -17,6 +21,7 @@ end
 
 function LoadingScene:onEnter()
 	self:unUpdate()
+	audio.stopMusic(false)
 	self:onUpdate(handler(self, self.update))
 end
 
