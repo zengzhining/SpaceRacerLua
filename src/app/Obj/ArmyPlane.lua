@@ -6,6 +6,9 @@ function ArmyPlane:ctor(  )
 	self:flipY(true)
 
 	self.isHurtRole_ = false
+
+	--是否被超越
+	self.hasBeyound_ = false
 end
 
 function ArmyPlane:onCollision( other )

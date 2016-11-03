@@ -35,6 +35,7 @@ end
 function GameScene:step( dt )
 	--遍历处理
 	local roleRect = self.role_:getCollisionRect()
+	local rolePosY = self.role_:getPositionY()
 	for k, army in pairs(armySet) do
 		local rect = army:getCollisionRect()
 		local iscollision = cc.rectIntersectsRect(roleRect, rect) 
@@ -43,9 +44,18 @@ function GameScene:step( dt )
 			army:onCollision( self.role_ )
 		end
 
-		local isOutOfWindow = (army:getPositionY() <= 0 and true or false )
+		local armyPosY = army:getPositionY()
+		local isBeyound = ((armyPosY <= rolePosY - roleRect.height * 0.5 ) and true or false)
+		if isBeyound then 
+			--只进行一次回调
+			if not army.hasBeyound_ then
+				army.hasBeyound_ = true
+				self:onBeyoundArmy(army)
+			end
+		end
+
+		local isOutOfWindow = ( armyPosY <= (-display.cy * 0.5) and true or false )
 		if isOutOfWindow then 
-			GameData:getInstance():addScore( army:getScore() ) 
 			army:removeSelf()
 			table.remove(armySet, k)
 			break
@@ -54,13 +64,27 @@ function GameScene:step( dt )
 
 	--生成敌人
 	tempTime = tempTime + dt
-	if tempTime >= ARMY_TIME then
+	local armtTime = self:getArmyTime()
+	if tempTime >= armtTime then
 		tempTime = 0 
 		self:onCreateArmy()
 	end
 
 	self:updateScore()
 	self:updateRank()
+end
+
+function GameScene:getArmyTime()
+	local time = ARMY_TIME
+	local rank = GameData:getInstance():getRank()
+	local armySpeed = self:getArmySpeed()
+	time = 0.01* math.abs(armySpeed)
+	return time
+end
+
+--角色超越敌机瞬间的回调函数
+function GameScene:onBeyoundArmy( army_ )
+	GameData:getInstance():addScore( army_:getScore() ) 
 end
 
 --角色死亡回调函数
@@ -186,7 +210,8 @@ end
 function GameScene:getArmySpeed()
 	--根据排名来获得分数
 	local rank = GameData:getInstance():getRank()
-	local speed = (100-rank) * 0.1 + 10
+	local speed = (100-rank) * 0.2 + 10
+	--最大到三十
 	return (0-speed)
 end
 
