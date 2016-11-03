@@ -244,8 +244,10 @@ end
 function SDKManager:isCanPlayVedio()
 	if not CC_NEED_SDK then return false end
 	--一分钟只能播放一次广告
-	if os.time() - self.lastPlayVedioTime_ >= DELTA_TIME_VEDIO then 
-		return false
+	if DEBUG == 0 then
+		if os.time() - self.lastPlayVedioTime_ >= DELTA_TIME_VEDIO then 
+			return false
+		end
 	end
 
 	local status = sdkbox.PluginAdColony:getStatus(SDK_VEDIO_NAME)
