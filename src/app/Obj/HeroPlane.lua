@@ -44,14 +44,8 @@ function HeroPlane:accelerateEvent( x,y,z,timeStap )
 		self:onRight( self:getViewRect().width * 0.6 )
 	end
 
-	print("y~~~", y)
-	if y > UP_ACC then
-		GameData:getInstance():setGameSpeed(2.0)
-	end
-
-	if y < DOWN_ACC then
-		GameData:getInstance():setGameSpeed(1.0)
-	end
+	local speed = 2.0 - y
+	GameData:getInstance():setGameSpeed(speed)
 end
 
 function HeroPlane:onKeyPad( event )
