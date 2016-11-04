@@ -8,10 +8,33 @@ function TestScene:ctor()
 
 	--test keycode
 	layer:onKeypad(function( event )
-		print("keycode~~~~", event.keycode, event.target)
-		print("cc.KeyCode.KEY_BACK~~~~~", cc.KeyCode.KEY_BACK)
+		
 	end)
 
+    
+
+	--testJson
+    require('cocos.cocos2d.json')
+    local tbl = {}
+    for i = 1, 100 do
+    	local score = i* 100 
+    	table.insert( tbl, score )
+    end
+
+    local text = json.encode(tbl)
+    print("text~~~~", text)
+    local fileUtils = cc.FileUtils:getInstance()
+    local writePath = fileUtils:getWritablePath()
+    print("writePath~~~~~", writePath)
+    local isSuccess = fileUtils:writeValueVectorToFile( tbl, writePath.."score.plist")
+    print("isSuccess~~~~", isSuccess)
+
+    if isSuccess then 
+    	local data = fileUtils:getValueVectorFromFile(writePath.."score.plist")
+    	dump(data)
+    end
+
+    local decodeTbl = json.decode(text)
 	--remove
 	-- layer:removeKeypad()
 	
