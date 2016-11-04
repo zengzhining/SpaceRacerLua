@@ -34,4 +34,4 @@ CC_DESIGN_RESOLUTION = {
     end
 }
 
-DEFAULT_SCENE = "TestScene"
+DEFAULT_SCENE = "MainMenu"

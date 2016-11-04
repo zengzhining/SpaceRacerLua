@@ -27,7 +27,7 @@ function ArmyPlane:playDeadAnimation(fileFormat_)
 		display.setAnimationCache( "PlaneDeadAnimation", ani )
 	end
 
-	local originVol = audio.getSoundsVolume()
+	local originVol = 1.0
 	local act = cc.Sequence:create( cc.CallFunc:create( function ( target )
 		--播放前调整一下音效声音大小
 		audio.setSoundsVolume( originVol - 0.2)

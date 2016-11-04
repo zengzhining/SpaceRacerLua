@@ -9,10 +9,15 @@ function LoadingScene:onCreate(  )
 	self.title_ = root:getChildByName("Loading") 
 
 	self.time_ = 0
+	self.needAds_ = false
 
 	local bg = __G__createBg( "Layer/BackGround.csb" )
 	bg:setSpeed(-5)
 	self:add(bg, -1)
+end
+
+function LoadingScene:setNeedAds( needAds_ )
+	self.needAds_ = needAds_
 end
 
 function LoadingScene:setNextScene( sceneName )
@@ -39,7 +44,7 @@ function LoadingScene:update(dt)
 			SDKManager:getInstance():setFULLADCallback( nil)
 		end
 
-		if SDKManager:getInstance():isFULLADAvailable() then
+		if self.needAds_ and SDKManager:getInstance():isFULLADAvailable() then
 			SDKManager:getInstance():setFULLADCallback( callback)
 			SDKManager:getInstance():showFULLAD()
 		else

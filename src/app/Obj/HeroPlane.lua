@@ -6,6 +6,8 @@ local MOVE_TIME = 0.3
 --左右加速器判断
 local LEFT_ACC = -0.1
 local RIGHT_ACC = 0.1
+local UP_ACC = -0.4
+local DOWN_ACC = -0.8
 
 function HeroPlane:ctor(  )
 	self.super.ctor(self)
@@ -40,6 +42,15 @@ function HeroPlane:accelerateEvent( x,y,z,timeStap )
 	
 	if x > RIGHT_ACC then
 		self:onRight( self:getViewRect().width * 0.6 )
+	end
+
+	print("y~~~", y)
+	if y > UP_ACC then
+		GameData:getInstance():setGameSpeed(2.0)
+	end
+
+	if y < DOWN_ACC then
+		GameData:getInstance():setGameSpeed(1.0)
 	end
 end
 
