@@ -115,10 +115,6 @@ function GameScene:step( dt )
 			self:onCreateArmy()
 		end
 	end
-
-	--ui可以被动更新
-	self:updateScore()
-	self:updateRank()
 end
 
 --子弹击中敌人的回调，这里可以处理连击
@@ -189,6 +185,18 @@ function GameScene:onArmyDead( target)
 	local scoreFactor = self:getScoreAddFactor()
 	local score = target:getScore() * scoreFactor
 	GameData:getInstance():addScore( score ) 
+	--分数改变时候更新分数
+	self:updateScore()
+	--排名改变时候更新排名
+	--如果两次的排行榜数据不同就更新显示
+	local score = GameData:getInstance():getScore()
+	local rank = 100 - math.floor(score /10) 
+	local oldRank = GameData:getInstance():getRank()
+	if rank < oldRank then
+		GameData:getInstance():setRank(rank) 
+		self:updateRank()
+	end
+
 end
 
 function GameScene:getScoreAddFactor()
@@ -221,10 +229,7 @@ function GameScene:updateScore(  )
 end
 
 function GameScene:updateRank()
-	--如果两次的排行榜数据不同就更新显示
-	local score = GameData:getInstance():getScore()
-	local rank = 100 - math.floor(score /10) 
-	GameData:getInstance():setRank(rank) 
+	
 	self.rankLb_:setString( GameData:getInstance():getRank() )
 end
 
