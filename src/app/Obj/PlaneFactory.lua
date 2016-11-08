@@ -10,7 +10,7 @@ end
 function PlaneFactory:createPlane( id_ )
 	local plane = nil
 	if id_ == 1 then 
-		plane = ArmyPlane.new("#GreyPlane.png")	
+		plane = ArmyPlane.new("#RedPlane.png")	
 	elseif id_ == 2 then
 		plane = ArmyPlane.new("#GreyPlane.png")
 	end
@@ -25,6 +25,7 @@ function PlaneFactory:createRole( id_ )
 	elseif id_ == 2 then 
 		plane = HeroPlane.new("#GreenPlane.png")
 	end
+	plane:setBulletId(id_)
 	return plane
 end
 
@@ -34,6 +35,9 @@ function PlaneFactory:createBullet( id_ )
 	if id_ == 1 then
 		bullet = Bullet.new("#BlueBullet03.png")
 		bullet:setAnimationFormat("BlueBullet%02d.png")
+	elseif id_ == 2 then 
+		bullet = Bullet.new("#RedBullet03.png")
+		bullet:setAnimationFormat("RedBullet%02d.png")
 	end
 	return bullet
 
