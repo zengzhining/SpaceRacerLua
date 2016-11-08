@@ -1,8 +1,8 @@
 local MovedObject = require("app/Obj/MovedObject")
 local BasePlane = class("BasePlane", MovedObject)
 
-function BasePlane:ctor()
-	BasePlane.super.ctor(self)
+function BasePlane:ctor( fileName )
+	BasePlane.super.ctor(self, fileName)
 end
 
 function BasePlane:initData()
@@ -89,7 +89,7 @@ function BasePlane:onHurt( hp_ )
 end
 
 function BasePlane:isDead(  )
-	return self.hp_ == 0
+	return self.hp_ <= 0
 end
 
 --左右的控制

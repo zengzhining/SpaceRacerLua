@@ -2,16 +2,15 @@ local MovedObject = class("MovedObject", function ( fileName )
 	return display.newSprite( fileName )
 end)
 
-function MovedObject:ctor(  )
+function MovedObject:ctor( fileName )
 	self:enableNodeEvents()
-
 	self:initData()
 	self:debugDraw()
-	
+
+	self.originFileName_ = fileName
 end
 
 function MovedObject:debugDraw()
-
 	if CC_DEBUG_RECT then 
 		local draw = display.newDrawNode()
 		self:addChild(draw, 999)
@@ -66,6 +65,11 @@ end
 
 function MovedObject:setAnimationFormat(formatFile)
 	self.aniFormat_ = formatFile
+end
+
+function MovedObject:restoreOriginSprite()
+	local frame = display.newSpriteFrame(self.originFileName_)
+	self:setSpriteFrame(frame)
 end
 
 function MovedObject:playAnimation( formatFile )

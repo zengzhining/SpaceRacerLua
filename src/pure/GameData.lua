@@ -3,7 +3,7 @@ GameData = class("GameData")
 local MAX_RANK = 100
 local BG_SPEED = 10
 
-local DEFAULT_ROLE = 2
+local DEFAULT_ROLE = 1
 function GameData:ctor()
 	self:initData()
 end

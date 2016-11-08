@@ -49,6 +49,14 @@ function Layer:onTouch(callback, isMultiTouches, swallowTouches)
     return self
 end
 
+function Layer:pauseTouch()
+    self:setTouchEnabled(false)
+end
+
+function Layer:resumeTouch()
+    self:setTouchEnabled(true)
+end
+
 function Layer:removeTouch()
     self:unregisterScriptTouchHandler()
     self:setTouchEnabled(false)
@@ -74,6 +82,14 @@ function Layer:onKeypad(callback)
     return self
 end
 
+function Layer:pauseKeyPad()
+    self:setKeyboardEnabled(false)
+end
+
+function Layer:resumeKeyPad()
+    self:setKeyboardEnabled(true)
+end
+
 function Layer:removeKeypad()
     self:unregisterScriptKeypadHandler()
     local eventDispatcher = self:getEventDispatcher()
@@ -88,8 +104,28 @@ function Layer:onAccelerate(callback)
     return self
 end
 
+function Layer:pauseAccelerate()
+    self:setAccelerometerEnabled(false)
+end
+
+function Layer:resumeAccelerate()
+    self:setAccelerometerEnabled(true)
+end
+
 function Layer:removeAccelerate()
     self:unregisterScriptAccelerateHandler()
     self:setAccelerometerEnabled(false)
     return self
+end
+
+function Layer:pauseAllInput()
+    self:pauseTouch()
+    self:pauseKeyPad()
+    self:pauseAccelerate()
+end
+
+function Layer:resumeAllInput()
+    self:resumeTouch()
+    self:resumeAccelerate()
+    self:resumeKeyPad()
 end

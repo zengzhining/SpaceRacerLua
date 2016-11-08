@@ -11,6 +11,9 @@ local bulletSet = {}
 local ARMY_TIME = 0.6 --敌人生成时间
 local tempTime = 0
 
+local hitSameArmyNum = 0
+local commboTimes = 0
+
 function GameScene:onCreate()
 	self:initData()
 	--addSpriteFrames
@@ -31,6 +34,9 @@ end
 function GameScene:initData()
 	armySet = {}
 	bulletSet = {}
+
+	hitSameArmyNum = 0
+	commboTimes = 0
 end
 
 function GameScene:step( dt )
@@ -41,7 +47,9 @@ function GameScene:step( dt )
 	for k, army in pairs(armySet) do
 		local rect = army:getCollisionRect()
 		local iscollision = cc.rectIntersectsRect(roleRect, rect) 
-		if iscollision  then 
+		local isRelive = self.role_:isRelive()
+		--碰撞检测成功判断下角色是否处于复活状态
+		if iscollision and (not isRelive) then 
 			self.role_:onCollision( army )
 			army:onCollision( self.role_ )
 		end
@@ -80,7 +88,7 @@ function GameScene:step( dt )
 			if iscollision then
 				army:onCollisionBullet(bullet)
 				bullet:onCollision(army)
-
+				self:onBulletHitArmy( bullet, army )
 				--最后再处理去除逻辑
 				table.remove(bulletSet, i)
 				table.remove(armySet, army.key_)
@@ -111,6 +119,11 @@ function GameScene:step( dt )
 	self:updateRank()
 end
 
+--子弹击中敌人的回调，这里可以处理连击
+function GameScene:onBulletHitArmy( bullet_, army_ )
+	
+end
+
 function GameScene:getArmyTime()
 	local time = ARMY_TIME
 	local rank = GameData:getInstance():getRank()
@@ -131,14 +144,26 @@ function GameScene:onPlayerDead( target )
 	end
 	__G__ExplosionSound()
 	self.cutBtn_:setTouchEnabled(false)
-	self.gameLayer_:removeKeypad()
-	self.gameLayer_:removeAccelerate()
+	-- self.gameLayer_:removeKeypad()
+	-- self.gameLayer_:removeAccelerate()
+	self.gameLayer_:pauseAllInput()
 	self:unUpdate()
 	__G__MusicFadeOut(self, 1)
 	__G__actDelay( self, function (  )
-		self:getApp():enterScene("ResultScene")
-	end, 1.0 )
+		-- self:getApp():enterScene("ResultScene")
+		self:onContinue()
+		self.gameLayer_:resumeAllInput()
+	end, 3.0 )
 	device.vibrate( 0.2 )
+end
+
+--玩家复活继续游戏
+function GameScene:onContinue()
+	if self.role_ then 
+		self.role_:setVisible(true)
+		self.role_:relive()
+		self:onUpdate(handler(self, self.step))
+	end
 end
 
 --敌人死亡的回调函数

@@ -8,9 +8,10 @@ local LEFT_ACC = -0.1
 local RIGHT_ACC = 0.1
 local UP_ACC = -0.4
 local DOWN_ACC = -0.8
+local RELIVE_TIME = 3
 
-function HeroPlane:ctor(  )
-	HeroPlane.super.ctor(self)
+function HeroPlane:ctor( fileName )
+	HeroPlane.super.ctor(self, fileName)
 
 	--是否在左右移动过程中
 	self.isMoved_ = false
@@ -21,6 +22,9 @@ function HeroPlane:ctor(  )
 	self.onDeadAni_ = false
 
 	self.moveTime_ = MOVE_TIME
+
+	--是否复活
+	self.isRelive_ = false
 end
 
 function HeroPlane:setMoveTime(time)
@@ -41,6 +45,26 @@ function HeroPlane:fireBullet()
 			self:setLastFireTime(os.time())
 		end
 	end
+end
+
+--复活
+function HeroPlane:relive()
+	self:restoreOriginSprite()
+
+	--3秒内无敌
+	self.isRelive_ = true
+	local act = cc.Sequence:create( cc.DelayTime:create( RELIVE_TIME ) , cc.CallFunc:create( function ( target )
+		target.isRelive_ = false
+	end ))	
+
+	local sequence = cc.Sequence:create( cc.FadeOut:create(0.3), cc.FadeIn:create(0.2) )
+	local hurtAct = cc.Repeat:create(sequence,  RELIVE_TIME / 0.5)
+	self:runAction(act)
+	self:runAction(hurtAct)
+end
+
+function HeroPlane:isRelive()
+	return self.isRelive_
 end
 
 function HeroPlane:accelerateEvent( x,y,z,timeStap )
