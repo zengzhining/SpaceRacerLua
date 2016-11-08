@@ -217,10 +217,10 @@ end
 
 --主角发射炮弹的回调函数
 function GameScene:onFireBullet( id_ )
-	if #bulletSet >= GameData:getInstance():getBulletFireNum() then return end
-	local bullet = PlaneFactory.createBullet(id_)
-	local gameLayer = self.gameLayer_
 	local role = self.role_
+	if #bulletSet >= role:getBulletFireNum() then return end
+	local bullet = PlaneFactory:getInstance():createBullet(id_)
+	local gameLayer = self.gameLayer_
 	local roleX,roleY = role:getPosition()
 	bullet:pos(roleX, roleY + role:getViewRect().height *0.5 + bullet:getViewRect().height * 0.25)
 	bullet:onFire()

@@ -29,12 +29,69 @@ function BasePlane:initData()
 	self.speed_ = cc.p(0, 0)
 	self.hp_ = 1
 	self.score_ = 0
+
+	self.id_ = 1
+	--发射子弹的id
 	self.bulletId_ = 1
+	self.bulletFireNum_ = 1
+	--子弹冷却时间
+	self.bulletCalmTime_ = 1
+	self.lastFireTime_ = 0
+end
+
+--角色的id
+function BasePlane:setId(id_)
+	self.id_ = id_
+end
+
+function BasePlane:getId()
+	return self.id_
+end
+
+--角色可以发射的子弹个数，暂时放在基础类以便日后其他飞机也能发射子弹
+function BasePlane:setBulletFireNum( num )
+	self.bulletFireNum_ = num
+end
+
+function BasePlane:getBulletFireNum()
+	return self.bulletFireNum_
+end
+
+--设置对应子弹的冷却时间
+function BasePlane:setBulletCalmTime( time )
+	self.bulletCalmTime_ = time
+end
+
+function BasePlane:getBulletCalmTime()
+	return self.bulletCalmTime_
 end
 
 function BasePlane:setSpeed(speed)
 	-- body
 	self.speed_ = speed
+end
+
+--发射子弹的冷却时间
+function BasePlane:isCanFireBullet()
+	local flag = false
+	local time = os.time()
+	if time - self:getLastFireTime() >= self:getBulletCalmTime() then 
+		flag = true
+	end
+
+	return flag
+end
+
+function BasePlane:setLastFireTime( time )
+	self.lastFireTime_ = time
+end
+
+function BasePlane:getLastFireTime()
+	return self.lastFireTime_
+end
+
+function BasePlane:fireBullet()
+
 end
 
 function BasePlane:step( dt )

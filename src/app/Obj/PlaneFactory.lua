@@ -22,10 +22,17 @@ function PlaneFactory:createRole( id_ )
 	local plane = nil
 	if id_ == 1 then 
 		plane = HeroPlane.new("#FriendPlane01.png")
+		plane:setMoveTime(0.3)
 	elseif id_ == 2 then 
 		plane = HeroPlane.new("#GreenPlane.png")
+		plane:setMoveTime(0.5)
 	end
+	plane:setId(id_)
 	plane:setBulletId(id_)
+	plane:setBulletFireNum(id_)
+	--设置子弹冷却时间
+	plane:setBulletCalmTime(1)
+
 	return plane
 end
 

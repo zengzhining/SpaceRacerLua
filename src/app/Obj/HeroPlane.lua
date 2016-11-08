@@ -19,18 +19,26 @@ function HeroPlane:ctor(  )
 
 	--死亡动画播放
 	self.onDeadAni_ = false
+
+	self.moveTime_ = MOVE_TIME
+end
+
+function HeroPlane:setMoveTime(time)
+	self.moveTime_ = time
 end
 
 function HeroPlane:onTouch( event )
 	if event.name == "began" then
-		-- if event.x < display.cx then 
-		-- 	self:onLeft( self:getViewRect().width * 0.6 )
-		-- else
-		-- 	self:onRight( self:getViewRect().width * 0.6 )
-		-- end
-		local scene = self:getParent():getParent()
-		if scene and scene.onFireBullet then 
+		self:fireBullet()
+	end
+end
+
+function HeroPlane:fireBullet()
+	local scene = self:getParent():getParent()
+	if scene and scene.onFireBullet then 
+		if self:isCanFireBullet() then
 			scene:onFireBullet(self:getBulletId())
+			self:setLastFireTime(os.time())
 		end
 	end
 end
@@ -116,8 +124,8 @@ function HeroPlane:onLeft( x )
 	if self.dir_.x == -1 then return end
 	__G__actDelay(self, function (  )
 		self.isMoved_ = false
-	end, MOVE_TIME)
-	self:moveTo({ x = display.cx - x, time = MOVE_TIME })
+	end, self.moveTime_)
+	self:moveTo({ x = display.cx - x, time = self.moveTime_ })
 	self.dir_.x = -1
 	self.isMoved_ = true
 end
@@ -125,10 +133,10 @@ end
 function HeroPlane:onRight(x)
 	if self.isMoved_ then return end
 	if self.dir_.x == 1 then return end
-	self:moveTo({ x = display.cx + x, time = MOVE_TIME })
+	self:moveTo({ x = display.cx + x, time = self.moveTime_ })
 	__G__actDelay(self, function (  )
 		self.isMoved_ = false
-	end, MOVE_TIME)
+	end, self.moveTime_)
 	self.dir_.x = 1
 	self.isMoved_ = true
 end
