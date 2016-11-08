@@ -14,6 +14,7 @@ function PlaneFactory:createPlane( id_ )
 	elseif id_ == 2 then
 		plane = ArmyPlane.new("#GreyPlane.png")
 	end
+	plane:setId(id_)
 	plane:setScore( 2 )
 	return plane
 end

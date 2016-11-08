@@ -11,7 +11,8 @@ local bulletSet = {}
 local ARMY_TIME = 0.6 --敌人生成时间
 local tempTime = 0
 
-local hitSameArmyNum = 0
+local hitSameArmyNum = 0 --打击到相同敌人的数目
+local lastHitArmyId = 1 --上次子弹打到的敌人的id
 local commboTimes = 0
 
 function GameScene:onCreate()
@@ -115,13 +116,28 @@ function GameScene:step( dt )
 		end
 	end
 
+	--ui可以被动更新
 	self:updateScore()
 	self:updateRank()
 end
 
 --子弹击中敌人的回调，这里可以处理连击
 function GameScene:onBulletHitArmy( bullet_, army_ )
-	
+	local id = army_:getId()
+	--如果是和之前打到的是相同的id就增加
+	if id == lastHitArmyId then 
+		hitSameArmyNum = hitSameArmyNum + 1
+	else
+		commboTimes = 0
+		hitSameArmyNum = 0
+		lastHitArmyId = id 
+	end
+
+	--一般保持在三个连击
+	if hitSameArmyNum >= 3 then 
+		commboTimes = commboTimes + 1
+		hitSameArmyNum = 0
+	end
 end
 
 function GameScene:getArmyTime()
@@ -167,9 +183,17 @@ function GameScene:onContinue()
 end
 
 --敌人死亡的回调函数
+--只有敌人死亡时候才更新分数和排名
 function GameScene:onArmyDead( target)
 	__G__ExplosionSound()
-	GameData:getInstance():addScore( target:getScore() ) 
+	local scoreFactor = self:getScoreAddFactor()
+	local score = target:getScore() * scoreFactor
+	GameData:getInstance():addScore( score ) 
+end
+
+function GameScene:getScoreAddFactor()
+	local factor = math.pow(2, commboTimes)
+	return factor
 end
 
 function GameScene:initUI( ui_ )
@@ -192,7 +216,8 @@ function GameScene:initUI( ui_ )
 end
 
 function GameScene:updateScore(  )
-	self.scoreLb_:setString(string.format("%04d", GameData:getInstance():getScore()))
+	local score = GameData:getInstance():getScore()
+	self.scoreLb_:setString(string.format("%04d", score))
 end
 
 function GameScene:updateRank()
