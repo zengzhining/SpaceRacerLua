@@ -8,13 +8,24 @@ function PlaneFactory:ctor(  )
 end
 
 function PlaneFactory:createPlane( id_ )
-	if id_ == 1 then 	
-		return HeroPlane.new("png/RolePlane.png")
+	local plane = nil
+	if id_ == 1 then 
+		plane = ArmyPlane.new("#GreyPlane.png")	
 	elseif id_ == 2 then
-		local plane = ArmyPlane.new("png/GreenPlane.png")
-		plane:setScore( 2 )
-		return plane
+		plane = ArmyPlane.new("#GreyPlane.png")
 	end
+	plane:setScore( 2 )
+	return plane
+end
+
+function PlaneFactory:createRole( id_ )
+	local plane = nil
+	if id_ == 1 then 
+		plane = HeroPlane.new("#FriendPlane01.png")
+	elseif id_ == 2 then 
+		plane = HeroPlane.new("#GreenPlane.png")
+	end
+	return plane
 end
 
 function PlaneFactory:createBullet( id_ )

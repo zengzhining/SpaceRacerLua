@@ -4,6 +4,7 @@ local MAX_RANK = 100
 local BG_SPEED = 10
 local DEFAULT_BULLET_NUM = 1
 
+local DEFAULT_ROLE = 2
 function GameData:ctor()
 	self:initData()
 end
@@ -18,6 +19,8 @@ function GameData:initData()
 
 	--游戏速度
 	self.gameSpeed_ = 1.0
+	--角色id
+	self.roleId_ = DEFAULT_ROLE
 end
 --读取和存储游戏数据
 function GameData:load()
@@ -30,6 +33,14 @@ end
 
 function GameData:reset()
 	self:initData()
+end
+
+function GameData:setRoleId( id_ )
+	self.roleId_ = id_
+end
+
+function GameData:getRoleId()
+	return self.roleId_
 end
 
 function GameData:getBulletFireNum()

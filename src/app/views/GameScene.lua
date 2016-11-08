@@ -14,7 +14,6 @@ local tempTime = 0
 function GameScene:onCreate()
 	self:initData()
 	--addSpriteFrames
-	display.loadSpriteFrames("Plane.plist", "Plane.png")
 	-- body
 	local fileName = "Layer/GameCut.csb"
 	local uiLayer = display.newCSNode(fileName)	
@@ -183,7 +182,8 @@ function GameScene:initObj()
 	local gameLayer = display.newLayer()
 	self:addChild(gameLayer, 1, TAG_GAME_LAYER)
 	self.gameLayer_ = gameLayer
-	local plane = PlaneFactory:getInstance():createPlane(1)
+	local id = GameData:getInstance():getRoleId()
+	local plane = PlaneFactory:getInstance():createRole(id)
 	local width = plane:getViewRect().width
 	plane:pos(display.cx - width * 0.6, display.height /4 )
 	gameLayer:addChild(plane)

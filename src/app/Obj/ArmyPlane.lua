@@ -1,10 +1,15 @@
 local BasePlane = require "app/Obj/BasePlane"
 local ArmyPlane = class("ArmyPlane", BasePlane)
 
+--角色id
+local GREY_PLANE = 1
+local RED_PLABNE = 2
+
 function ArmyPlane:ctor(  )
 	self.super.ctor(self)
 	self:flipY(true)
 
+	self.id_ = GREY_PLANE -- id默认1
 	self.isHurtRole_ = false
 
 	--是否被超越
