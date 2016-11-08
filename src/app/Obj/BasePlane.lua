@@ -1,27 +1,8 @@
-local BasePlane = class("BasePlane", function ( fileName )
-	local node = display.newSprite( fileName )
-	node:enableNodeEvents()
-	return node 
-end)
+local MovedObject = require("app/Obj/MovedObject")
+local BasePlane = class("BasePlane", MovedObject)
 
-function BasePlane:ctor(  )
-	self:initData()
-	if CC_DEBUG_RECT then 
-		local draw = display.newDrawNode()
-		self:addChild(draw, 999)
-		--draw a rectangle
-		local rect = self:getCollisionRect()
-		local viewRect = self:getViewRect()
-        draw:drawRect(cc.p( (viewRect.width - rect.width) * 0.5 , (viewRect.height - rect.height) * 0.5 ), cc.p(rect.width + (viewRect.width - rect.width) * 0.5,rect.height +  (viewRect.width - rect.width) * 0.5), cc.c4f(1,1,0,1))
-	end
-end
-
-function BasePlane:onEnter()
-	self:onUpdate(handler(self, self.step))
-end
-
-function BasePlane:onExit()
-	self:unUpdate()
+function BasePlane:ctor()
+	BasePlane.super.ctor(self)
 end
 
 function BasePlane:initData()
@@ -66,11 +47,6 @@ function BasePlane:getBulletCalmTime()
 	return self.bulletCalmTime_
 end
 
-function BasePlane:setSpeed(speed)
-	-- body
-	self.speed_ = speed
-end
-
 --发射子弹的冷却时间
 function BasePlane:isCanFireBullet()
 	local flag = false
@@ -94,11 +70,6 @@ function BasePlane:fireBullet()
 
 end
 
-function BasePlane:step( dt )
-	local gameSpeed = GameData:getInstance():getGameSpeed()
-	self:posBy(self.speed_.x , self.speed_.y * gameSpeed )
-end
-
 --碰撞检测所用矩形
 function BasePlane:getCollisionRect(  )
 	local rect = self:getBoundingBox()
@@ -106,15 +77,6 @@ function BasePlane:getCollisionRect(  )
 	local finalHeight = rect.height * 0.5 
 	local newRect = cc.rect( rect.x, rect.y, finalWidth, finalHeight )
 	return newRect
-end
-
-function BasePlane:getViewRect(  )
-	return self:getBoundingBox()
-end
-
---碰撞检测回调
-function BasePlane:onCollision( other )
-	self:hide()
 end
 
 function BasePlane:onCollisionBullet(other)

@@ -24,7 +24,7 @@ function MovedObject:debugDraw()
 end
 
 function MovedObject:initData()
-	self.speed_= 5
+	self.speed_= cc.p( 0, 5 )
 	self.aniFormat_ = nil
 end
 
@@ -34,7 +34,8 @@ end
 
 function MovedObject:step(dt)
 	local gameSpeed = GameData:getInstance():getGameSpeed()
-	self:posByY(self.speed_ * gameSpeed)
+	self:posByY(self.speed_.y * gameSpeed)
+	self:posByX(self.speed_.x * gameSpeed)
 end
 
 --碰撞检测所用矩形

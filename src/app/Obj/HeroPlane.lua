@@ -10,7 +10,7 @@ local UP_ACC = -0.4
 local DOWN_ACC = -0.8
 
 function HeroPlane:ctor(  )
-	self.super.ctor(self)
+	HeroPlane.super.ctor(self)
 
 	--是否在左右移动过程中
 	self.isMoved_ = false

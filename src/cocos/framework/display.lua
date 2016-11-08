@@ -379,6 +379,12 @@ function display.newSprite(source, x, y, params)
                 break
             end
 
+            --如果帧缓存里面
+            local frame = spriteFrameCache:getSpriteFrame(source)
+            if frame then 
+                sprite = spriteClass:createWithSpriteFrameName(source)
+            end
+
             -- create sprite from image file
             if display.TEXTURES_PIXEL_FORMAT[source] then
                 cc.Texture2D:setDefaultAlphaPixelFormat(display.TEXTURES_PIXEL_FORMAT[source])
