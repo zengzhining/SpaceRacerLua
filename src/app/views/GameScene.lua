@@ -224,6 +224,10 @@ end
 
 function GameScene:getScoreAddFactor()
 	local factor = math.pow(2, commboTimes)
+	--限制最高为32
+	if factor >= 32 then 
+		factor = 32
+	end
 	return factor
 end
 
@@ -307,12 +311,18 @@ end
 
 function GameScene:onCreateArmy(  )
 	math.randomseed(os.time())
-	local dir = math.random(1,2)
-	if dir == 2 then
+	local dir = math.random(1,20) % 2
+	if dir == 0 then
 		dir = -1
 	end
 
-	local army = PlaneFactory:getInstance():createPlane(2)
+
+	local id = (math.random(1,200) % 2)
+	if id == 0 then 
+		id = 2
+	end
+
+	local army = PlaneFactory:getInstance():createPlane(id)
 	local armySpeed = self:getArmySpeed()
 	army:setSpeed(cc.p(0, armySpeed))
 	local lastArmy = armySet[#armySet] 
