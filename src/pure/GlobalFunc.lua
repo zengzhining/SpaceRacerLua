@@ -210,5 +210,11 @@ end
 __G__MainMusic = function( id )
 	if not id then id = 1 end
 	audio.stopMusic()
-	audio.playMusic("sfx/mainMenu.mp3")
+	local fileName = "sfx/mainMenu.mp3"
+	if id == 2 then
+		fileName = "sfx/main.mp3"
+	elseif id == 3 then
+		fileName = "sfx/result.mp3"
+	end
+	audio.playMusic(fileName)
 end

@@ -66,7 +66,7 @@ function ResultScene:onGameExit()
 end
 
 function ResultScene:onEnter()
-	__G__MainMusic()		
+	__G__MainMusic(3)		
 end
 
 function ResultScene:onExit()

@@ -27,6 +27,7 @@ function MainMenu:onCreate()
 end
 
 function MainMenu:onEnter()
+	math.randomseed(os.time())
 	local root = self:getResourceNode()
 
 	local hint = root:getChildByName("Hint")
@@ -34,7 +35,7 @@ function MainMenu:onEnter()
 
 	hint:runAction(act)
 	
-	__G__MainMusic()
+	__G__MainMusic(math.random(1,2))
 end
 
 function MainMenu:onExit(  )

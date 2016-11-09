@@ -4,6 +4,22 @@ LoadingScene.RESOURCE_FILENAME = "Layer/Loading.csb"
 
 local LOADING_DT = 1
 
+local musicTbl = { 
+	"sfx/main.mp3",
+	"sfx/mainMenu.mp3",
+	"sfx/result.mp3",
+ }
+
+local fxTbl = {
+	"sfx/sound/cancel.wav",
+	"sfx/sound/click.wav",
+	"sfx/sound/explosion.wav",
+	"sfx/sound/fire.wav",
+}
+
+local index = 1
+local flag = 1
+
 function LoadingScene:onCreate(  )
 	local root = self:getResourceNode()
 	self.title_ = root:getChildByName("Loading") 
@@ -56,6 +72,29 @@ function LoadingScene:update(dt)
 		display.loadSpriteFrames("Plane.plist", "Plane.png")
 	elseif self.time_ >= LOADING_DT then
 		self.title_:setString("Loading.")
+
+		if flag == 1 then
+			if index <= #musicTbl then 
+				local music = musicTbl[index]
+				audio.preloadMusic(music)
+				index = index + 1
+			else
+				index = 1
+				flag = 2
+			end
+		end
+
+		if flag == 2 then 
+			if index <= #fxTbl then 
+				local sound = fxTbl[index]
+				audio.preloadSound(sound)
+				index = index + 1
+			else
+				index = 1
+				flag = 2
+			end
+		end
+
 	end
 end
 
