@@ -75,9 +75,6 @@ function HeroPlane:accelerateEvent( x,y,z,timeStap )
 	if x > RIGHT_ACC then
 		self:onRight( self:getViewRect().width * 0.6 )
 	end
-
-	local speed = 2.0 - y
-	GameData:getInstance():setGameSpeed(speed)
 end
 
 function HeroPlane:onKeyPad( event )

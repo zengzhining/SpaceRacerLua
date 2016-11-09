@@ -206,6 +206,7 @@ function GameScene:onArmyDead( target)
 	GameData:getInstance():addScore( score ) 
 	--分数改变时候更新分数
 	self:updateScore()
+	self:updateSpeed()
 	--排名改变时候更新排名
 	--如果两次的排行榜数据不同就更新显示
 	local score = GameData:getInstance():getScore()
@@ -215,6 +216,9 @@ function GameScene:onArmyDead( target)
 		GameData:getInstance():setRank(rank) 
 		self:updateRank()
 	end
+end
+
+function GameScene:updateSpeed()
 
 end
 
@@ -335,7 +339,8 @@ end
 
 function GameScene:getBgSpeed()
 	local rank = GameData:getInstance():getRank()
-	local speed = (100-rank) * 0.2 + 2
+	local speed = (100-rank) * 0.08 + 2
+	--最快到8
 	return (0-speed)
 end
 
@@ -346,7 +351,6 @@ function GameScene:getArmySpeed()
 	--最大到三十
 	return (0-speed)
 end
-
 
 function GameScene:onCut(  )
 	if not self:getChildByTag(TAG_CUT) then 
