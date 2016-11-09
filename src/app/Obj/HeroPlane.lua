@@ -76,7 +76,7 @@ function HeroPlane:accelerateEvent( x,y,z,timeStap )
 		self:onRight( self:getViewRect().width * 0.6 )
 	end
 
-	local speed = 2.0 - y
+	local speed = 1.2 + y
 	GameData:getInstance():setGameSpeed(speed)
 end
 

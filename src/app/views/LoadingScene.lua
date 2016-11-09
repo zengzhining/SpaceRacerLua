@@ -91,7 +91,7 @@ function LoadingScene:update(dt)
 				index = index + 1
 			else
 				index = 1
-				flag = 2
+				flag = 3
 			end
 		end
 
