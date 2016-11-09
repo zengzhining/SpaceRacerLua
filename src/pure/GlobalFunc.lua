@@ -115,6 +115,7 @@ __G__createContinueLayer = function ( fileName )
 	local Sure = node:getChildByName("Sure")
 	Sure:onTouch(function ( event )
 		if event.name == "ended" then
+			__G__MenuCancelSound()
 			local scene = layer:getParent()
 			if scene and scene.onContinue then 
 				scene:onContinue()
@@ -126,6 +127,7 @@ __G__createContinueLayer = function ( fileName )
 	local Cancel = node:getChildByName("Cancel")
 	Cancel:onTouch(function ( event )
 		if event.name == "ended" then
+			__G__MenuCancelSound()
 			local scene = layer:getParent()
 			if scene and scene.onContinueCancel then 
 				scene:onContinueCancel()
@@ -197,6 +199,11 @@ end
 --爆炸音效
 __G__ExplosionSound = function (  )
 	audio.playSound("sfx/sound/explosion.wav", false)
+end
+
+--发射子弹音效
+__G__FireBullet = function(  )
+	audio.playSound("sfx/sound/fire.wav", false)
 end
 
 --背景音乐播放，1为菜单，2为游戏场景，3为结算场景

@@ -8,6 +8,8 @@ end
 --发射时候的回调函数
 function Bullet:onFire()
 	if self.aniFormat_ then
+		--发射子弹时候播放音效
+		__G__FireBullet()
 		self:playAnimation(self.aniFormat_)
 	end
 end

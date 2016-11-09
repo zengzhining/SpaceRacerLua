@@ -9,7 +9,8 @@ function ResultScene:onCreate(  )
 	local root = self:getResourceNode()
 	local Retry = root:getChildByName("Retry")
 	Retry:onTouch(function ( event )
-		if event.name == "began" then
+		if event.name == "ended" then
+			__G__MenuCancelSound()
 			local scene = root:getParent()
 			if scene and scene.onRetry then 
 				scene:onRetry()
@@ -19,7 +20,8 @@ function ResultScene:onCreate(  )
 
 	local exit = root:getChildByName("Exit")
 	exit:onTouch(function ( event )
-		if event.name == "began" then
+		if event.name == "ended" then
+			__G__MenuCancelSound()
 			local scene = root:getParent()
 			if scene and scene.onGameExit then 
 				scene:onGameExit()
