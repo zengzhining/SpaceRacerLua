@@ -76,12 +76,12 @@ function ArmyPlane:onRight(x)
 end
 
 function ArmyPlane:leftRightForever()
-	local DELAY_TIME = 5
+	local DELAY_TIME = math.random(1,3)
 	local act = cc.RepeatForever:create(cc.Sequence:create( cc.DelayTime:create(DELAY_TIME), cc.CallFunc:create( function ( target )
 		target:onLeft(self:getViewRect().width * 0.6)
 	end ),
 	cc.DelayTime:create(DELAY_TIME), cc.CallFunc:create( function ( target )
-		target:onLeft(self:getViewRect().width * 0.6)
+		target:onRight(self:getViewRect().width * 0.6)
 	end )
 	 ))
 	self:runAction(act)
