@@ -5,12 +5,16 @@ local ArmyPlane = class("ArmyPlane", BasePlane)
 local GREY_PLANE = 1
 local RED_PLABNE = 2
 
+local MOVE_TIME = 0.2
+
 function ArmyPlane:ctor(  )
 	self.super.ctor(self)
 	self:flipY(true)
 
 	self.id_ = GREY_PLANE -- id默认1
 	self.isHurtRole_ = false
+
+	self.moveTime_ = MOVE_TIME
 
 	--是否被超越
 	self.hasBeyound_ = false
@@ -43,6 +47,43 @@ function ArmyPlane:playDeadAnimation(fileFormat_)
 	end ),cc.Animate:create( ani ), cc.CallFunc:create( function ( target )
 		audio.setSoundsVolume(originVol)
 	end ), cc.RemoveSelf:create(true))
+	self:runAction(act)
+end
+
+function ArmyPlane:setGameAi( typeId_ )
+	if not typeId_ then typeId = 1 end
+	if typeId_ ==  1 then 
+		self:leftRightForever()
+	end
+end
+
+function ArmyPlane:onLeft(x)
+	if self.dir_.x == -1 then return end
+	__G__actDelay(self, function (  )
+		self.isMoved_ = false
+	end, self.moveTime_)
+	self:moveTo({ x = display.cx - x, time = self.moveTime_ })
+	self.dir_.x = -1
+end
+
+function ArmyPlane:onRight(x)
+	if self.dir_.x == 1 then return end
+	self:moveTo({ x = display.cx + x, time = self.moveTime_ })
+	__G__actDelay(self, function (  )
+		self.isMoved_ = false
+	end, self.moveTime_)
+	self.dir_.x = 1
+end
+
+function ArmyPlane:leftRightForever()
+	local DELAY_TIME = 5
+	local act = cc.RepeatForever:create(cc.Sequence:create( cc.DelayTime:create(DELAY_TIME), cc.CallFunc:create( function ( target )
+		target:onLeft(self:getViewRect().width * 0.6)
+	end ),
+	cc.DelayTime:create(DELAY_TIME), cc.CallFunc:create( function ( target )
+		target:onLeft(self:getViewRect().width * 0.6)
+	end )
+	 ))
 	self:runAction(act)
 end
 

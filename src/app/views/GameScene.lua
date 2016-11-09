@@ -335,6 +335,7 @@ function GameScene:onCreateArmy(  )
 		width = lastArmy:getViewRect().width
 		posy =  lastArmy:getPositionY()
 	end
+	army:setDirX(dir)
 	army:pos(display.cx + width * 0.6 * dir, posy + height * 3 )
 	self.gameLayer_ :addChild(army)
 	table.insert(armySet, army)

@@ -29,6 +29,11 @@ function BasePlane:getId()
 	return self.id_
 end
 
+--设置角色方向
+function BasePlane:setDirX( dir_ )
+	self.dir_.x = dir_
+end
+
 --角色可以发射的子弹个数，暂时放在基础类以便日后其他飞机也能发射子弹
 function BasePlane:setBulletFireNum( num )
 	self.bulletFireNum_ = num
