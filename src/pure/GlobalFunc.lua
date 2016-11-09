@@ -38,6 +38,7 @@ __G__createCutLayer = function ( fileName )
 	end,  false, true)
 
 
+
 	return layer
 end
 
@@ -100,6 +101,61 @@ __G__createBg = function (fileName)
 			bg:posByY(self.speed_ * gameSpeed)
 		end
 	end
+
+	return layer
+end
+
+--死亡之后弹窗是否继续
+__G__createContinueLayer = function ( fileName )
+	local layer = display.newLayer(cc.c4b(255, 255, 255, 150))
+	local node = display.newCSNode(fileName)
+	node:pos(0, display.cy * 0.5)
+	layer:addChild(node)
+
+	local Sure = node:getChildByName("Sure")
+	Sure:onTouch(function ( event )
+		if event.name == "ended" then
+			local scene = layer:getParent()
+			if scene and scene.onContinue then 
+				scene:onContinue()
+			end
+			layer:removeSelf()		
+		end
+	end, false, true)
+
+	local Cancel = node:getChildByName("Cancel")
+	Cancel:onTouch(function ( event )
+		if event.name == "ended" then
+			local scene = layer:getParent()
+			if scene and scene.onContinueCancel then 
+				scene:onContinueCancel()
+			end	
+			layer:removeSelf()	
+		end
+	end,  false, true)
+
+	local Time = node:getChildByName("Time")
+	local time = 15
+	local allTime = 0
+	layer:onUpdate(function ( dt )
+		allTime = allTime + dt
+
+		if allTime >= 1 then
+			allTime = 0
+			time = time - 1
+		end
+
+		Time:setString(time)
+
+		if time <= -0.5 then 
+			layer:unUpdate()
+			local scene = layer:getParent()
+			if scene and scene.onContinueCancel then 
+				scene:onContinueCancel()
+			end	
+		end
+	end)
+
 
 	return layer
 end

@@ -4,6 +4,7 @@ local TAG_UI = 101
 local TAG_CUT = 100
 local TAG_GAME_LAYER = 102
 local TAG_BG = 103
+local TAG_CONTINUE_LAYER = 104
 
 local armySet = {}
 local bulletSet = {}
@@ -162,20 +163,29 @@ function GameScene:onPlayerDead( target )
 	self:unUpdate()
 	__G__MusicFadeOut(self, 1)
 	__G__actDelay( self, function (  )
-		-- self:getApp():enterScene("ResultScene")
-		self:onContinue()
-		self.gameLayer_:resumeAllInput()
-	end, 3.0 )
+	if not self:getChildByTag(TAG_CONTINUE_LAYER) then
+			local layer = __G__createContinueLayer("Layer/ContinueLayer.csb")
+			self:addChild(layer, 100, TAG_CONTINUE_LAYER)
+		end
+	end, 1.5 )
 	device.vibrate( 0.2 )
 end
 
 --玩家复活继续游戏
 function GameScene:onContinue()
+	self.gameLayer_:resumeAllInput()	
 	if self.role_ then 
 		self.role_:setVisible(true)
 		self.role_:relive()
 		self:onUpdate(handler(self, self.step))
 	end
+end
+
+--玩家不复活继续游戏
+function GameScene:onContinueCancel()
+	__G__actDelay(self,function (  )
+		self:getApp():enterScene("ResultScene")
+	end, 1.0)
 end
 
 --敌人死亡的回调函数
@@ -229,7 +239,6 @@ function GameScene:updateScore(  )
 end
 
 function GameScene:updateRank()
-	
 	self.rankLb_:setString( GameData:getInstance():getRank() )
 end
 
