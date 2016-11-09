@@ -16,6 +16,8 @@ local hitSameArmyNum = 0 --打击到相同敌人的数目
 local lastHitArmyId = 1 --上次子弹打到的敌人的id
 local commboTimes = 0
 
+local ContinueTimes = 2  -- 只能有两次继续游戏机会
+
 function GameScene:onCreate()
 	self:initData()
 	--addSpriteFrames
@@ -39,6 +41,7 @@ function GameScene:initData()
 
 	hitSameArmyNum = 0
 	commboTimes = 0
+	ContinueTimes = 2
 end
 
 function GameScene:step( dt )
@@ -164,8 +167,13 @@ function GameScene:onPlayerDead( target )
 	__G__MusicFadeOut(self, 1)
 	__G__actDelay( self, function (  )
 	if not self:getChildByTag(TAG_CONTINUE_LAYER) then
-			local layer = __G__createContinueLayer("Layer/ContinueLayer.csb")
-			self:addChild(layer, 100, TAG_CONTINUE_LAYER)
+			if ContinueTimes > 0 then 
+				local layer = __G__createContinueLayer("Layer/ContinueLayer.csb")
+				self:addChild(layer, 100, TAG_CONTINUE_LAYER)
+			else
+				--直接进入结算关卡,相当于按下取消
+				self:onContinueCancel()
+			end
 		end
 	end, 1.5 )
 	device.vibrate( 0.2 )
@@ -179,6 +187,7 @@ function GameScene:onContinue()
 		self.role_:relive()
 		self:onUpdate(handler(self, self.step))
 	end
+	ContinueTimes = ContinueTimes - 1
 end
 
 --玩家不复活继续游戏
