@@ -263,6 +263,10 @@ function GameScene:initUI( ui_ )
 	self.scoreLb_ = scoreLb
 	local rankLb = ui_:getChildByName("Rank")
 	self.rankLb_ = rankLb
+
+	local commboLb = ui_:getChildByName("commboNum")
+	local commboTitle = ui_:getChildByName("comboTitle")
+	local plusTitle = ui_:getChildByName("plusScore")
 	self:updateScore()
 end
 
