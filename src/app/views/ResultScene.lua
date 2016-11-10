@@ -53,7 +53,7 @@ function ResultScene:onRetry(  )
 	--判断能否播放广告，可以就播放
 	if SDKManager:getInstance():isCanPlayVedio() then
 		SDKManager:getInstance():showVideo( callback )
-	elseif SDKManager:getInstance():isFULLADAvailable() then
+	elseif (SDKManager:getInstance():isFULLADAvailable() and SDKManager:getInstance():isInFullTime()) then
 		SDKManager:getInstance():showFULLAD()
 		SDKManager:getInstance():setFULLADCallback(callback)
 	else
