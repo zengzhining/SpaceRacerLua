@@ -116,6 +116,7 @@ __G__createContinueLayer = function ( fileName )
 	Sure:onTouch(function ( event )
 		if event.name == "ended" then
 			__G__MenuCancelSound()
+
 			local scene = layer:getParent()
 			if scene and scene.onContinue then 
 				scene:onContinue()

@@ -181,13 +181,27 @@ end
 
 --玩家复活继续游戏
 function GameScene:onContinue()
-	self.gameLayer_:resumeAllInput()	
-	if self.role_ then 
-		self.role_:setVisible(true)
-		self.role_:relive()
-		self:onUpdate(handler(self, self.step))
+	local callback = function ()
+		__G__actDelay(self, function()
+			self.gameLayer_:resumeAllInput()	
+			if self.role_ then 
+				self.role_:setVisible(true)
+				self.role_:relive()
+				self:onUpdate(handler(self, self.step))
+			end
+			ContinueTimes = ContinueTimes - 1
+		end, 0.2)
 	end
-	ContinueTimes = ContinueTimes - 1
+
+	--判断能否播放广告，可以就播放
+	if SDKManager:getInstance():isCanPlayVedio() then
+		SDKManager:getInstance():showVideo( callback )
+	elseif SDKManager:getInstance():isFULLADAvailable() then
+		SDKManager:getInstance():showFULLAD()
+		SDKManager:getInstance():setFULLADCallback(callback)
+	else
+		callback()
+	end	
 end
 
 --玩家不复活继续游戏
