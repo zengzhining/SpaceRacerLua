@@ -7,6 +7,8 @@ local RED_PLABNE = 2
 
 local MOVE_TIME = 0.2
 
+local AI_HEIGHT = display.height * 2 /3
+
 function ArmyPlane:ctor(  )
 	self.super.ctor(self)
 	self:flipY(true)
@@ -18,6 +20,12 @@ function ArmyPlane:ctor(  )
 
 	--是否被超越
 	self.hasBeyound_ = false
+
+	--是否到达屏幕一半以下
+	self.hasUnderHalfDisplayHeight_ = false
+
+	--设置游戏AI,--默认0不作为
+	self.gameAiId_ = 0
 end
 
 function ArmyPlane:onCollision( other )
@@ -51,10 +59,7 @@ function ArmyPlane:playDeadAnimation(fileFormat_)
 end
 
 function ArmyPlane:setGameAi( typeId_ )
-	if not typeId_ then typeId = 1 end
-	if typeId_ ==  1 then 
-		self:leftRightForever()
-	end
+	self.gameAiId_ = typeId_
 end
 
 function ArmyPlane:onLeft(x)
@@ -75,16 +80,31 @@ function ArmyPlane:onRight(x)
 	self.dir_.x = 1
 end
 
-function ArmyPlane:leftRightForever()
-	local DELAY_TIME = math.random(1,3)
-	local act = cc.RepeatForever:create(cc.Sequence:create( cc.DelayTime:create(DELAY_TIME), cc.CallFunc:create( function ( target )
-		target:onLeft(self:getViewRect().width * 0.6)
-	end ),
-	cc.DelayTime:create(DELAY_TIME), cc.CallFunc:create( function ( target )
-		target:onRight(self:getViewRect().width * 0.6)
-	end )
-	 ))
-	self:runAction(act)
+function ArmyPlane:onHalfDisplayHeight()
+
+end
+
+function ArmyPlane:aiMove( aiId )
+	if aiId == 1 then
+		if self:getPositionY() <= AI_HEIGHT and (self.hasUnderHalfDisplayHeight_ == false) then 
+			if self.dir_.x == 1 then 
+				self:onLeft(self:getViewRect().width * 0.6)
+			elseif self.dir_.x == -1 then 
+				self:onRight(self:getViewRect().width * 0.6)
+			end
+		end
+
+		if self:getPositionY() <= AI_HEIGHT then 
+			self.hasUnderHalfDisplayHeight_ = true
+		end
+	end
+end
+
+function ArmyPlane:step(dt)
+	ArmyPlane.super.step(self,dt)
+
+	self:aiMove(self.gameAiId_)
+	
 end
 
 return ArmyPlane
