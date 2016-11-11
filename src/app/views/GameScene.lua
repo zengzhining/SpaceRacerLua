@@ -217,9 +217,10 @@ function GameScene:onArmyDead( target)
 	__G__ExplosionSound()
 	local scoreFactor = self:getScoreAddFactor()
 	local score = target:getScore() * scoreFactor
+
 	GameData:getInstance():addScore( score ) 
 	--分数改变时候更新分数
-	self:updateScore()
+	self:updateScore( score )
 	--排名改变时候更新排名
 	--如果两次的排行榜数据不同就更新显示
 	local score = GameData:getInstance():getScore()
@@ -269,15 +270,32 @@ function GameScene:initUI( ui_ )
 	local commboTitle = ui_:getChildByName("comboTitle")
 	self.commboTitle_ = commboTitle
 	local plusTitle = ui_:getChildByName("plusScore")
+	plusTitle:hide()
+	local x,y = plusTitle:getPosition()
+	plusTitle.originPos_ = cc.p(x,y)
 	self.plusTitle_ = plusTitle
 
 	self:updateScore()
 end
 
 --更新commbo,更新数字
-function GameScene:updateScore(  )
-	local score = GameData:getInstance():getScore()
-	self.scoreLb_:setString(string.format("%04d", score))
+function GameScene:updateScore( changeScore )
+	__G__actDelay(self, function (  )
+		local score = GameData:getInstance():getScore()
+		self.scoreLb_:setString(string.format("%04d", score))
+	end, 0.4)
+
+	if changeScore then 
+		local str = string.format("+%d", changeScore)
+		self.plusTitle_:setString(str)
+		local act = cc.Sequence:create( cc.Show:create(), cc.FadeIn:create(0.1), cc.Spawn:create( cc.ScaleTo:create(0.5, 1.2), cc.MoveBy:create(0.5, cc.p(0, 10)),cc.FadeOut:create(0.5) ),cc.Hide:create() )
+		self.plusTitle_:setScale(1)
+		if self.plusTitle_.originPos_ then 
+			local pos = self.plusTitle_.originPos_
+			self.plusTitle_:setPosition(pos)
+		end
+		self.plusTitle_:runAction(act)
+	end
 end
 
 function GameScene:updateCommbo()
