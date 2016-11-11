@@ -279,14 +279,20 @@ function GameScene:initUI( ui_ )
 	plusTitle.originPos_ = cc.p(x,y)
 	self.plusTitle_ = plusTitle
 
-	self:updateScore()
+	--直接更新
+	self:flashScore()
+	
+end
+
+function GameScene:flashScore()
+	local score = GameData:getInstance():getScore()
+	self.scoreLb_:setString(string.format("%04d", score))
 end
 
 --更新commbo,更新数字
 function GameScene:updateScore( changeScore )
 	__G__actDelay(self, function (  )
-		local score = GameData:getInstance():getScore()
-		self.scoreLb_:setString(string.format("%04d", score))
+		self:flashScore()
 	end, 0.4)
 
 	if changeScore then 
