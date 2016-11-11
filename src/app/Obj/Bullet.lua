@@ -23,9 +23,8 @@ function Bullet:getCollisionRect()
 end
 
 function Bullet:onCollision(army)
-	__G__actDelay(self,function()
-		self:removeSelf()
-	end, 0.1)
+	local act = cc.Sequence:create( cc.FadeOut:create(0.1), cc.RemoveSelf:create(true) )
+	self:runAction(act)
 end
 
 
