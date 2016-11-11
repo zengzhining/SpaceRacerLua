@@ -216,6 +216,12 @@ end
 
 --玩家不复活继续游戏
 function GameScene:onContinueCancel()
+	--这里保存数据
+	local rank = GameData:getInstance():getRank()
+	local score = GameData:getInstance():getScore()
+	GameData:getInstance():insertRank( rank, score )
+	GameData:getInstance():save()
+
 	__G__actDelay(self,function (  )
 		self:getApp():enterScene("ResultScene")
 	end, 1.0)

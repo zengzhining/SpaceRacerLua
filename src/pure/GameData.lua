@@ -28,13 +28,25 @@ end
 --读取和存储游戏数据
 function GameData:load()
     local fileUtils = cc.FileUtils:getInstance()
-	local data = fileUtils:getValueVectorFromFile("score.plist")
+	local writePath = fileUtils:getWritablePath()
+	local path = writePath.."score.plist"
+    local data = nil
+    if io.exists(path) then 
+    	data = fileUtils:getValueVectorFromFile(path)
+    else
+		data = fileUtils:getValueVectorFromFile("score.plist")
+	end
 	self.rankInfo_ = data
 end
 
 --插入分数
 function GameData:insertRank( pos,score )
-
+	if pos > 1 and pos < 100 then 
+		for i = 100,pos,-1 do
+			self.rankInfo_[i] = self.rankInfo_[i-1]
+		end
+		self.rankInfo_[pos] = score
+	end
 end
 
 --从排行榜中取得分数
@@ -42,14 +54,16 @@ function GameData:getRankFromScore( score )
 	for i = 100 , 1 ,-1 do
 		local hScore = self.rankInfo_[i]
 		if score <= hScore then 
-			return i
+			return (i+1) 
 		end
 	end
 	return 1
 end
 
 function GameData:save()
-
+	local fileUtils = cc.FileUtils:getInstance()
+	local writePath = fileUtils:getWritablePath()
+	fileUtils:writeValueVectorToFile( self.rankInfo_, writePath.."score.plist")
 end
 
 function GameData:reset()
