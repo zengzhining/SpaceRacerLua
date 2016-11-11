@@ -74,8 +74,6 @@ function SDKManager:addEvent()
 
     --vedio event
     sdkbox.PluginAdColony:setListener(function(args)
-    	print("PluginAdColony~~~~~~~~~~~")
-        dump(args)
 
         if "onAdColonyChange" == args.name then
         local info = args.info  -- sdkbox::AdColonyAdInfo
@@ -102,7 +100,6 @@ function SDKManager:addEvent()
     end)
 
 	sdkbox.PluginVungle:setListener(function(name, args)
-		print("PluginVungle~~~~~~~~~~~", name, args)
 	    if "onVungleCacheAvailable" == name then
 	        print("onVungleCacheAvailable")
 	    elseif "onVungleStarted" ==  name then
@@ -282,10 +279,8 @@ end
 function SDKManager:showVideo( callback )
 	if not CC_NEED_SDK then return end
 	local status = sdkbox.PluginAdColony:getStatus(SDK_VEDIO_NAME)
-	print("sdkbox.PluginAdColony:getStatus~~~~~", sdkbox.PluginAdColony:getStatus(SDK_VEDIO_NAME))
 	--没有就播放全屏
 	if status == 2 then
-		print("sdkbox.PluginVungle:isCacheAvailable()~~~~", sdkbox.PluginVungle:isCacheAvailable())
 		if sdkbox.PluginVungle:isCacheAvailable() then
 			self:setVedioCallback( callback )
 			sdkbox.PluginVungle:show("video")

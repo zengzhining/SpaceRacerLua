@@ -265,14 +265,23 @@ function GameScene:initUI( ui_ )
 	self.rankLb_ = rankLb
 
 	local commboLb = ui_:getChildByName("commboNum")
+	self.commboLb_ = commboLb
 	local commboTitle = ui_:getChildByName("comboTitle")
+	self.commboTitle_ = commboTitle
 	local plusTitle = ui_:getChildByName("plusScore")
+	self.plusTitle_ = plusTitle
+
 	self:updateScore()
 end
 
+--更新commbo,更新数字
 function GameScene:updateScore(  )
 	local score = GameData:getInstance():getScore()
 	self.scoreLb_:setString(string.format("%04d", score))
+end
+
+function GameScene:updateCommbo()
+	-- commboTimes
 end
 
 function GameScene:updateRank()
