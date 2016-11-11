@@ -167,6 +167,14 @@ function GameScene:onPlayerDead( target )
 	self.gameLayer_:pauseAllInput()
 	self:unUpdate()
 	__G__MusicFadeOut(self, 1)
+	--根据排名来确定是否有续命选项
+	local rank = GameData:getInstance():getRank()
+	if rank <= 50 then 
+		ContinueTimes = 1
+	elseif rank <= 20 then 
+		ContinueTimes = 0
+	end
+	
 	__G__actDelay( self, function (  )
 	if not self:getChildByTag(TAG_CONTINUE_LAYER) then
 			if ContinueTimes > 0 then 
