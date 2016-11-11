@@ -17,7 +17,7 @@ function TestScene:ctor()
     require('cocos.cocos2d.json')
     local tbl = {}
     for i = 1, 100 do
-    	local score = i* 100 
+    	local score = (101 - i)* 50
     	table.insert( tbl, score )
     end
 

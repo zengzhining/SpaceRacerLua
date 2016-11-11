@@ -19,10 +19,33 @@ function GameData:initData()
 	self.gameSpeed_ = 1.0
 	--角色id
 	self.roleId_ = DEFAULT_ROLE
+
+	--排行榜数据
+	self.rankInfo_ = nil
+
+	self:load()
 end
 --读取和存储游戏数据
 function GameData:load()
+    local fileUtils = cc.FileUtils:getInstance()
+	local data = fileUtils:getValueVectorFromFile("score.plist")
+	self.rankInfo_ = data
+end
 
+--插入分数
+function GameData:insertRank( pos,score )
+
+end
+
+--从排行榜中取得分数
+function GameData:getRankFromScore( score )
+	for i = 100 , 1 ,-1 do
+		local hScore = self.rankInfo_[i]
+		if score <= hScore then 
+			return i
+		end
+	end
+	return 1
 end
 
 function GameData:save()

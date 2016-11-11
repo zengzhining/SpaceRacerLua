@@ -174,7 +174,7 @@ function GameScene:onPlayerDead( target )
 	elseif rank <= 20 then 
 		ContinueTimes = 0
 	end
-	
+
 	__G__actDelay( self, function (  )
 	if not self:getChildByTag(TAG_CONTINUE_LAYER) then
 			if ContinueTimes > 0 then 
@@ -221,6 +221,8 @@ function GameScene:onContinueCancel()
 	end, 1.0)
 end
 
+--从排行榜读取分数
+
 --敌人死亡的回调函数
 --只有敌人死亡时候才更新分数和排名
 function GameScene:onArmyDead( target)
@@ -234,7 +236,7 @@ function GameScene:onArmyDead( target)
 	--排名改变时候更新排名
 	--如果两次的排行榜数据不同就更新显示
 	local score = GameData:getInstance():getScore()
-	local rank = 100 - math.floor(score /10) 
+	local rank = GameData:getInstance():getRankFromScore(score) 
 	local oldRank = GameData:getInstance():getRank()
 	if rank < oldRank then
 		GameData:getInstance():setRank(rank) 
