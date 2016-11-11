@@ -25,13 +25,14 @@ function PlaneFactory:createRole( id_ )
 	if id_ == 1 then 
 		plane = HeroPlane.new("#FriendPlane01.png")
 		plane:setMoveTime(0.3)
+		plane:setBulletFireNum(2)
 	elseif id_ == 2 then 
 		plane = HeroPlane.new("#GreenPlane.png")
 		plane:setMoveTime(0.5)
+		plane:setBulletFireNum(4)
 	end
 	plane:setId(id_)
 	plane:setBulletId(id_)
-	plane:setBulletFireNum(id_)
 	--设置子弹冷却时间
 	plane:setBulletCalmTime(0.6)
 

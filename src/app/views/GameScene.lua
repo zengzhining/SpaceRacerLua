@@ -131,12 +131,14 @@ function GameScene:onBulletHitArmy( bullet_, army_ )
 		commboTimes = 0
 		hitSameArmyNum = 0
 		lastHitArmyId = id 
+		self:updateCommbo()
 	end
 
 	--一般保持在三个连击
 	if hitSameArmyNum >= 3 then 
 		commboTimes = commboTimes + 1
 		hitSameArmyNum = 0
+		self:updateCommbo()
 	end
 end
 
@@ -266,8 +268,10 @@ function GameScene:initUI( ui_ )
 	self.rankLb_ = rankLb
 
 	local commboLb = ui_:getChildByName("commboNum")
+	commboLb:hide()
 	self.commboLb_ = commboLb
 	local commboTitle = ui_:getChildByName("comboTitle")
+	commboTitle:hide()
 	self.commboTitle_ = commboTitle
 	local plusTitle = ui_:getChildByName("plusScore")
 	plusTitle:hide()
@@ -300,6 +304,15 @@ end
 
 function GameScene:updateCommbo()
 	-- commboTimes
+	if commboTimes <= 0 then 
+		--hide
+		self.commboTitle_:hide()
+		self.commboLb_:hide()
+	else
+		self.commboTitle_:show()
+		self.commboLb_:show()
+		self.commboLb_:setString(commboTimes)
+	end
 end
 
 function GameScene:updateRank()
