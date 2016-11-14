@@ -6,6 +6,11 @@ local TAG_ROLE_1 = 101
 local TAG_ROLE_2 = 102
 
 function SelectScene:onCreate()
+
+	if DEBUG == 2 then
+		display.loadSpriteFrames("Plane.plist", "Plane.png")
+	end
+
 	self.roleId_ = 1
 	local root = self:getResourceNode()
 
@@ -17,6 +22,7 @@ function SelectScene:onCreate()
 	startBtn:onTouch(function ( event )
 		if event.name == "ended" then
 			__G__MenuCancelSound()
+			GameData:getInstance():setRoleId(self.roleId_)
 			self:getApp():enterLoading("GameScene")
 		end
 	end)
@@ -64,10 +70,18 @@ function SelectScene:createRole(id_)
 end
 
 function SelectScene:updateRole()
-
-	local role = PlaneFactory:getInstance():createRole(self.roleId_)
-	role:pos(display.cx, display.cy)
-	self:addChild(role,100, TAG_ROLE)
+	local role1 = self:getChildByTag(TAG_ROLE_1)
+	local role2 = self:getChildByTag(TAG_ROLE_2)
+	if self.roleId_ == 1 then 
+		role1:show()
+		role2:hide()
+	elseif self.roleId_ == 2 then 
+		role1:hide()
+		role2:show()
+	end
+	-- local role = PlaneFactory:getInstance():createRole(self.roleId_)
+	-- role:pos(display.cx, display.cy)
+	-- self:addChild(role,100, TAG_ROLE)
 end
 
 function SelectScene:onLeft(  )
@@ -76,6 +90,7 @@ function SelectScene:onLeft(  )
 	self.leftBtn_:hide()
 	self.rightBtn_:show()
 	self:updateTitle(self.roleId_)
+	self:updateRole()
 end
 
 function SelectScene:onRight(  )
@@ -84,7 +99,7 @@ function SelectScene:onRight(  )
 	self.rightBtn_:hide()
 	self.leftBtn_:show()
 	self:updateTitle(self.roleId_)
-
+	self:updateRole()
 end
 
 function SelectScene:updateTitle( id )
