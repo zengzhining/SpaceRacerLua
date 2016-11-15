@@ -30,6 +30,23 @@ function LoadingScene:onCreate(  )
 	local bg = __G__createBg( "Layer/BackGround.csb" )
 	bg:setSpeed(-5)
 	self:add(bg, -1)
+
+	--展示tips
+	self:showTips()
+end
+
+function LoadingScene:showTips(  )
+	math.randomseed(os.time())
+	local tipsTbl = gameio.getVectorPlistFromFile("gameTips.plist")
+
+	local str = tipsTbl[math.random(1,#tipsTbl)]
+	local tips = display.newTTF("Pixel.ttf", 72, str)
+	tips:setOpacity(0)
+	tips:setScale(0.5)
+	tips:pos(display.cx, display.cy * 1.5)
+	local act = cc.Spawn:create( cc.ScaleTo:create(1.2, 1), cc.FadeIn:create(2) )
+	tips:runAction(act)
+	self:addChild(tips, 100)
 end
 
 function LoadingScene:setNeedAds( needAds_ )

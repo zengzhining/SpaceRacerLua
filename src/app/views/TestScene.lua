@@ -49,6 +49,16 @@ function TestScene:ctor()
     layer:addChild(emitter1)
 
 	self:add(layer)
+
+	--test label
+	local title = display.newTTF("Pixel.ttf", 48, "Hello World")
+	title:pos(display.cx, display.cy)
+	self:addChild(title)
+
+	--生成plist文字
+	local tbl = {"hello","World"}
+	local isSuccess = gameio.writeVectorPlistToFile( tbl, "./res/gameTips.plist")
+
 end
 
 return TestScene
