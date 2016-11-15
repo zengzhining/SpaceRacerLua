@@ -35,6 +35,7 @@ audio      = require("cocos.framework.audio")
 transition = require("cocos.framework.transition")
 userDefault = require("cocos.framework.userDefault")
 particle = require("cocos.framework.particle")
+gameio = require("cocos.framework.gameio")
 
 require("cocos.framework.extends.NodeEx")
 require("cocos.framework.extends.SpriteEx")
