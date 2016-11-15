@@ -50,15 +50,7 @@ function ResultScene:onRetry(  )
 	--重置游戏数据
 	GameData:getInstance():reset()
 
-	--判断能否播放广告，可以就播放
-	if SDKManager:getInstance():isCanPlayVedio() then
-		SDKManager:getInstance():showVideo( callback )
-	elseif (SDKManager:getInstance():isFULLADAvailable() and SDKManager:getInstance():isInFullTime()) then
-		SDKManager:getInstance():showFULLAD()
-		SDKManager:getInstance():setFULLADCallback(callback)
-	else
-		callback()
-	end
+	callback()
 end
 
 function ResultScene:onGameExit()
