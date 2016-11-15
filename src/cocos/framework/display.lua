@@ -567,4 +567,14 @@ function display.newDrawNode(  )
     return node
 end
 
+function display.newTTF( fontName, fontSize, str )
+    local s = cc.Director:getInstance():getWinSize()
+    local ttfConfig = {}
+    ttfConfig.fontFilePath= fontName or "fonts/arial.ttf"
+    ttfConfig.fontSize= fontSize or 18
+
+    local ttf = cc.Label:createWithTTF(ttfConfig,str, cc.VERTICAL_TEXT_ALIGNMENT_CENTER,s.width)
+    return ttf
+end
+
 return display

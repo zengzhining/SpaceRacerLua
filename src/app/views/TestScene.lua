@@ -49,6 +49,11 @@ function TestScene:ctor()
     layer:addChild(emitter1)
 
 	self:add(layer)
+
+	--test label
+	local title = display.newTTF("Pixel.ttf", 48, "Hello World")
+	title:pos(display.cx, display.cy)
+	self:addChild(title)
 end
 
 return TestScene
