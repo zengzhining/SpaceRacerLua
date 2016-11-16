@@ -213,15 +213,15 @@ function GameScene:onContinue()
 		end, 0.2)
 	end
 
-	--判断能否播放广告，可以就播放
-	if SDKManager:getInstance():isCanPlayVedio() then
-		SDKManager:getInstance():showVideo( callback )
-	elseif SDKManager:getInstance():isFULLADAvailable() then
-		SDKManager:getInstance():setFULLADCallback(callback)
-		SDKManager:getInstance():showFULLAD()
-	else
+	--判断能否播放广告，可以就播放,原型测试暂时关闭
+	-- if SDKManager:getInstance():isCanPlayVedio() then
+	-- 	SDKManager:getInstance():showVideo( callback )
+	-- elseif SDKManager:getInstance():isFULLADAvailable() then
+	-- 	SDKManager:getInstance():setFULLADCallback(callback)
+	-- 	SDKManager:getInstance():showFULLAD()
+	-- else
 		callback()
-	end	
+	-- end	
 end
 
 --玩家不复活继续游戏
