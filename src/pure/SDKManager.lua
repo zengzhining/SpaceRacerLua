@@ -279,14 +279,20 @@ end
 function SDKManager:showVideo( callback )
 	if not CC_NEED_SDK then return end
 	local status = sdkbox.PluginAdColony:getStatus(SDK_VEDIO_NAME)
+	print("status~~~~~~", status)
 	--没有就播放全屏
 	if status == 2 then
 		if sdkbox.PluginVungle:isCacheAvailable() then
 			self:setVedioCallback( callback )
 			sdkbox.PluginVungle:show("video")
 		else
-			self:setFULLADCallback( callback )
-			self:showFULLAD()
+			if self:isFULLADAvailable() then
+				self:setFULLADCallback( callback )
+				self:showFULLAD()
+			else
+				callback()
+				return 
+			end
 		end
 	else
 		self:setVedioCallback( callback )
