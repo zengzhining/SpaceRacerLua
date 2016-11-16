@@ -5,6 +5,7 @@ local TAG_CUT = 100
 local TAG_GAME_LAYER = 102
 local TAG_BG = 103
 local TAG_CONTINUE_LAYER = 104
+local TAG_CONTROL_LAYER = 105
 
 local armySet = {}
 local bulletSet = {}
@@ -28,6 +29,8 @@ function GameScene:onCreate()
 	self:initUI(uiLayer)
 	self:addChild(uiLayer, -1, TAG_UI )
 
+	self:initControl()
+
 	self:initObj()
 
 	local bg = __G__createBg( "Layer/BackGround.csb" )
@@ -36,6 +39,12 @@ function GameScene:onCreate()
 end
 
 function GameScene:initData()
+
+	--测试默认载入plist
+	if DEBUG == 2 then 
+		display.loadSpriteFrames("Plane.plist", "Plane.png")
+	end
+
 	armySet = {}
 	bulletSet = {}
 
@@ -194,6 +203,7 @@ function GameScene:onContinue()
 	local callback = function ()
 		__G__actDelay(self, function()
 			self.gameLayer_:resumeAllInput()	
+			self.cutBtn_:setTouchEnabled(true)
 			if self.role_ then 
 				self.role_:setVisible(true)
 				self.role_:relive()
@@ -207,8 +217,8 @@ function GameScene:onContinue()
 	if SDKManager:getInstance():isCanPlayVedio() then
 		SDKManager:getInstance():showVideo( callback )
 	elseif SDKManager:getInstance():isFULLADAvailable() then
-		SDKManager:getInstance():showFULLAD()
 		SDKManager:getInstance():setFULLADCallback(callback)
+		SDKManager:getInstance():showFULLAD()
 	else
 		callback()
 	end	
@@ -341,6 +351,42 @@ function GameScene:updateRank()
 	self.rankLb_:setString( GameData:getInstance():getRank() )
 end
 
+function GameScene:initControl()
+	local fileName = "Layer/ControlLayer.csb"
+	local controlLayer = display.newCSNode(fileName)
+	self:addChild(controlLayer, 2, TAG_CONTROL_LAYER)
+
+	local left = controlLayer:getChildByName("Left")
+	local right = controlLayer:getChildByName("Right")
+	local fire = controlLayer:getChildByName("Fire")
+
+	left:onTouch(function ( event )
+		if event.name == "began" then 
+			if self.role_ and self.role_.onLeft then 
+				self.role_:onLeft( self.role_:getViewRect().width * 0.6 )
+			end
+		end
+	end)
+
+	right:onTouch(function ( event )
+		if event.name == "began" then 
+			if self.role_ and self.role_.onRight then 
+				self.role_:onRight( self.role_:getViewRect().width * 0.6 )
+			end
+		end
+	end)
+
+	fire:onTouch(function ( event )
+		if event.name == "began" then 
+			if self.role_ and self.role_.fireBullet then 
+				self.role_:fireBullet()
+			end
+		end
+	end)
+
+
+end
+
 function GameScene:initObj()
 	local gameLayer = display.newLayer()
 	self:addChild(gameLayer, 1, TAG_GAME_LAYER)
@@ -351,19 +397,6 @@ function GameScene:initObj()
 	plane:pos(display.cx - width * 0.6, display.height /4 )
 	gameLayer:addChild(plane)
 	self.role_ = plane
-
-	--事件处理
-	gameLayer:onTouch(function (  event )
-		if plane and plane.onTouch then
-			plane:onTouch(event)
-		end
-	end, false, true)
-
-	gameLayer:onAccelerate( function ( x,y,z,timeStap )
-		if plane and plane.accelerateEvent then 
-			plane:accelerateEvent(x,y,z,timeStap)
-		end
-	end )
 
 	--按键事件
 	local keyCallback = function ( event )

@@ -36,4 +36,4 @@ CC_DESIGN_RESOLUTION = {
     end
 }
 
-DEFAULT_SCENE = "SelectScene"
+DEFAULT_SCENE = "GameScene"
