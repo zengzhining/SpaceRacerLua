@@ -1,23 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"/>
-
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-    <array>
-        <dict>
-            <key>posx</key>
-            <real>1.0000000000000000</real>
-            <key>armyType</key>
-            <real>1.0000000000000000</real>
-            <key>posy</key>
-            <real>100.0000000000000000</real>
-        </dict>
-        <dict>
-            <key>posx</key>
-            <real>1.0000000000000000</real>
-            <key>armyType</key>
-            <real>1.0000000000000000</real>
-            <key>posy</key>
-            <real>100.0000000000000000</real>
-        </dict>
-    </array>
+<array>
+	<dict>
+		<key>id</key>
+		<real>1</real>
+		<key>x</key>
+		<real>120.73095703125</real>
+		<key>y</key>
+		<real>510.67578125</real>
+	</dict>
+	<dict>
+		<key>id</key>
+		<real>1</real>
+		<key>x</key>
+		<real>478.24017333984375</real>
+		<key>y</key>
+		<real>822.239990234375</real>
+	</dict>
+	<dict>
+		<key>id</key>
+		<real>1</real>
+		<key>x</key>
+		<real>80.434417724609375</real>
+		<key>y</key>
+		<real>1038.0098876953125</real>
+	</dict>
+	<dict>
+		<key>id</key>
+		<real>1</real>
+		<key>x</key>
+		<real>201.75775146484375</real>
+		<key>y</key>
+		<real>1298.257568359375</real>
+	</dict>
+	<dict>
+		<key>id</key>
+		<real>1</real>
+		<key>x</key>
+		<real>512.6943359375</real>
+		<key>y</key>
+		<real>1435.160400390625</real>
+	</dict>
+	<dict>
+		<key>id</key>
+		<real>1</real>
+		<key>x</key>
+		<real>135.406005859375</real>
+		<key>y</key>
+		<real>1606.822021484375</real>
+	</dict>
+</array>
 </plist>
