@@ -280,6 +280,12 @@ function display.getRunningScene()
     return director:getRunningScene()
 end
 
+function display.getDefaultCamera()
+    local scene = display.getRunningScene()
+    local camera = scene:getDefaultCamera()
+    return camera
+end
+
 function display.pause()
     director:pause()
 end
