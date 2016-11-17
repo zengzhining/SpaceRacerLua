@@ -6,6 +6,39 @@ local BG_SPEED = 10
 local DEFAULT_ROLE = 1
 function GameData:ctor()
 	self:initData()
+
+	--因为到读取大量文件
+	--只有进行第一次初始化时候才进行读取配置文件
+	self:loadConfig()
+end
+
+function GameData:loadConfig()
+	for i = 1, MAX_ARMY_ROUND do
+		local fileName = string.format("config/army%02d.plist",i)
+		if gameio.isExist(fileName) then 
+			local armyConfig = gameio.getVectorPlistFromFile(fileName)
+			if armyConfig then 
+				table.insert(self.armyConfig_, armyConfig)
+			end
+		else
+			--一定是从1开始的,所以如果到这里代表没了那个文件
+			break
+		end
+	end
+
+	if DEBUG == 2 then 
+		print("armyConfig==============")
+		dump(self.armyConfig_)
+	end
+end
+
+function GameData:getArmyConfig( id )
+	if not id then return self.armyConfig_ end
+	if self.armyConfig_ and self.armyConfig_[id] then 
+		return self.armyConfig_[id]
+	else
+		error("no army config")
+	end
 end
 
 function GameData:initData()
@@ -22,6 +55,9 @@ function GameData:initData()
 
 	--排行榜数据
 	self.rankInfo_ = nil
+
+	--敌人配置
+	self.armyConfig_ = {}
 
 	self:load()
 end

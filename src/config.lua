@@ -18,6 +18,9 @@ CC_NEED_SDK = false
 
 CC_DEBUG_RECT = false
 
+--最大的敌人配置个数，对应config下的army配置表个数
+MAX_ARMY_ROUND = 2
+
 SDK_BANNER_NAME = "admob"
 SDK_FULLAD_NAME = "gameover"
 SDK_VEDIO_NAME  = "restart"
@@ -38,4 +41,4 @@ CC_DESIGN_RESOLUTION = {
     end
 }
 
-DEFAULT_SCENE = "DesignScene"
+DEFAULT_SCENE = "GameScene"

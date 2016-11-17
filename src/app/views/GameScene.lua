@@ -124,7 +124,7 @@ function GameScene:step( dt )
 	if tempTime >= armtTime then
 		tempTime = 0 
 		--只有全部敌人数量超过三十个才要创建
-		if #armySet <= 30 then
+		if #armySet <= 0 then
 			self:onCreateArmy()
 		end
 	end
@@ -417,37 +417,31 @@ function GameScene:onFireBullet( id_ )
 	table.insert(bulletSet, bullet)
 end
 
+--获得army的数据，根据数据来创建敌机
+function GameScene:getArmyData(  )
+	local num = math.random(1, MAX_ARMY_ROUND)
+	local armyData = GameData:getInstance():getArmyConfig(num)
+	dump(armyData)
+	return armyData
+end
+
 function GameScene:onCreateArmy(  )
-	math.randomseed(os.time())
-	local dir = math.random(1,20) % 2
-	if dir == 0 then
-		dir = -1
+	--读取plist数据创建敌人
+	local armyData = self:getArmyData()
+	for i, armyInfo in pairs(armyData) do
+		local id = armyInfo.id
+		local army = PlaneFactory:getInstance():createPlane(id)
+
+		local width = army:getViewRect().width
+		local dir = armyInfo.x > display.cx and 1 or -1
+		local x = display.cx + width * 0.6 * dir
+		local armyPos = cc.p(x, armyInfo.y)
+		local armySpeed = self:getArmySpeed()
+		army:setSpeed(cc.p(0, armySpeed))
+		army:pos(armyPos)
+		self.gameLayer_ :addChild(army)
+		table.insert(armySet, army)
 	end
-
-
-	local id = (math.random(1,200) % 2)
-	if id == 0 then 
-		id = 2
-	end
-
-	local army = PlaneFactory:getInstance():createPlane(id)
-	local armySpeed = self:getArmySpeed()
-	army:setSpeed(cc.p(0, armySpeed))
-	local lastArmy = armySet[#armySet] 
-
-	local height = army:getViewRect().height
-	local width = army:getViewRect().width
-	local posy = display.height * 1.2
-	if lastArmy then
-		height = lastArmy:getViewRect().height
-		width = lastArmy:getViewRect().width
-		posy =  lastArmy:getPositionY()
-	end
-	army:setDirX(dir)
-	army:pos(display.cx + width * 0.6 * dir, posy + height * 3 )
-	self.gameLayer_ :addChild(army)
-	table.insert(armySet, army)
-
 	--调整一下游戏背景速度
 	local bgSpeed = self:getBgSpeed()
 	local bg = self:getChildByTag(TAG_BG)

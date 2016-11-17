@@ -191,7 +191,20 @@ function DesignScene:save()
 	print("now save data:")
 	dump(tbl)
 
-	gameio.writeVectorPlistToFile(tbl, "./res/config/army.plist")
+	local FORCE_ADD = false
+
+	if FORCE_ADD then 
+		local str = string.format("res/config/army%02d.plist", 1)
+		gameio.writeVectorPlistToFile(tbl, str)
+	end
+	--默认自动增加,到后面去
+	for i = 1, 50 do
+		local str = string.format("res/config/army%02d.plist", i)
+		if not gameio.isExist(str) then 
+			gameio.writeVectorPlistToFile(tbl, str)
+			break
+		end
+	end
 
 end
 
