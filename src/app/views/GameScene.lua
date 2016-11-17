@@ -438,6 +438,7 @@ function GameScene:onCreateArmy(  )
 		local armyPos = cc.p(x, armyInfo.y)
 		local armySpeed = self:getArmySpeed()
 		army:setSpeed(cc.p(0, armySpeed))
+		army:setDirX(dir)
 		army:pos(armyPos)
 		self.gameLayer_ :addChild(army)
 		table.insert(armySet, army)
@@ -487,7 +488,7 @@ function GameScene:onRestart()
 	__G__MenuCancelSound()
 	display.resume()
 	GameData:getInstance():reset()
-	self:getApp():enterLoading("GameScene")
+	self:getApp():enterLoading("SelectScene")
 end
 
 

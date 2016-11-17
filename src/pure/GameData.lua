@@ -37,6 +37,7 @@ function GameData:getArmyConfig( id )
 	if self.armyConfig_ and self.armyConfig_[id] then 
 		return self.armyConfig_[id]
 	else
+		print("id ~~~", id)
 		error("no army config")
 	end
 end
@@ -46,18 +47,18 @@ function GameData:initData()
 	self.rank_ = MAX_RANK
 	self.lastRank_ = MAX_RANK
 	--游戏背景移动速度
-	self.bgSpeed_ = MAX_RANK
+	self.bgSpeed_ = BG_SPEED
 
 	--游戏速度
 	self.gameSpeed_ = 1.0
 	--角色id
-	self.roleId_ = DEFAULT_ROLE
+	self.roleId_ = self.roleId_ or DEFAULT_ROLE
 
 	--排行榜数据
 	self.rankInfo_ = nil
 
 	--敌人配置
-	self.armyConfig_ = {}
+	self.armyConfig_ = self.armyConfig_ or {}
 
 	self:load()
 end
