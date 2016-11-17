@@ -5,7 +5,15 @@ local TAG_ARMY_LAYER = 101
 
 local planeSet = {}
 local selectPlane = nil
+--上次设置的id,用来快速生成相同敌人
+local g_lastId = 1
 
+-------------------var-----------------
+
+--是否强置加入,后为强制加入的id,可用于编辑
+local FORCE_ADD = true
+local FORCE_ID = 2
+---------------------------------------
 
 --------------function----------------
 local function convertCamera( point )
@@ -15,11 +23,6 @@ local function convertCamera( point )
 	p.y = p.y - display.cy
 	return p
 end
-
-
-
-
-
 
 
 ----------------------------
@@ -68,7 +71,7 @@ function DesignScene:onCreate()
 	title:onUpdate(function ( dt )
 		local defaultCamera = display.getDefaultCamera()
 		local posx, posy = defaultCamera:getPosition()
-		local str = string.format("camera pos:%d,%d", posx, posy)
+		local str = string.format("camera pos:%d,%d    armyNum : %d", posx, posy, #planeSet)
 		title:setString(str)
 	end)
 
@@ -80,7 +83,22 @@ function DesignScene:onCreate()
 
 	local armyLayer = display.newLayer()
 	self:addChild(armyLayer,1, TAG_ARMY_LAYER)
-	
+
+	--初始化编辑器，可以用于读取敌人配置
+	self:initEdit()	
+end
+
+function DesignScene:initEdit()
+	local str = string.format("res/config/army%02d.plist", FORCE_ID)
+	if not FORCE_ADD then return end
+	if not gameio.isExist(str) then return end
+
+	local armyData = gameio.getVectorPlistFromFile(str)
+	if armyData then 
+		for i,info in pairs(armyData) do
+			self:createPlane(info.x, info.y, info.id )
+		end
+	end
 end
 
 function DesignScene:initControl()
@@ -118,7 +136,7 @@ function DesignScene:initControl()
 			end
 
 			if selectPlane == nil then
-				self:createPlane(p.x, p.y )
+				self:createPlane(p.x, p.y, g_lastId )
 			else
 				return true
 			end
@@ -168,12 +186,14 @@ function DesignScene:changePlaneId()
 		local res = idTbl[id]
 		selectPlane:setSpriteFrame(display.newSpriteFrame(res))
 		selectPlane:setId(id)
+		g_lastId = id
 	end
 end
 
-function DesignScene:createPlane( x,y  )
+function DesignScene:createPlane( x,y , id_ )
+	if not id_ then id_ = 1 end
 	local layer = self:getChildByTag(TAG_ARMY_LAYER)
-	local plane = PlaneFactory:getInstance():createPlane(1)
+	local plane = PlaneFactory:getInstance():createPlane(id_)
 	plane:pos(x,y)
 	layer:add(plane)
 	table.insert(planeSet, plane)
@@ -191,11 +211,10 @@ function DesignScene:save()
 	print("now save data:")
 	dump(tbl)
 
-	local FORCE_ADD = false
-
 	if FORCE_ADD then 
-		local str = string.format("res/config/army%02d.plist", 1)
+		local str = string.format("res/config/army%02d.plist", FORCE_ID)
 		gameio.writeVectorPlistToFile(tbl, str)
+		return 
 	end
 	--默认自动增加,到后面去
 	for i = 1, 50 do
