@@ -59,6 +59,19 @@ function TestScene:ctor()
 	local tbl = {"hello","World"}
 	local isSuccess = gameio.writeVectorPlistToFile( tbl, "./res/gameTips.plist")
 
+	--两个相机
+	-- local plane = PlaneFactory:getInstance():createRole(1)
+	-- plane:pos(display.cx, display.cy)
+	-- plane:setCameraMask(cc.CameraFlag.USER1)
+	-- self:addChild(plane)
+
+	-- self:initControl()
+
+	-- local camera = cc.Camera:createOrthographic(display.width, display.height,-11,1000)
+	-- camera:setCameraFlag(cc.CameraFlag.USER1)
+
+	-- self:addChild(camera)
+
 end
 
 return TestScene
