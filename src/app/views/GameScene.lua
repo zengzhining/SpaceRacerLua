@@ -417,6 +417,7 @@ function GameScene:onFireBullet( id_ )
 	local roleX,roleY = role:getPosition()
 	bullet:pos(roleX, roleY + role:getViewRect().height *0.5 + bullet:getViewRect().height * 0.25)
 	bullet:onFire()
+	bullet:setSpeed(cc.p(0, 10))
 	gameLayer:addChild(bullet)
 	table.insert(bulletSet, bullet)
 end
