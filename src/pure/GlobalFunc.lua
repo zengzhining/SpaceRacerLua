@@ -150,7 +150,7 @@ __G__createContinueLayer = function ( fileName )
 
 		Time:setString(time)
 
-		if time <= -0.5 then 
+		if time <= 0 then 
 			layer:unUpdate()
 			local scene = layer:getParent()
 			if scene and scene.onContinueCancel then 

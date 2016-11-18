@@ -9,6 +9,7 @@ local TAG_CONTROL_LAYER = 105
 
 local armySet = {}
 local bulletSet = {}
+local pointSet = {}  --连击显示红点
 
 local ARMY_TIME = 0.6 --敌人生成时间
 local tempTime = 0
@@ -29,6 +30,16 @@ function GameScene:onCreate()
 	self:initUI(uiLayer)
 	self:addChild(uiLayer, -1, TAG_UI )
 
+	--hit num
+	for i = 1 ,3 do
+		local point = display.newDrawNode()
+		point:drawSolidCircle(cc.p(0 ,0), 10, math.pi * 2, 50, 1.0, 1.0, cc.c4f(1,0,0,0.8))
+		point:pos( (i-0.5)*30 , display.height-100)
+		point:hide()
+		uiLayer:add(point)
+		table.insert(pointSet, point)
+	end
+
 	self:initControl()
 
 	self:initObj()
@@ -46,6 +57,7 @@ function GameScene:initData()
 	end
 
 	armySet = {}
+	--如果已经连击完
 	bulletSet = {}
 
 	hitSameArmyNum = 0
@@ -137,20 +149,57 @@ end
 function GameScene:onBulletHitArmy( bullet_, army_ )
 	local id = army_:getId()
 	--如果是和之前打到的是相同的id就增加
-	if id == lastHitArmyId then 
-		hitSameArmyNum = hitSameArmyNum + 1
+	--如果已经连击完
+	if hitSameArmyNum ~= 0 then
+		if id == lastHitArmyId then 
+			hitSameArmyNum = hitSameArmyNum + 1
+		else
+			commboTimes = 0
+			hitSameArmyNum = 0
+			lastHitArmyId = id 
+			self:updateCommbo()
+		end
 	else
-		commboTimes = 0
-		hitSameArmyNum = 0
+		hitSameArmyNum = hitSameArmyNum + 1
 		lastHitArmyId = id 
-		self:updateCommbo()
 	end
+
+	self:updateSameHit()
 
 	--一般保持在三个连击
 	if hitSameArmyNum >= 3 then 
 		commboTimes = commboTimes + 1
 		hitSameArmyNum = 0
 		self:updateCommbo()
+	end
+
+end
+
+function GameScene:updateSameHit( )
+	-- body
+	if hitSameArmyNum > 0 and hitSameArmyNum < 3  then
+		for c,point in pairs(pointSet) do
+			if c > hitSameArmyNum then
+				point:hide()
+			else
+				point:show()
+			end
+		end
+	elseif hitSameArmyNum > 0 and hitSameArmyNum >= 3 then
+		for c,point in pairs(pointSet) do
+			-- point:show()
+			local act = cc.Sequence:create(
+				cc.Show:create(),
+				cc.ScaleTo:create(0.3, 1.2),
+				cc.Hide:create()
+				)
+			point:runAction(act)
+
+		end
+	else
+		for c,point in pairs(pointSet) do
+			point:hide()
+		end
 	end
 end
 
@@ -344,6 +393,7 @@ function GameScene:updateCommbo()
 		--hide
 		self.commboTitle_:hide()
 		self.commboLb_:hide()
+		--如果已经连击完
 	else
 		self.commboTitle_:show()
 		self.commboLb_:show()
