@@ -17,6 +17,10 @@ local function main()
    --初始化SDK
    SDKManager:getInstance()
 
+   --设置默认音效大小
+   audio.setSoundsVolume(DEFAULT_SOUND_VOL)
+   audio.setMusicVolume(DEFAULT_MUSIC_VOL)
+
    require("app.MyApp"):create():run()
 end
 
