@@ -31,9 +31,7 @@ function MainMenu:onEnter()
 	local root = self:getResourceNode()
 
 	local hint = root:getChildByName("Hint")
-	local act = cc.RepeatForever:create(cc.Sequence:create( cc.FadeOut:create(2), cc.FadeIn:create(2) ))
-
-	hint:runAction(act)
+	Helper.fadeObj(hint)
 	
 	__G__MainMusic(math.random(1,2))
 end
