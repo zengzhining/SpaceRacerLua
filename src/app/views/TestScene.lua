@@ -13,10 +13,10 @@ function TestScene:ctor()
 
 	layer:onTouch(function ( event )
 		-- local emitter1 = cc.ParticleSystemQuad:create("Particles/LavaFlow.plist")
-		if event.name == "began" then
-			return true
-		end
-		Helper.showClickParticle(layer, cc.p(event.x, event.y))
+		-- if event.name == "began" then
+		-- 	return true
+		-- end
+		-- Helper.showClickParticle(layer, cc.p(event.x, event.y))
 	end)
 
     
@@ -57,13 +57,13 @@ function TestScene:ctor()
 	self:add(layer)
 
 	--test label
-	local title = display.newTTF("Pixel.ttf", 48, "Hello World")
-	title:pos(display.cx, display.cy)
-	self:addChild(title)
+	-- local title = display.newTTF("Pixel.ttf", 48, "Hello World")
+	-- title:pos(display.cx, display.cy)
+	-- self:addChild(title)
 
 	--生成plist文字
-	local tbl = {"hello","World"}
-	local isSuccess = gameio.writeVectorPlistToFile( tbl, "./res/gameTips.plist")
+	-- local tbl = {"hello","World"}
+	-- local isSuccess = gameio.writeVectorPlistToFile( tbl, "./res/gameTips.plist")
 
 	--两个相机
 	-- local plane = PlaneFactory:getInstance():createRole(1)
@@ -77,6 +77,44 @@ function TestScene:ctor()
 	-- camera:setCameraFlag(cc.CameraFlag.USER1)
 
 	-- self:addChild(camera)
+
+
+	--测试图片的粒子特效
+	local spTbl = {}
+	local texture = display.loadImage("png/RedPlane.png")
+	local size = texture:getContentSize()
+	local perWidth = size.width / 50
+	local perHeight = size.height /50
+	for i = 1, 50 do
+		for j = 1, 50 do
+			local rect = cc.rect(perWidth * (i-1),perHeight * (j-1) ,perWidth,perHeight)
+			local sp = cc.Sprite:createWithTexture(texture, rect)
+			sp:setAnchorPoint(cc.p(0,0))
+			sp:pos(display.cx + perWidth * (i-1), display.cy - perHeight * (j-1) )
+			layer:add(sp)
+			table.insert(spTbl, sp)
+		end
+	end
+
+	for i,plane in pairs (spTbl) do
+		local spawnAct = cc.Spawn:create( cc.MoveBy:create(0.2, cc.p(math.random(-200,200), math.random(-200, 200) )),
+			cc.RotateBy:create(0.2, math.random( 1,180 ))
+		 )
+		local act = cc.Sequence:create(cc.DelayTime:create(i*0.001), spawnAct, cc.Hide:create())
+		plane:runAction(act)
+	end
+
+	-- local function step(dt )
+	-- 	-- body
+	-- 	width = width + 2
+	-- 	sp:setTextureRect(cc.rect(0,0,width,200))
+		
+	-- end
+
+
+	-- layer:add(sp)
+
+	-- layer:onUpdate(step)
 
 end
 
