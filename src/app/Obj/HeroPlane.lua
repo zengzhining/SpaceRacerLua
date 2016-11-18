@@ -38,7 +38,6 @@ function HeroPlane:onTouch( event )
 end
 
 function HeroPlane:fireBullet()
-	print("fireBullet~~~~~~~~")
 	--如果死掉时候不能发射子弹
 	if self:isDead() then return end
 	local scene = self:getParent():getParent()
@@ -88,6 +87,9 @@ function HeroPlane:onKeyPad( event )
 		self:onLeft( self:getViewRect().width * 0.6 )
 	elseif code == cc.KeyCode.KEY_D then 
 		self:onRight( self:getViewRect().width * 0.6 )
+
+	elseif code == cc.KeyCode.KEY_S then
+		self:fireBullet()
 	end
 
 	if code == cc.KeyCode.KEY_SPACE then 

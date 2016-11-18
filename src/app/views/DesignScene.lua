@@ -157,7 +157,7 @@ function DesignScene:initControl()
 			self:cameraMove(-1)
 		elseif keycode == cc.KeyCode.KEY_Q then 
 			self:save()
-		elseif keycode == cc.KeyCode.KEY_SPACE then
+		elseif keycode == cc.KeyCode.KEY_SPACE or keycode == cc.KeyCode.KEY_D then
 			self:changePlaneId()
 		elseif keycode == cc.KeyCode.KEY_DELETE then
 			self:deleteSelectPlane()
