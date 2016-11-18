@@ -34,7 +34,7 @@ function PlaneFactory:createRole( id_ )
 	plane:setId(id_)
 	plane:setBulletId(id_)
 	--设置子弹冷却时间
-	plane:setBulletCalmTime(0.6)
+	plane:setBulletCalmTime(0.04)
 
 	return plane
 end

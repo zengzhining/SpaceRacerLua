@@ -20,6 +20,10 @@ function BasePlane:initData()
 	self.lastFireTime_ = 0
 end
 
+function BasePlane:resetHp()
+	self.hp_ = 1
+end
+
 --角色的id
 function BasePlane:setId(id_)
 	self.id_ = id_
@@ -55,7 +59,7 @@ end
 --发射子弹的冷却时间
 function BasePlane:isCanFireBullet()
 	local flag = false
-	local time = os.time()
+	local time = os.clock()
 	if time - self:getLastFireTime() >= self:getBulletCalmTime() then 
 		flag = true
 	end

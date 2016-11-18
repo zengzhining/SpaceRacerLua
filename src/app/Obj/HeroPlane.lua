@@ -38,11 +38,14 @@ function HeroPlane:onTouch( event )
 end
 
 function HeroPlane:fireBullet()
+	print("fireBullet~~~~~~~~")
+	--如果死掉时候不能发射子弹
+	if self:isDead() then return end
 	local scene = self:getParent():getParent()
 	if scene and scene.onFireBullet then 
 		if self:isCanFireBullet() then
 			scene:onFireBullet(self:getBulletId())
-			self:setLastFireTime(os.time())
+			self:setLastFireTime(os.clock())
 		end
 	end
 end
@@ -53,6 +56,7 @@ function HeroPlane:relive()
 
 	--3秒内无敌
 	self.isRelive_ = true
+	self:resetHp()
 	local act = cc.Sequence:create( cc.DelayTime:create( RELIVE_TIME ) , cc.CallFunc:create( function ( target )
 		target.isRelive_ = false
 	end ))	

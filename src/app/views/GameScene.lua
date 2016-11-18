@@ -215,6 +215,10 @@ function GameScene:onContinue()
 
 	--判断能否播放广告，可以就播放,原型测试暂时关闭
 	SDKManager:getInstance():showVideo( callback )
+
+	if DEBUG == 2 then 
+		callback()
+	end
 end
 
 --玩家不复活继续游戏

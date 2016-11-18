@@ -33,6 +33,7 @@ function ArmyPlane:onCollision( other )
 end
 
 function ArmyPlane:onCollisionBullet(other)
+	self:onHurt(1)
 	self:playDeadAnimation("PlaneExplose%02d.png")
 end
 
@@ -85,6 +86,8 @@ function ArmyPlane:onHalfDisplayHeight()
 end
 
 function ArmyPlane:aiMove( aiId )
+	--人物死亡时候没有Ai
+	if self:isDead() then return end
 	if aiId == 1 then
 		if self:getPositionY() <= AI_HEIGHT and (self.hasUnderHalfDisplayHeight_ == false) then 
 			if self.dir_.x == 1 then 
