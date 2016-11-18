@@ -24,6 +24,18 @@ local function main()
    require("app.MyApp"):create():run()
 end
 
+function __G__applicationDidEnterBackground()
+  print("__G__applicationDidEnterBackground~~~~~~")
+end
+
+function __G__applicationWillEnterForeground()
+  print("__G__applicationWillEnterForeground~~~~~~~")
+  local scene = display.getRunningScene()
+  if scene and scene.onAppEnterForeground then 
+     scene.onAppEnterForeground()
+  end
+end
+
 local status, msg = xpcall(main, __G__TRACKBACK__)
 if not status then
     print(msg)

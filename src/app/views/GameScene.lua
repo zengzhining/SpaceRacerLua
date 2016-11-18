@@ -51,6 +51,9 @@ function GameScene:initData()
 	hitSameArmyNum = 0
 	commboTimes = 0
 	ContinueTimes = 2
+
+	--默认进入后台就暂停游戏,播放广告例外
+	self.isNeedPause_ = true
 end
 
 function GameScene:step( dt )
@@ -198,6 +201,10 @@ function GameScene:onPlayerDead( target )
 	device.vibrate( 0.2 )
 end
 
+function GameScene:isNeedPause()
+	return self.isNeedPause_
+end
+
 --玩家复活继续游戏
 function GameScene:onContinue()
 	local callback = function ()
@@ -210,13 +217,15 @@ function GameScene:onContinue()
 				self:onUpdate(handler(self, self.step))
 			end
 			ContinueTimes = ContinueTimes - 1
+			self.isNeedPause_ = true
 		end, 0.2)
 	end
 
 	--判断能否播放广告，可以就播放,原型测试暂时关闭
+	self.isNeedPause_ = false
 	SDKManager:getInstance():showVideo( callback )
 
-	if DEBUG == 2 then 
+	if DEBUG == 2 and device.platform ~= "android" then 
 		callback()
 	end
 end
@@ -277,9 +286,7 @@ function GameScene:initUI( ui_ )
 	local cutBtn = ui_:getChildByName("CutButton")
 	cutBtn:onTouch(function ( event )
 		if event.name == "ended" then 
-			self.gameLayer_:setTouchEnabled(false)
 			self:onCut()
-			cutBtn:setTouchEnabled(false)
 			return false
 		end
 	end,  false, true)
@@ -474,6 +481,8 @@ end
 function GameScene:onCut(  )
 	if not self:getChildByTag(TAG_CUT) then 
 		__G__MenuClickSound()
+		self.gameLayer_:setTouchEnabled(false)	
+		self.cutBtn_:setTouchEnabled(false)
 		local layer = __G__createCutLayer( "Layer/ResumeLayer.csb" )
 		self:addChild(layer, 100, TAG_CUT)
 		display.pause()

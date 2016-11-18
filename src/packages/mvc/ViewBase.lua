@@ -60,8 +60,15 @@ end
 function ViewBase:showWithScene(transition, time, more)
     self:setVisible(true)
     local scene = display.newScene(self.name_)
+    scene.onAppEnterForeground = function (  )
+        if self:isNeedPause() then
+            if self and self.onCut then 
+                self:onCut()
+            end
+        end
+    end
     scene:addChild(self)
-    
+
     display.runScene(scene, transition, time, more)
     return self
 end
