@@ -40,6 +40,13 @@ function GameScene:onCreate()
 		table.insert(pointSet, point)
 	end
 
+	--能量条
+	local powerLayer = display.newCSNode("Layer/powerLayer.csb")
+	powerLayer:pos(0, display.cy * 0.5)
+	local powerBar = powerLayer:getChildByName("powerBar")
+	self.powerBar_ = powerBar
+	uiLayer:add(powerLayer)
+
 	self:initControl()
 
 	self:initObj()
@@ -143,6 +150,17 @@ function GameScene:step( dt )
 			self:onCreateArmy()
 		end
 	end
+
+	--更新能量条
+	self:updatePowerBar()
+end
+
+function GameScene:updatePowerBar(  )
+	if self.role_ then
+		local MAX_POWER = self.role_:getMaxPower()
+		local power = self.role_:getPower()
+		self.powerBar_:setPercent(power * 100/MAX_POWER)
+	end
 end
 
 --子弹击中敌人的回调，这里可以处理连击
@@ -169,6 +187,10 @@ function GameScene:onBulletHitArmy( bullet_, army_ )
 	--一般保持在三个连击
 	if hitSameArmyNum >= 3 then 
 		commboTimes = commboTimes + 1
+		--连击时候恢复能量
+		if self.role_ and self.role_.resetPower then
+			self.role_:resetPower()
+		end
 		hitSameArmyNum = 0
 		self:updateCommbo()
 	end

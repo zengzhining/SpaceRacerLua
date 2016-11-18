@@ -31,7 +31,13 @@ function MovedObject:setSpeed(speed)
 	self.speed_ = speed
 end
 
+--更新逻辑,每帧调用一次
+function MovedObject:updateLogic( time  )
+	-- body
+end
+
 function MovedObject:step(dt)
+	self:updateLogic(dt)
 	local gameSpeed = GameData:getInstance():getGameSpeed()
 	self:posByY(self.speed_.y * gameSpeed)
 	self:posByX(self.speed_.x * gameSpeed)

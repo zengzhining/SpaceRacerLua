@@ -10,6 +10,13 @@ local UP_ACC = -0.4
 local DOWN_ACC = -0.8
 local RELIVE_TIME = 3
 
+local allTime = 0
+
+local isFireBullet = false
+
+--最大能量条
+local MAX_POWER = 8
+
 function HeroPlane:ctor( fileName )
 	HeroPlane.super.ctor(self, fileName)
 
@@ -25,6 +32,36 @@ function HeroPlane:ctor( fileName )
 
 	--是否复活
 	self.isRelive_ = false
+
+	--能量
+	self.power_ = MAX_POWER
+end
+
+function HeroPlane:getMaxPower(  )
+	return MAX_POWER
+end
+
+function HeroPlane:getPower(  )
+	return self.power_
+end
+
+function HeroPlane:minitesPower( pow )
+	self.power_ = self.power_ - pow
+end
+
+function HeroPlane:addPower( pow )
+	self.power_ = self.power_ + pow 
+	--最大只能是极限值
+	self.power_ = self.power_ > MAX_POWER and MAX_POWER or self.power_
+end
+
+--是否还有能量
+function HeroPlane:hasPower(  )
+	return self.power_ > 0
+end
+
+function HeroPlane:resetPower(  )
+	self.power_ = MAX_POWER
 end
 
 function HeroPlane:setMoveTime(time)
@@ -45,6 +82,38 @@ function HeroPlane:fireBullet()
 		if self:isCanFireBullet() then
 			scene:onFireBullet(self:getBulletId())
 			self:setLastFireTime(os.clock())
+			self:minitesPower(1)
+			isFireBullet = true
+		end
+	end
+end
+
+function HeroPlane:isCanFireBullet( ... )
+	-- body
+	local flag = false
+	local time = os.clock()
+	if time - self:getLastFireTime() >= self:getBulletCalmTime() then 
+		flag = true
+	end
+
+	if not self:hasPower() then
+		flag = false
+	end
+
+	return flag
+end
+
+function HeroPlane:updateLogic(dt)
+	allTime = allTime + dt
+
+	--每秒加一个能量
+	if allTime > 1 then 
+		allTime = 0
+		--发射子弹不能加能量
+		if isFireBullet then
+			isFireBullet = false
+		else
+			self:addPower(1)
 		end
 	end
 end
@@ -52,10 +121,10 @@ end
 --复活
 function HeroPlane:relive()
 	self:restoreOriginSprite()
-
 	--3秒内无敌
 	self.isRelive_ = true
 	self:resetHp()
+	self:resetPower()
 	local act = cc.Sequence:create( cc.DelayTime:create( RELIVE_TIME ) , cc.CallFunc:create( function ( target )
 		target.isRelive_ = false
 	end ))	
