@@ -31,6 +31,11 @@ function LoadingScene:onCreate(  )
 	bg:setSpeed(-5)
 	self:add(bg, -1)
 
+	local touchLayer = display.newLayer()
+	touchLayer:onTouch(function ( event )
+		Helper.showClickParticle(touchLayer, cc.p(event.x, event.y))
+	end)
+	self:add(touchLayer)
 	--展示tips
 	self:showTips()
 end

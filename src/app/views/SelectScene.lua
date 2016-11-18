@@ -20,10 +20,15 @@ function SelectScene:onCreate()
 	--button
 	local startBtn = root:getChildByName("Go")
 	startBtn:onTouch(function ( event )
-		if event.name == "ended" then
+		if event.name == "began" then 
+			local size = startBtn:getSize()
+			Helper.showClickParticle(startBtn, cc.p(size.width * 0.5, size.height * 0.5))
+		elseif event.name == "ended" then
 			__G__MenuCancelSound()
 			GameData:getInstance():setRoleId(self.roleId_)
-			self:getApp():enterLoading("GameScene")
+			__G__actDelay(self, function (  )
+				self:getApp():enterLoading("GameScene")
+			end, 0.5)
 		end
 	end)
 	--left

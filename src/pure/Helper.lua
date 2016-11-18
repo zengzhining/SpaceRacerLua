@@ -25,6 +25,16 @@ function fadeObj( obj, time )
 		cc.EaseIn:create( cc.FadeIn:create(time), 1.5 )
 		)
 	obj:runAction(cc.RepeatForever:create(seq))
-
 end
+
+function showParticle( layer, point, fileName )
+	local emitter = particle.createParticle( fileName)
+	emitter:pos(point)
+	layer:add(emitter,999)
+end
+--显示一个粒子特效
+function showClickParticle( layer, point )
+	showParticle(layer, point, "Particles/LavaFlow.plist")
+end
+
 

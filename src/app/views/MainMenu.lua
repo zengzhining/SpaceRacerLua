@@ -18,6 +18,9 @@ function MainMenu:onCreate()
 		__G__actDelay(self, function (  )
 			self:getApp():enterLoading("SelectScene")
 		end, 1)
+
+		--展示一个粒子
+		Helper.showClickParticle( layer, cc.p( event.x, event.y ) )
 	end, false, false)
 	self:add(layer,1)
 

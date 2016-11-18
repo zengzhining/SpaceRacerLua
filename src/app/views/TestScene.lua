@@ -11,6 +11,14 @@ function TestScene:ctor()
 		
 	end)
 
+	layer:onTouch(function ( event )
+		-- local emitter1 = cc.ParticleSystemQuad:create("Particles/LavaFlow.plist")
+		if event.name == "began" then
+			return true
+		end
+		Helper.showClickParticle(layer, cc.p(event.x, event.y))
+	end)
+
     
 
 	--testJson
@@ -44,9 +52,7 @@ function TestScene:ctor()
 	--  y> 0.5 为向前旋转
 
 	--test emitter
-	local emitter1 = cc.ParticleSystemQuad:create("Particles/LavaFlow.plist")
-	-- local emitter1 = particle.createParticle( "Particles/particle.plist" )
-    layer:addChild(emitter1)
+	
 
 	self:add(layer)
 
