@@ -60,6 +60,9 @@ function GameData:initData()
 	--敌人配置
 	self.armyConfig_ = self.armyConfig_ or {}
 
+	--关卡数
+	self.level_ = self.level_ or 1
+
 	self:load()
 end
 --读取和存储游戏数据
@@ -84,6 +87,14 @@ function GameData:insertRank( pos,score )
 		end
 		self.rankInfo_[pos] = score
 	end
+end
+
+function GameData:resetLevel()
+	self.level_ = 1
+end
+
+function GameData:addLevel( num )
+	self.level_ = self.level_ + 1
 end
 
 --从排行榜中取得分数

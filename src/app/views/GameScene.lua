@@ -145,9 +145,10 @@ function GameScene:step( dt )
 	local armtTime = self:getArmyTime()
 	if tempTime >= armtTime then
 		tempTime = 0 
-		--只有全部敌人数量超过三十个才要创建
+		--没有敌人时候需要进入下一个关卡生成敌人
 		if #armySet <= 0 then
-			self:onCreateArmy()
+			self:onAllArmyGone()
+			-- self:onCreateArmy()
 		end
 	end
 
@@ -507,6 +508,11 @@ function GameScene:getArmyData(  )
 	local armyData = GameData:getInstance():getArmyConfig(num)
 	dump(armyData)
 	return armyData
+end
+
+--全部敌人离开屏幕或者死掉的回调，用来判断是否进入下一个关卡
+function GameScene:onAllArmyGone()
+	self:onCreateArmy()
 end
 
 function GameScene:onCreateArmy(  )
