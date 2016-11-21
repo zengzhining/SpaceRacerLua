@@ -262,14 +262,14 @@ function GameScene:onPlayerDead( target )
 	end
 
 	__G__actDelay( self, function (  )
-	if not self:getChildByTag(TAG_CONTINUE_LAYER) then
-			if ContinueTimes > 0 then 
+		if ContinueTimes > 0 then 
+			if not self:getChildByTag(TAG_CONTINUE_LAYER) then
 				local layer = __G__createContinueLayer("Layer/ContinueLayer.csb")
 				self:addChild(layer, 100, TAG_CONTINUE_LAYER)
-			else
-				--直接进入结算关卡,相当于按下取消
-				self:onContinueCancel()
 			end
+		else
+			--直接进入结算关卡,相当于按下取消
+			self:onContinueCancel()
 		end
 	end, 1.5 )
 	device.vibrate( 0.2 )
