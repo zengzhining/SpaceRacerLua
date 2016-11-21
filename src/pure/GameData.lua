@@ -4,6 +4,8 @@ local MAX_RANK = 100
 local BG_SPEED = 10
 
 local DEFAULT_ROLE = 1
+local DEFAULT_LEVEL = 2
+
 function GameData:ctor()
 	self:initData()
 
@@ -61,7 +63,7 @@ function GameData:initData()
 	self.armyConfig_ = self.armyConfig_ or {}
 
 	--关卡数
-	self.level_ = self.level_ or 1
+	self.level_ = self.level_ or DEFAULT_LEVEL
 
 	self:load()
 end

@@ -281,7 +281,10 @@ function SDKManager:showVideo( callback )
 	local status = sdkbox.PluginAdColony:getStatus(SDK_VEDIO_NAME)
 	print("status~~~~~~", status)
 	--没有就播放全屏
-	if status == 2 then
+	if status >= 2 and status <= 3 then
+		self:setVedioCallback( callback )
+		sdkbox.PluginAdColony:show(SDK_VEDIO_NAME)
+	else
 		if sdkbox.PluginVungle:isCacheAvailable() then
 			self:setVedioCallback( callback )
 			sdkbox.PluginVungle:show("video")
@@ -294,9 +297,6 @@ function SDKManager:showVideo( callback )
 				return 
 			end
 		end
-	else
-		self:setVedioCallback( callback )
-		sdkbox.PluginAdColony:show(SDK_VEDIO_NAME)
 	end
 
 	self.lastPlayVedioTime_ = os.time()
