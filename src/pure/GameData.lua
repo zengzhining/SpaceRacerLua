@@ -13,7 +13,7 @@ function GameData:ctor()
 end
 
 function GameData:loadConfig()
-	for i = 1, MAX_ARMY_ROUND do
+	for i = 1, MAX_LEVEL do
 		local fileName = string.format("config/army%02d.plist",i)
 		if gameio.isExist(fileName) then 
 			local armyConfig = gameio.getVectorPlistFromFile(fileName)
@@ -93,8 +93,16 @@ function GameData:resetLevel()
 	self.level_ = 1
 end
 
+function GameData:getLevel()
+	return self.level_
+end
+
 function GameData:addLevel( num )
 	self.level_ = self.level_ + 1
+end
+
+function GameData:getMaxLevel()
+	return MAX_LEVEL
 end
 
 --从排行榜中取得分数

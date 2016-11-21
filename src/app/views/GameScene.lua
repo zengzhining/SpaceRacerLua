@@ -54,6 +54,8 @@ function GameScene:onCreate()
 	local bg = __G__createBg( "Layer/BackGround.csb" )
 	bg:setSpeed(self:getBgSpeed())
 	self:add(bg, -2, TAG_BG)
+
+	self:onCreateArmy()
 end
 
 function GameScene:initData()
@@ -504,14 +506,18 @@ end
 
 --获得army的数据，根据数据来创建敌机
 function GameScene:getArmyData(  )
-	local num = math.random(1, MAX_ARMY_ROUND)
-	local armyData = GameData:getInstance():getArmyConfig(num)
-	dump(armyData)
+	local level = GameData:getInstance():getLevel()
+	local armyData = GameData:getInstance():getArmyConfig(level)
+
 	return armyData
 end
 
 --全部敌人离开屏幕或者死掉的回调，用来判断是否进入下一个关卡
 function GameScene:onAllArmyGone()
+	local level = GameData:getInstance():getLevel()
+	if level < GameData:getInGameScene():getMaxLevel() then 
+		GameData:getInstance():addLevel(1)		
+	end
 	self:onCreateArmy()
 end
 
