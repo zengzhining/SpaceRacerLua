@@ -108,11 +108,11 @@ function ArmyPlane:aiMove( aiId )
 
 	--在更下面才切换方向
 	if aiId == 2 then
-		if self:getPositionY() <= AI_HEIGHT/2 and (self.hasUnderHalfDisplayHeight_ == false) then 
+		if self:getPositionY() <= AI_HEIGHT/2 * 1.5 and (self.hasUnderHalfDisplayHeight_ == false) then 
 			self:reverseDir()
 		end
 
-		if self:getPositionY() <= AI_HEIGHT/2 then 
+		if self:getPositionY() <= AI_HEIGHT/2 * 1.5 then 
 			self.hasUnderHalfDisplayHeight_ = true
 		end
 	end
