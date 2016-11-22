@@ -16,7 +16,7 @@ function MainMenu:onCreate()
 		__G__MenuClickSound()
 		__G__MusicFadeOut(self, 1)
 		__G__actDelay(self, function (  )
-			self:getApp():enterLoading("SelectScene")
+			self:getApp():enterLoading("GameScene")
 		end, 1)
 
 		--展示一个粒子

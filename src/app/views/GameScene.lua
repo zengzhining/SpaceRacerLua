@@ -586,7 +586,7 @@ function GameScene:onRestart()
 	__G__MenuCancelSound()
 	display.resume()
 	GameData:getInstance():reset()
-	self:getApp():enterLoading("SelectScene")
+	self:getApp():enterLoading("GameScene")
 end
 
 
