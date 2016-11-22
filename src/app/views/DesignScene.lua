@@ -174,15 +174,15 @@ function DesignScene:deleteSelectPlane()
 end
 
 function DesignScene:changePlaneId()
-	local idTbl = { "#RedPlane.png", "#GreyPlane.png" }
+	local idTbl = { "#RedPlane.png", "#GreyPlane.png", "#GreenPlane.png" }
 	if selectPlane then 
 		local id = selectPlane:getId()
-		if id == 1 then 
-			id =  2
-		elseif id == 2 then
+		if id < 3 then 
+			id = id+1
+		else
 			id = 1
-		end 
-
+		end
+		
 		local res = idTbl[id]
 		selectPlane:setSpriteFrame(display.newSpriteFrame(res))
 		selectPlane:setId(id)

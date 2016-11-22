@@ -14,6 +14,9 @@ function PlaneFactory:createPlane( id_ )
 	elseif id_ == 2 then
 		plane = ArmyPlane.new("#GreyPlane.png")
 		plane:setGameAi(1)
+	elseif id_ == 3 then
+		plane = ArmyPlane.new("#GreenPlane.png")
+		plane:setGameAi(2)
 	end
 	plane:setId(id_)
 	plane:setScore( 2 )

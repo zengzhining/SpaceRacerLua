@@ -7,7 +7,7 @@ local RED_PLABNE = 2
 
 local MOVE_TIME = 0.2
 
-local AI_HEIGHT = display.height * 2 /3
+local AI_HEIGHT = display.height * 3 / 4
 
 function ArmyPlane:ctor(  )
 	self.super.ctor(self)
@@ -85,19 +85,34 @@ function ArmyPlane:onHalfDisplayHeight()
 
 end
 
+function ArmyPlane:reverseDir()
+	if self.dir_.x == 1 then 
+		self:onLeft(self:getViewRect().width * 0.6)
+	elseif self.dir_.x == -1 then 
+		self:onRight(self:getViewRect().width * 0.6)
+	end
+end
+
 function ArmyPlane:aiMove( aiId )
 	--人物死亡时候没有Ai
 	if self:isDead() then return end
 	if aiId == 1 then
 		if self:getPositionY() <= AI_HEIGHT and (self.hasUnderHalfDisplayHeight_ == false) then 
-			if self.dir_.x == 1 then 
-				self:onLeft(self:getViewRect().width * 0.6)
-			elseif self.dir_.x == -1 then 
-				self:onRight(self:getViewRect().width * 0.6)
-			end
+			self:reverseDir()
 		end
 
 		if self:getPositionY() <= AI_HEIGHT then 
+			self.hasUnderHalfDisplayHeight_ = true
+		end
+	end
+
+	--在更下面才切换方向
+	if aiId == 2 then
+		if self:getPositionY() <= AI_HEIGHT/2 and (self.hasUnderHalfDisplayHeight_ == false) then 
+			self:reverseDir()
+		end
+
+		if self:getPositionY() <= AI_HEIGHT/2 then 
 			self.hasUnderHalfDisplayHeight_ = true
 		end
 	end
