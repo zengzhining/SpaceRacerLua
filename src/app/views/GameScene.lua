@@ -557,7 +557,8 @@ end
 function GameScene:getArmySpeed()
 	--根据排名来获得分数
 	local rank = GameData:getInstance():getRank()
-	local speed = 10
+	local speed = 15 + (100-rank)/20
+	-- local speed = 22
 	--最大到三十
 	return (0-speed)
 end

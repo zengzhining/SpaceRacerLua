@@ -12,7 +12,9 @@ local g_lastId = 1
 
 --是否强置加入,后为强制加入的id,可用于编辑
 local FORCE_ADD = true
-local FORCE_ID = 2
+local NEED_LOAD = false
+local FORCE_ID = 1
+
 ---------------------------------------
 
 --------------function----------------
@@ -85,7 +87,9 @@ function DesignScene:onCreate()
 	self:addChild(armyLayer,1, TAG_ARMY_LAYER)
 
 	--初始化编辑器，可以用于读取敌人配置
-	self:initEdit()	
+	if NEED_LOAD then
+		self:initEdit()	
+	end
 end
 
 function DesignScene:initEdit()
@@ -157,9 +161,11 @@ function DesignScene:initControl()
 			self:cameraMove(-1)
 		elseif keycode == cc.KeyCode.KEY_Q then 
 			self:save()
-		elseif keycode == cc.KeyCode.KEY_SPACE or keycode == cc.KeyCode.KEY_D then
+		elseif keycode == cc.KeyCode.KEY_SPACE then
 			self:changePlaneId()
-		elseif keycode == cc.KeyCode.KEY_DELETE then
+		elseif keycode == cc.KeyCode.KEY_F then
+			self:start()
+		elseif keycode == cc.KeyCode.KEY_DELETE or keycode == cc.KeyCode.KEY_D  then
 			self:deleteSelectPlane()
 		end
 	end)
@@ -170,6 +176,12 @@ function DesignScene:deleteSelectPlane()
 		table.remove(planeSet, selectPlane.key_)
 		selectPlane:removeSelf()
 		selectPlane = nil
+	end
+end
+
+function DesignScene:start()
+	for c,plane in pairs(planeSet) do
+		plane:setSpeed(cc.p(0,-5))
 	end
 end
 
